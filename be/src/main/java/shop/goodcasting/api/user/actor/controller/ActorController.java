@@ -21,7 +21,6 @@ public class ActorController {
 
     private final ActorServiceImpl service;
     private final ActorRepository repo;
-    private final ModelMapper modelMapper;
 
     @GetMapping("/list")
     public ResponseEntity<List<Actor>> actorList(){

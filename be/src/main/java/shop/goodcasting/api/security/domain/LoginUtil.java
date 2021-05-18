@@ -1,4 +1,4 @@
-package shop.goodcasting.api.security.domain;//package com.example.api.security.domain;
+//package shop.goodcasting.api.security.domain;//package com.example.api.security.domain;
 //
 //import io.jsonwebtoken.Claims;
 //import io.jsonwebtoken.Jwts;

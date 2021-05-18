@@ -37,7 +37,7 @@ public class ProducerTest {
                     .position("직급" + i)
                     .userVO(userVO)
                     .build();
-                
+
                 producerRepository.save(producer);
 
 
