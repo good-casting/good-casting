@@ -1,6 +1,9 @@
 package shop.goodcasting.api.user.producer.domain;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import shop.goodcasting.api.common.domain.BaseEntity;
 import shop.goodcasting.api.user.login.domain.UserVO;
 
@@ -8,12 +11,14 @@ import javax.persistence.*;
 
 @Getter
 @Entity
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "producers")
 public class Producer extends BaseEntity {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "producer_id") private Long producerId;
 
-    @Column private String password;
     @Column private String email;
     @Column private String agency;
     @Column private String phone;
@@ -22,4 +27,10 @@ public class Producer extends BaseEntity {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private UserVO userVO;
+
+    public void changeUserVO(UserVO userVO){
+        this.userVO = userVO;
+    }
+
+
 }

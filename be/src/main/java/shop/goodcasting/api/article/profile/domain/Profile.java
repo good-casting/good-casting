@@ -21,6 +21,7 @@ public class Profile extends BaseEntity {
 
     @Column private Boolean privacy;
     @Column private String contents;
+    @Column private String title;
     @Column private String career;
 
     @ManyToOne

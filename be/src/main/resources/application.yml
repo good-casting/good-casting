@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:mariadb://192.168.0.199/goodc
+    url: jdbc:mariadb://192.168.0.199:3306/goodc
     driver-class-name: org.mariadb.jdbc.Driver
     username: goodc
     password: Goodc1234

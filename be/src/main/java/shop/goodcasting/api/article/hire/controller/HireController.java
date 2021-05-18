@@ -34,4 +34,5 @@ public class HireController {
         return ResponseEntity.ok(service.delete(id));
     }
 
+
 }

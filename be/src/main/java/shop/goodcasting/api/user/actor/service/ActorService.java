@@ -13,4 +13,18 @@ public interface ActorService {
     Optional<Actor> findById(Long actorId);
 
     Long delete(Actor actor);
+
+    default Actor dtoToEntity(ActorDTO dto) {
+        Actor entity = Actor.builder()
+                .birthday(dto.getBirthday())
+                .gender(dto.getGender())
+                .phone(dto.getPhone())
+                .height(dto.getHeight())
+                .weight(dto.getWeight())
+                .agency(dto.getAgency())
+                .major(dto.getMajor())
+                .build();
+        return entity;
+    }
+
 }

@@ -1,7 +1,9 @@
 package shop.goodcasting.api.user.login.domain;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import shop.goodcasting.api.common.domain.BaseEntity;
 
 import javax.persistence.*;
@@ -10,6 +12,8 @@ import java.util.List;
 
 @Builder
 @Getter
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "users")
 @Entity
 public class UserVO extends BaseEntity {
@@ -22,4 +26,6 @@ public class UserVO extends BaseEntity {
 
     @ElementCollection(fetch = FetchType.EAGER)
     List<Role> roles;
+
+
 }
