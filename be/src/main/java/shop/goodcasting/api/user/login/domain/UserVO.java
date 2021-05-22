@@ -29,6 +29,10 @@ public class UserVO extends BaseEntity {
     @ElementCollection(fetch = FetchType.EAGER)
     List<Role> roles;
 
+    public void addUserRole(Role role) {
+        roles.add(role);
+    }
+
     public void changePosition(Boolean position) {
         this.position = position;
     }

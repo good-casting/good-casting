@@ -33,8 +33,6 @@ public class UserServiceImpl implements UserService {
     @Override
     public String signup(UserDTO userDTO) {
 
-        UserVO userVO = dto2EntityUserVO(userDTO);
-
         if(!userRepo.existsByUsername(userDTO.getUsername())){
             userDTO.setPassword(passwordEncoder.encode(userDTO.getPassword()));
             List<Role> actorList = new ArrayList<>();
@@ -46,6 +44,9 @@ public class UserServiceImpl implements UserService {
             if(position){
                 actorList.add(Role.USER);
                 userDTO.setRoles(actorList);
+
+                UserVO userVO = dto2EntityUserVO(userDTO);
+
                 userRepo.save(userVO);
                 actor.changeUserVO(userVO);
                 actorRepo.save(actor);
@@ -53,6 +54,9 @@ public class UserServiceImpl implements UserService {
             } else {
                 producerList.add(Role.USER);
                 userDTO.setRoles(producerList);
+
+                UserVO userVO = dto2EntityUserVO(userDTO);
+
                 userRepo.save(userVO);
                 producer.changeUserVO(userVO);
                 producerRepo.save(producer);

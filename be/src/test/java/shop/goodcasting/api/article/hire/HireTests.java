@@ -29,7 +29,7 @@ public class HireTests {
 
 //    @Autowired
 //    private PasswordEncoder passwordEncoder;
-
+//
 //    @Test
 //    public List<Hire> hireCrawl() throws IOException {
 //        for (int j = 8; j < 20; j++) {

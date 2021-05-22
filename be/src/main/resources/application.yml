@@ -9,14 +9,19 @@ spring:
     generate-ddl: true
     show-sql: true
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: update
     properties:
       hibernate:
         format_sql: true
+  servlet:
+    multipart:
+      enabled: true
+      location: /Users/Kodongyoung/goodCasting
+      max-request-size: 100MB
+      max-file-size: 100MB
   security:
     jwt:
       secret: secret-value
-
   mail:
     host: smtp.gmail.com
     port: 587
@@ -28,3 +33,10 @@ spring:
           auth: true
           starttls:
             enable: true
+shop:
+  goodcast:
+    upload:
+      path: /usr/local/goodCasting
+UserController:
+  signup: Create user and returns ins JWT token
+  signin: Authenticaties user and returns ins JWT token

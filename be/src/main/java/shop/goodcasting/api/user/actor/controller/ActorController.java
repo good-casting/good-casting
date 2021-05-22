@@ -3,7 +3,6 @@ package shop.goodcasting.api.user.actor.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
-import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import shop.goodcasting.api.user.actor.domain.Actor;
