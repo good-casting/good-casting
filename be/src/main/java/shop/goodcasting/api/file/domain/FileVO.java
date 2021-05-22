@@ -24,7 +24,7 @@ public class FileVO extends BaseEntity {
     @Column(name = "file_name") private String fileName;
     @Column private boolean first;
 
-    private boolean photoFile;
+    private boolean photoType;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "profile_id")

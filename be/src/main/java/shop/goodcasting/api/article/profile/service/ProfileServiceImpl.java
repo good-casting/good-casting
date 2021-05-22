@@ -60,7 +60,7 @@ public class ProfileServiceImpl implements ProfileService {
                 System.out.println("----------------------after dto to entity-----------------------: " + file);
 
                 fileRepo.save(file);
-                if (file.isPhotoFile()) {
+                if (file.isPhotoType()) {
                     extractCelebrity(file.getFileName(), finalProfileDto.getProfileId());
                 }
             });

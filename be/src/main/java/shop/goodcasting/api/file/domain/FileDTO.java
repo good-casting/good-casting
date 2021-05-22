@@ -22,7 +22,7 @@ public class FileDTO {
     private boolean first;
     private Timestamp regDate;
     private Timestamp modDate;
-    private boolean photoFile;
+    private boolean photoType;
 
     private ProfileDTO profile;
 }
