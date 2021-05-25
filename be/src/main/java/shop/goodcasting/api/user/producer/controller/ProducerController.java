@@ -2,11 +2,9 @@ package shop.goodcasting.api.user.producer.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
-import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import shop.goodcasting.api.user.producer.domain.Producer;
-import shop.goodcasting.api.user.producer.domain.ProducerDTO;
 import shop.goodcasting.api.user.producer.repository.ProducerRepository;
 import shop.goodcasting.api.user.producer.service.ProducerServiceImpl;
 
@@ -20,7 +18,6 @@ import java.util.Optional;
 public class ProducerController {
     private final ProducerServiceImpl service;
     private final ProducerRepository repo;
-    private final ModelMapper modelMapper;
 
     @GetMapping("/list")
     public ResponseEntity<List<Producer>> producerList(){

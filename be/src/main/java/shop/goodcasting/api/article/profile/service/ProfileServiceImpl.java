@@ -3,16 +3,23 @@ package shop.goodcasting.api.article.profile.service;
 import lombok.RequiredArgsConstructor;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import shop.goodcasting.api.article.hire.repository.HireRepository;
 import shop.goodcasting.api.article.profile.domain.Profile;
 import shop.goodcasting.api.article.profile.domain.ProfileDTO;
 import shop.goodcasting.api.article.profile.repository.ProfileRepository;
 
+import shop.goodcasting.api.common.domain.PageRequestDTO;
+import shop.goodcasting.api.common.domain.PageResultDTO;
 import shop.goodcasting.api.file.domain.FileDTO;
 import shop.goodcasting.api.file.domain.FileVO;
 import shop.goodcasting.api.file.repository.FileRepository;
 import shop.goodcasting.api.file.service.FileService;
+import shop.goodcasting.api.file.service.FileServiceImpl;
 import shop.goodcasting.api.user.actor.domain.Actor;
 import shop.goodcasting.api.user.actor.domain.ActorDTO;
 import shop.goodcasting.api.user.actor.repository.ActorRepository;
@@ -28,6 +35,7 @@ import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Lazy
@@ -37,13 +45,15 @@ public class ProfileServiceImpl implements ProfileService {
 
     private final ProfileRepository profileRepo;
     private final FileRepository fileRepo;
-    private final FileService fileService;
+    private final FileServiceImpl fileService;
     private final ActorService actorService;
+    private final HireRepository hireRepo;
     private final UserRepository userRepo;
     private final ActorRepository actorRepo;
-    private final UserService userService;;
+    private final UserService userService;
 
-
+    @Value("${shop.goodcast.upload.path}")
+    private String uploadPath;
 
     @Transactional
     @Override
@@ -52,40 +62,20 @@ public class ProfileServiceImpl implements ProfileService {
 
         List<FileDTO> files = profileDTO.getFiles();
 
-        if(files != null && files.size() > 0) {
-            files.forEach(fileDTO -> {
-                fileDTO.setProfile(finalProfileDto);
-                System.out.println("----------------------after set final dto-----------------------: " + fileDTO);
-                FileVO file = fileService.dto2EntityAll(fileDTO);
-                System.out.println("----------------------after dto to entity-----------------------: " + file);
-
-                fileRepo.save(file);
-                if (file.isPhotoType()) {
-                    extractCelebrity(file.getFileName(), finalProfileDto.getProfileId());
-                }
-            });
-        }
-
-
-        return null;
+        return saveFile(finalProfileDto, files);
     }
 
     @Transactional
     @Override
     public ProfileDTO readProfile(Long profileId) {
-        System.out.println("getProfileWithFileByProfileId() entry");
-
-        List<Object[]> profileAndFileAndActor = profileRepo.getProfileAndFileAndActorByProfileId(2L);
+        List<Object[]> profileAndFileAndActor = profileRepo.getProfileAndFileAndActorByProfileId(profileId);
 
         Profile profile = (Profile) profileAndFileAndActor.get(0)[0];
         Actor actor = profile.getActor();
-        System.out.println("actor: " + actor);
 
         ProfileDTO profileDTO = entity2Dto(profile);
-        System.out.println("profileDTO: " + profileDTO);
 
         ActorDTO actorDTO = actorService.entity2Dto(actor);
-        System.out.println("actorDTO: " + actorDTO);
 
         List<FileDTO> fileList = new ArrayList<>();
 
@@ -96,51 +86,43 @@ public class ProfileServiceImpl implements ProfileService {
         profileDTO.setActor(actorDTO);
         profileDTO.setFiles(fileList);
 
-        System.out.println("profile dto: " + profileDTO);
-
         return profileDTO;
     }
 
-    public List<ProfileDTO> readProfileList() {
 
+    @Override
+    public PageResultDTO<ProfileDTO, Object[]> getProfileList(PageRequestDTO requestDTO) {
+        Page<Object[]> result = profileRepo.getProfileAndFileAndActorByFirst(
+                requestDTO.getPageable(Sort.by("profileId").descending()));
 
-//        for (Object[] re : res) {
-//            System.out.println("loop enter");
-//            System.out.println(Arrays.toString(re));
-//        }
+        Function<Object[], ProfileDTO> fn = (entity -> entity2DtoFiles((Profile) entity[0],
+                (Actor) entity[1], (FileVO) entity[2]));
 
-        List<ProfileDTO> profileList = profileRepo.getProfileAndFileAndActorByFirst(true)
-                .stream().map(objects -> {
-                    System.out.println("loop enter");
-                    System.out.println(Arrays.toString(objects));
+        return new PageResultDTO<>(result, fn);
+    }
 
-                    ProfileDTO profileDTO = entity2Dto((Profile) objects[0]);
-                    ActorDTO actorDTO = actorService.entity2Dto((Actor) objects[1]);
-                    FileDTO fileDTO = fileService.entity2Dto((FileVO) objects[2]);
+    @Transactional
+    public Long update(ProfileDTO profileDTO) {
+        Long profileId = profileDTO.getProfileId();
 
-                    List<FileDTO> files = new ArrayList<>();
-                    files.add(fileDTO);
+        profileRepo.save(dto2EntityAll(profileDTO));
 
-                    profileDTO.setActor(actorDTO);
-                    profileDTO.setFiles(files);
+        fileRepo.deleteByProfileId(profileId);
 
-                    System.out.println(profileDTO);
+        List<FileDTO> files = profileDTO.getFiles();
 
-                    return profileDTO;
-                }).collect(Collectors.toList());
+        return saveFile(profileDTO, files);
+    }
 
-        for (ProfileDTO profileDTO : profileList) {
-            System.out.println("----------------------------------------");
-            System.out.println(profileDTO.getTitle());
-            System.out.println(profileDTO.getActor());
-            System.out.println(profileDTO.getFiles());
-        }
+    @Transactional
+    public void deleteProfile(Long profileId) {
+        fileRepo.deleteByProfileId(profileId);
 
-        return profileList;
+        profileRepo.deleteById(profileId);
     }
 
 
-    public void extractCelebrity(String photoName, Long profileId) {
+    public void extractCelebrity(String photoName, Long profileId, Long hireId) {
 
         StringBuffer reqStr = new StringBuffer();
         String clientId = "92mep69l88";//애플리케이션 클라이언트 아이디값";
@@ -217,7 +199,8 @@ public class ProfileServiceImpl implements ProfileService {
 
                 System.out.println("===================================================================");
 
-                profileRepo.resembleUpdate(profileId, resemble, confidence);
+                profileRepo.resembleUpdate(profileId,resemble, confidence);
+
 
             } else {
                 System.out.println("error !!!");
@@ -226,5 +209,21 @@ public class ProfileServiceImpl implements ProfileService {
             System.out.println(e);
         }
     }
+    public Long saveFile(ProfileDTO profileDTO, List<FileDTO> files) {
+        if(files != null && files.size() > 0) {
+            files.forEach(fileDTO -> {
+                fileDTO.setProfile(profileDTO);
+                FileVO file = fileService.dto2EntityAll(fileDTO);
+                fileRepo.save(file);
+
+                if (file.isPhotoType() && fileDTO.isFirst()) {
+                    extractCelebrity(file.getFileName(), profileDTO.getProfileId(), profileDTO.getProfileId());
+                }
+            });
+            return 1L;
+        }
+        return 0L;
+    }
+
 }
 

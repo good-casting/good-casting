@@ -1,5 +1,7 @@
 package shop.goodcasting.api.user.producer.service;
 
+import shop.goodcasting.api.user.actor.domain.Actor;
+import shop.goodcasting.api.user.actor.domain.ActorDTO;
 import shop.goodcasting.api.user.producer.domain.Producer;
 import shop.goodcasting.api.user.producer.domain.ProducerDTO;
 
@@ -14,4 +16,16 @@ public interface ProducerService {
         return entity;
     }
 
+
+    default ProducerDTO entity2Dto(Producer producer) {
+        ProducerDTO producerDTO = ProducerDTO.builder()
+                .producerId(producer.getProducerId())
+                .agency(producer.getAgency())
+                .email(producer.getEmail())
+                .phone(producer.getPhone())
+                .position(producer.getPosition())
+                .build();
+        return producerDTO;
+
+    }
 }

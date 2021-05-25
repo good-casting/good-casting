@@ -1,38 +1,45 @@
 package shop.goodcasting.api.article.hire.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpRange;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import shop.goodcasting.api.article.hire.domain.Hire;
 import shop.goodcasting.api.article.hire.domain.HireDTO;
 import shop.goodcasting.api.article.hire.service.HireServiceImpl;
 
-import java.util.List;
-import java.util.Optional;
 
+@CrossOrigin("*")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/hire")
 public class HireController {
     private final HireServiceImpl service;
 
-    @PostMapping("/save")
-    public ResponseEntity<Long> save(@RequestBody Hire hire) {
-        return ResponseEntity.ok(service.save(hire));
+    @PostMapping("/register")
+    public ResponseEntity<Long> register(@RequestBody HireDTO hireDTO) {
+
+        service.register(hireDTO);
+
+        return ResponseEntity.ok(1L);
+    }
+    @GetMapping("/hire-detail/{hireId}")
+    public ResponseEntity<HireDTO> hireDetail(@PathVariable Long hireId) {
+        return ResponseEntity.ok(service.readHire(hireId));
     }
 
-    @GetMapping("/findAll")
-    public ResponseEntity<List<Hire>> findAll() {
-        return ResponseEntity.ok(service.findAll());
+    @PutMapping("/update")
+    public ResponseEntity<Long> update(@RequestBody HireDTO hireDTO){
+        service.update(hireDTO);
+        return new ResponseEntity<>(1L, HttpStatus.OK);
     }
-    @GetMapping("/{id}")
-    public ResponseEntity<Optional<Hire>> findById(@PathVariable Long id) {
-        return ResponseEntity.ok(service.findById(id));
+
+    @DeleteMapping("/{hireId}")
+    public ResponseEntity<Long> delete(@PathVariable Long hireId){
+        service.deleteHire(hireId);
+        return new ResponseEntity<>(1L, HttpStatus.OK);
     }
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Long> delete(@PathVariable Hire id) {
-        return ResponseEntity.ok(service.delete(id));
-    }
+
 
 
 }

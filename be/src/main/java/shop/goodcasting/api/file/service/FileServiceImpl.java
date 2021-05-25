@@ -57,4 +57,24 @@ public class FileServiceImpl implements FileService {
 
         ImageIO.write(img, "jpg", imgFile);
     }
+    public void deleteFile(String fileName) {
+        File deleteFile = new File(fileName);
+
+        if(deleteFile.exists()) {
+            deleteFile.delete();
+            System.out.println("파일을 삭제하였습니다.");
+        } else {
+            System.out.println("파일이 존재하지 않습니다.");
+        }
+    }
+
+    public void deleteFileByProfileId(Long profileId) {
+        fileRepo.selectFileIdsByProfileId(profileId)
+                .forEach(fileRepo::deleteByProfileId);
+    }
+    public void deleteFileByHireId(Long hireId){
+        fileRepo.selectFileIdsByHireId(hireId)
+                .forEach(fileRepo::deleteByHireId);
+    }
+
 }

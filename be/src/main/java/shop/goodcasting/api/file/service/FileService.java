@@ -1,5 +1,6 @@
 package shop.goodcasting.api.file.service;
 
+import shop.goodcasting.api.article.hire.domain.Hire;
 import shop.goodcasting.api.article.profile.domain.Profile;
 import shop.goodcasting.api.article.profile.domain.ProfileDTO;
 import shop.goodcasting.api.file.domain.FileDTO;
@@ -10,8 +11,6 @@ import java.util.List;
 
 public interface FileService {
     void extractVideoThumbnail(File file) throws Exception;
-
-//    List<FileDTO> findFileListByProfileId(Long profileId);
 
     default FileDTO entity2Dto(FileVO fileVO) {
         return FileDTO.builder()
@@ -58,4 +57,5 @@ public interface FileService {
                         .build())
                 .build();
     }
+
 }

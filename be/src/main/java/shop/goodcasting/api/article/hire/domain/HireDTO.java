@@ -1,18 +1,43 @@
 package shop.goodcasting.api.article.hire.domain;
 
 
-import lombok.Data;
+import lombok.*;
 import org.springframework.stereotype.Component;
+import shop.goodcasting.api.article.profile.domain.ProfileDTO;
+import shop.goodcasting.api.file.domain.FileDTO;
+import shop.goodcasting.api.user.producer.domain.Producer;
+import shop.goodcasting.api.user.producer.domain.ProducerDTO;
 
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
+
+@ToString
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Data
 @Component
 public class HireDTO {
-    private Long hiresId;
-    private String hireTitle;
+    // pk
+    private Long hireId;
+
+    /// data
+    private String title;
+    private String project;
     private String cast;    //배역
     private String filming; //촬영기간
     private String guarantee; //출연료
     private String personnel; //모집인원
     private String deadline; //공고마감일
     private String contents; //내용
+
+
+    private Timestamp regDate;
+    private Timestamp modDate;
+
+    //join object
+    private ProducerDTO producer;
+    private List<FileDTO> files;
+    private List<ProfileDTO> profiles;
 }

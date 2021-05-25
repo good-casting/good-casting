@@ -123,4 +123,11 @@ public class FileController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+    @DeleteMapping("/delete")
+    public ResponseEntity<Long> delete(@RequestBody FileDTO fileDTO) {
+        service.deleteFile(uploadPath + "\\" + fileDTO.getUuid() + "_" + fileDTO.getFileName());
+
+        return ResponseEntity.ok(null);
+    }
+
 }

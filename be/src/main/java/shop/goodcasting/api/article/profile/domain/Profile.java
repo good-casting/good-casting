@@ -23,20 +23,32 @@ public class Profile extends BaseEntity {
     private Long profileId;
 
     // column
-    @Column private String title;
     @Column private boolean privacy;
     @Column private String contents;
     @Column private String career;
     @Column private String resemble;
-    @Column private String confidence;
+    @Column private Double confidence;
 
     // join column
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "actor_id")
     private Actor actor;
 
-    @Builder.Default
-    @OneToMany(mappedBy = "profile")
-    private List<HireProfile> hires = new ArrayList<>();
+    public void changePrivacy(boolean privacy) {
+        this.privacy = privacy;
+    }
+    public void changeContents(String contents) {
+        this.contents = contents;
+    }
+    public void changeCareer(String career) {
+        this.career = career;
+    }
+    public void changeResemble(String resemble) {
+        this.resemble = resemble;
+    }
+    public void changeConfidence(Double confidence) {
+        this.confidence = confidence;
+    }
+
 
 }

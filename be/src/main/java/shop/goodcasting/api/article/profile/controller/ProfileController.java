@@ -1,12 +1,14 @@
 package shop.goodcasting.api.article.profile.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.*;
 import shop.goodcasting.api.article.profile.domain.ProfileDTO;
 import shop.goodcasting.api.article.profile.service.ProfileServiceImpl;
+import shop.goodcasting.api.common.domain.PageRequestDTO;
 
 import java.util.List;
 
@@ -33,10 +35,26 @@ public class ProfileController {
         return ResponseEntity.ok(service.readProfile(profileId));
     }
 
-    @GetMapping("/profile-list")
-    public ResponseEntity<List<ProfileDTO>> profileList() {
+    @GetMapping("/profile-list/{page}")
+    public ResponseEntity<List<ProfileDTO>> profileList(@PathVariable int page) {
+        PageRequestDTO pageRequestDTO = new PageRequestDTO(page);
 
-        return ResponseEntity.of(null);
+        return new ResponseEntity<>(service.getProfileList(pageRequestDTO).getDtoList(), HttpStatus.OK);
+    }
+
+    @PutMapping("/update")
+    public ResponseEntity<Long> update(@RequestBody ProfileDTO profileDTO) {
+        service.update(profileDTO);
+
+        return new ResponseEntity<>(1L, HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{profileId}")
+    public ResponseEntity<Long> delete(@PathVariable Long profileId) {
+
+        service.deleteProfile(profileId);
+
+        return new ResponseEntity<>(1L, HttpStatus.OK);
     }
 
 }
