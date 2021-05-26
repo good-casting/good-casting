@@ -2,7 +2,6 @@ import React, { useCallback, useContext, useEffect, useState } from "react";
 import styled from "styled-components";
 import { Modal } from "react-bootstrap";
 import GlobalContext from "../../context/GlobalContext";
-import Checkbox from "../Core/Checkbox"
 import { useDispatch } from "react-redux";
 import { signup } from "../../state/reducer/user.reducer";
 
@@ -17,12 +16,15 @@ const ModalSignUp = (props) => {
   const [showPassSecond, setShowPassSecond] = useState(true);
 
   const [inputs, setInputs] = useState({
-    email: "",
+    username: "",
     password: "",
     confirmPassword: "",
+    position: false,
+    account: true,
   })
 
   const [checkValidate, setCheckValidate] = useState("")
+
 
   const onChange = useCallback((e) => {
     
@@ -50,6 +52,7 @@ const ModalSignUp = (props) => {
   };
   
   const dispatch = useDispatch();
+
 
   return (
     <>
@@ -79,7 +82,6 @@ const ModalSignUp = (props) => {
                   <p className="mb-0 font-size-4 text-white">
                     Create your account to continue and explore new jobs.
                   </p>
-                  <Checkbox />
                 </div>
                 <div className="border-top border-default-color-2 mt-auto">
                   <div className="d-flex mx-n9 pt-6 flex-xs-row flex-column">
@@ -101,22 +103,30 @@ const ModalSignUp = (props) => {
             </div>
             <div className="col-lg-7 col-md-6">
               <div className="bg-white-2 h-100 px-11 pt-11 pb-7">
-
+            <div className="form-grop">
+              <input  
+                      type="radio" name="radio"  onClick={() => { setInputs({ position: true}) }}/>
+              <label className="font-size-4 text-black-2 font-weight-semibold line-height-reset" htmlFor='radio'>&nbsp;배우</label>
+              &nbsp;&nbsp;&nbsp;&nbsp;
+              <input 
+                      type="radio" name="radio"  onClick={() => { setInputs({ position: false}) }}/>
+              <lable className="font-size-4 text-black-2 font-weight-semibold line-height-reset" htmlFor='radio'>&nbsp;재작자</lable>
+              </div>
                 <form onSubmit={e => e.preventDefault()}>
                   <div className="form-group">
                     <label
-                      htmlFor="email2"
+                      htmlFor="username2"
                       className="font-size-4 text-black-2 font-weight-semibold line-height-reset"
                     >
-                      E-mail
+                      Username
                     </label>
                     <input
-                      type="email"
+                      type="id"
                       className="form-control"
-                      placeholder="example@gmail.com"
-                      id="email2"
-                      name="email"
-                      value={inputs.email}
+                      placeholder="example"
+                      id="username2"
+                      name="username"
+                      value={inputs.username}
                       onChange={onChange}
                     />
                   </div>
