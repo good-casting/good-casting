@@ -2,10 +2,14 @@ package shop.goodcasting.api.article.profile.domain;
 
 import lombok.*;
 import org.springframework.stereotype.Component;
-import shop.goodcasting.api.common.domain.HireProfile;
 import shop.goodcasting.api.file.domain.FileDTO;
+import shop.goodcasting.api.user.actor.domain.Actor;
 import shop.goodcasting.api.user.actor.domain.ActorDTO;
 
+import javax.persistence.Column;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import java.sql.Timestamp;
 import java.util.List;
 
@@ -16,17 +20,17 @@ import java.util.List;
 @Data
 @Component
 public class ProfileDTO {
+    // pk
     private Long profileId;
+
     private boolean privacy;
     private String contents;
     private String career;
     private String resemble;
     private Double confidence;
-    private String actorName;
-    private String fileUuid;
-    private String fileName;
     private Timestamp regDate;
     private Timestamp modDate;
+    private String actorName;
 
     private ActorDTO actor;
 

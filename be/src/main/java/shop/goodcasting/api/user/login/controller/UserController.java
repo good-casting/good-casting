@@ -1,9 +1,6 @@
 package shop.goodcasting.api.user.login.controller;
 
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
+import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
 import org.springframework.http.ResponseEntity;
@@ -12,7 +9,9 @@ import shop.goodcasting.api.user.login.domain.UserDTO;
 import shop.goodcasting.api.user.login.domain.UserVO;
 import shop.goodcasting.api.user.login.service.UserServiceImpl;
 
-@Log
+import java.util.List;
+
+@Api(tags="users")
 @RestController
 @RequestMapping("/users")
 @CrossOrigin("*")
@@ -25,20 +24,23 @@ public class UserController {
     @ApiResponses(value={
             @ApiResponse(code=400, message = "something wrong"),
             @ApiResponse(code=403, message = "승인거절"),
-            @ApiResponse(code=422, message = "중복된 username")})
+            @ApiResponse(code=422, message = "ssdfad")})
     public ResponseEntity<String> signup(@ApiParam("Signup user") @RequestBody UserDTO userDTO){
-        log.info("회원가입 할꺼임");
         return ResponseEntity.ok(service.signup(userDTO));
     }
-
 
     @PostMapping("/signin")
     @ApiOperation(value="${UserController.signin}")
     @ApiResponses(value={
             @ApiResponse(code=400, message = "something wrong"),
             @ApiResponse(code=422, message = "유효하지 않은 아이디 / 비밀번호")})
-    public ResponseEntity<UserDTO> signin(@RequestBody UserDTO userDTO){
+    public ResponseEntity<UserDTO> signin(@RequestBody UserDTO userDTO) {
+        System.out.println(userDTO.getUserId());
         return ResponseEntity.ok(service.signin(userDTO));
     }
 
+    @GetMapping("/list")
+    public ResponseEntity<List<UserVO>> userList(){
+        return ResponseEntity.ok(service.findAll());
+    }
 }

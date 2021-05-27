@@ -5,16 +5,13 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 import org.springframework.data.repository.query.Param;
-import org.springframework.stereotype.Repository;
 import shop.goodcasting.api.article.profile.domain.Profile;
 
 import java.util.List;
 
-@Repository
 public interface ProfileRepository extends JpaRepository<Profile, Long>
-    , QuerydslPredicateExecutor<Profile> {
+        , SearchProfileRepository {
 
     @Query("select p, p.actor, f from Profile p left join FileVO f on f.profile = p where p.profileId = :profileId")
     List<Object[]> getProfileAndFileAndActorByProfileId(@Param("profileId") Long profileId);
@@ -34,6 +31,5 @@ public interface ProfileRepository extends JpaRepository<Profile, Long>
 
     @Modifying
     @Query("update Profile p set p.resemble = :resemble, p.confidence = :confidence where p.profileId = :profileId")
-    void resembleUpdate(Long profileId, String resemble, String confidence);
-
+    void updateResembleAndConfidenceByProfileId(Long profileId, String resemble, Double confidence);
 }

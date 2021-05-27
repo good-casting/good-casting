@@ -1,16 +1,18 @@
 package shop.goodcasting.api.article.profile.service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
+import net.coobird.thumbnailator.Thumbnailator;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-import shop.goodcasting.api.article.hire.repository.HireRepository;
+import org.springframework.web.multipart.MultipartFile;
 import shop.goodcasting.api.article.profile.domain.Profile;
 import shop.goodcasting.api.article.profile.domain.ProfileDTO;
+import shop.goodcasting.api.article.profile.domain.ProfileListDTO;
 import shop.goodcasting.api.article.profile.repository.ProfileRepository;
 
 import shop.goodcasting.api.common.domain.PageRequestDTO;
@@ -19,38 +21,30 @@ import shop.goodcasting.api.file.domain.FileDTO;
 import shop.goodcasting.api.file.domain.FileVO;
 import shop.goodcasting.api.file.repository.FileRepository;
 import shop.goodcasting.api.file.service.FileService;
-import shop.goodcasting.api.file.service.FileServiceImpl;
 import shop.goodcasting.api.user.actor.domain.Actor;
 import shop.goodcasting.api.user.actor.domain.ActorDTO;
-import shop.goodcasting.api.user.actor.repository.ActorRepository;
 import shop.goodcasting.api.user.actor.service.ActorService;
-import shop.goodcasting.api.user.login.repository.UserRepository;
-import shop.goodcasting.api.user.login.service.UserService;
 
 import javax.transaction.Transactional;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
+import java.util.UUID;
 import java.util.function.Function;
-import java.util.stream.Collectors;
 
-@Lazy
+@Log4j2
 @Service
 @RequiredArgsConstructor
 public class ProfileServiceImpl implements ProfileService {
-
     private final ProfileRepository profileRepo;
     private final FileRepository fileRepo;
-    private final FileServiceImpl fileService;
+    private final FileService fileService;
     private final ActorService actorService;
-    private final HireRepository hireRepo;
-    private final UserRepository userRepo;
-    private final ActorRepository actorRepo;
-    private final UserService userService;
 
     @Value("${shop.goodcast.upload.path}")
     private String uploadPath;
@@ -89,13 +83,13 @@ public class ProfileServiceImpl implements ProfileService {
         return profileDTO;
     }
 
-
     @Override
-    public PageResultDTO<ProfileDTO, Object[]> getProfileList(PageRequestDTO requestDTO) {
-        Page<Object[]> result = profileRepo.getProfileAndFileAndActorByFirst(
-                requestDTO.getPageable(Sort.by("profileId").descending()));
+    public PageResultDTO<ProfileListDTO, Object[]> getProfileList(PageRequestDTO pageRequest) {
+        Page<Object[]> result = profileRepo
+                .searchPage(pageRequest, pageRequest
+                        .getPageable(Sort.by(pageRequest.getSort()).descending()));
 
-        Function<Object[], ProfileDTO> fn = (entity -> entity2DtoFiles((Profile) entity[0],
+        Function<Object[], ProfileListDTO> fn = (entity -> entity2DtoFiles((Profile) entity[0],
                 (Actor) entity[1], (FileVO) entity[2]));
 
         return new PageResultDTO<>(result, fn);
@@ -121,9 +115,7 @@ public class ProfileServiceImpl implements ProfileService {
         profileRepo.deleteById(profileId);
     }
 
-
-    public void extractCelebrity(String photoName, Long profileId, Long hireId) {
-
+    public String[] extractCelebrity(String photoName) {
         StringBuffer reqStr = new StringBuffer();
         String clientId = "92mep69l88";//애플리케이션 클라이언트 아이디값";
         String clientSecret = "qdbpwHd8pRZPszLr0gLfqKR7OHbdsDriRmOFdwno";//애플리케이션 클라이언트 시크릿값";
@@ -131,6 +123,7 @@ public class ProfileServiceImpl implements ProfileService {
         try {
             String paramName = "image"; // 파라미터명은 image로 지정
             String imgFile = photoName;
+            System.out.println("##################"+ imgFile +"################################3");
             File uploadFile = new File(imgFile);
             String apiURL = "https://naveropenapi.apigw.ntruss.com/vision/v1/celebrity"; // 유명인 얼굴 인식
             URL url = new URL(apiURL);
@@ -194,30 +187,34 @@ public class ProfileServiceImpl implements ProfileService {
                 String resemble = celebObject.getString("value");
                 System.out.println("---------------------resemble-----------------" + resemble);
 
-                String confidence = String.valueOf(celebObject.getFloat("confidence"));
+                String confidence = String.valueOf(celebObject.getDouble("confidence"));
                 System.out.println("---------------------confidence-----------------" + confidence);
 
                 System.out.println("===================================================================");
 
-                profileRepo.resembleUpdate(profileId,resemble, confidence);
-
-
+                return new String[] {resemble, confidence};
             } else {
                 System.out.println("error !!!");
             }
         } catch (Exception e) {
             System.out.println(e);
         }
+        return null;
     }
+
     public Long saveFile(ProfileDTO profileDTO, List<FileDTO> files) {
         if(files != null && files.size() > 0) {
             files.forEach(fileDTO -> {
                 fileDTO.setProfile(profileDTO);
-                FileVO file = fileService.dto2EntityAll(fileDTO);
+                FileVO file = fileService.dto2EntityProfile(fileDTO);
                 fileRepo.save(file);
 
                 if (file.isPhotoType() && fileDTO.isFirst()) {
-                    extractCelebrity(file.getFileName(), profileDTO.getProfileId(), profileDTO.getProfileId());
+                    String[] arr = extractCelebrity(
+                            uploadPath + File.separator + file.getUuid() + "_" + file.getFileName());
+
+                    profileRepo.updateResembleAndConfidenceByProfileId(
+                            profileDTO.getProfileId(), arr[0], Double.parseDouble(arr[1]));
                 }
             });
             return 1L;
@@ -225,5 +222,34 @@ public class ProfileServiceImpl implements ProfileService {
         return 0L;
     }
 
-}
+    public PageResultDTO<ProfileListDTO, Object[]> searchResemble(PageRequestDTO pageRequest, MultipartFile uploadFile) {
+        String orgName = uploadFile.getOriginalFilename();
+        String fileName = orgName.substring(orgName.lastIndexOf("//") + 1);
+        String uuid = UUID.randomUUID().toString();
+        String saveName = uploadPath + File.separator + uuid + "_" + fileName;
+        Path savePath = Paths.get(saveName);
 
+        try {
+            uploadFile.transferTo(savePath);
+
+            log.info("image thumbnail extract");
+
+            String thumbnailSaveName = uploadPath + File.separator + "s_" + uuid + "_" + fileName;
+
+            File thumbnailFile = new File(thumbnailSaveName);
+
+            Thumbnailator.createThumbnail(savePath.toFile(), thumbnailFile, 500, 500);
+
+            String[] arr = extractCelebrity(thumbnailSaveName);
+
+            pageRequest.setRkeyword(arr[0]);
+
+            return getProfileList(pageRequest);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+}

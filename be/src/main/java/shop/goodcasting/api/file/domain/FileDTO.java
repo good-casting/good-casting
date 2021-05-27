@@ -2,12 +2,14 @@ package shop.goodcasting.api.file.domain;
 
 import lombok.*;
 import org.springframework.stereotype.Component;
+import shop.goodcasting.api.article.hire.domain.Hire;
 import shop.goodcasting.api.article.hire.domain.HireDTO;
+import shop.goodcasting.api.article.profile.domain.Profile;
 import shop.goodcasting.api.article.profile.domain.ProfileDTO;
 
 import java.sql.Timestamp;
 
-@ToString
+@ToString(exclude = {"profile", "hire"})
 @Data
 @Component
 @Builder
@@ -24,5 +26,4 @@ public class FileDTO {
 
     private ProfileDTO profile;
     private HireDTO hire;
-
 }

@@ -1,22 +1,18 @@
 package shop.goodcasting.api.user.actor.domain;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.*;
 import shop.goodcasting.api.common.domain.BaseEntity;
 import shop.goodcasting.api.user.login.domain.UserVO;
 
 import javax.persistence.*;
 
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
 @ToString
+@Builder
 @Getter
 @Entity
 @Table(name = "actors")
+@AllArgsConstructor
+@NoArgsConstructor
 public class Actor extends BaseEntity {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "actor_id")
@@ -26,18 +22,16 @@ public class Actor extends BaseEntity {
     @Column private String gender;
     @Column private String birthday;
     @Column private String phone;
-    @Column private String height;
-    @Column private String weight;
+    @Column private Integer height;
+    @Column private Integer weight;
     @Column private String agency;
     @Column private Boolean major;
+    @Column private String email;
+    @Column private Integer age;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
-    private UserVO userVO;
-
-    public void changeUserVO(UserVO userVO){
-        this.userVO = userVO;
-    }
+    private UserVO user;
 
     public void changeActorId(Long actorId) {
         this.actorId = actorId;
@@ -55,13 +49,15 @@ public class Actor extends BaseEntity {
         this.phone = phone;
     }
 
-    public void changeHeight(String height) {
+    public void changeHeight(Integer height) {
         this.height = height;
     }
 
-    public void changeWeight(String weight) {
+    public void changeWeight(Integer weight) {
         this.weight = weight;
     }
+
+    public void changeAge(Integer age){this.age= age;}
 
     public void changeAgency(String agency) {
         this.agency = agency;
@@ -71,4 +67,7 @@ public class Actor extends BaseEntity {
         this.major = major;
     }
 
+    public void changeUserVO(UserVO userVO) {
+        this.user = userVO;
+    }
 }

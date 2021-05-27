@@ -9,27 +9,18 @@ import org.jcodec.common.SeekableByteChannel;
 import org.jcodec.common.model.Picture;
 import org.jcodec.containers.mp4.demuxer.MP4Demuxer;
 import org.jcodec.scale.AWTUtil;
-
 import org.springframework.stereotype.Service;
-import shop.goodcasting.api.article.profile.repository.ProfileRepository;
 import shop.goodcasting.api.file.repository.FileRepository;
-import shop.goodcasting.api.user.actor.repository.ActorRepository;
-import shop.goodcasting.api.user.login.repository.UserRepository;
 
 import javax.imageio.ImageIO;
-
 import java.awt.image.BufferedImage;
 import java.io.File;
-
 
 @Log4j2
 @Service
 @RequiredArgsConstructor
 public class FileServiceImpl implements FileService {
     private final FileRepository fileRepo;
-    private final ProfileRepository profileRepo;
-    private final ActorRepository actorRepo;
-    private final UserRepository userRepo;
 
     public void extractVideoThumbnail(File file) throws Exception {
         SeekableByteChannel byteChannel = NIOUtils.readableFileChannel(file);
@@ -57,6 +48,9 @@ public class FileServiceImpl implements FileService {
 
         ImageIO.write(img, "jpg", imgFile);
     }
+
+
+
     public void deleteFile(String fileName) {
         File deleteFile = new File(fileName);
 
@@ -72,9 +66,4 @@ public class FileServiceImpl implements FileService {
         fileRepo.selectFileIdsByProfileId(profileId)
                 .forEach(fileRepo::deleteByProfileId);
     }
-    public void deleteFileByHireId(Long hireId){
-        fileRepo.selectFileIdsByHireId(hireId)
-                .forEach(fileRepo::deleteByHireId);
-    }
-
 }

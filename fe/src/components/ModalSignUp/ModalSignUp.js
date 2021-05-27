@@ -127,6 +127,7 @@ const ModalSignUp = (props) => {
                       id="username2"
                       name="username"
                       value={inputs.username}
+                      
                       onChange={onChange}
                     />
                   </div>
@@ -178,6 +179,7 @@ const ModalSignUp = (props) => {
                         onChange={onChange}
                         style={{backgroundColor: `${checkValidate}`, opacity: "0.4", borderColor: "gray"}}
                       />
+                    
                       <a
                         href="/#"
                         className="show-password pos-abs-cr fas mr-6 text-black-2"
@@ -217,7 +219,14 @@ const ModalSignUp = (props) => {
                   </div>
                   <div className="form-group mb-8">
                     <button className="btn btn-primary btn-medium w-100 rounded-5 text-uppercase" 
-                    onClick={() => dispatch(signup(inputs))}>
+                    onClick={() => {
+                      dispatch(signup(inputs))
+                      setInputs({
+                        username: "",
+                        password: "",
+                        confirmPassword: ""
+                      })
+                    }}>
                       Sign Up
                     </button>
                   </div>

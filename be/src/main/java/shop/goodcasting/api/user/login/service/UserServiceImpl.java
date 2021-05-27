@@ -1,6 +1,7 @@
 package shop.goodcasting.api.user.login.service;
 
 import lombok.RequiredArgsConstructor;
+
 import lombok.extern.java.Log;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -18,12 +19,12 @@ import shop.goodcasting.api.user.producer.repository.ProducerRepository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Log
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
-
     private final UserRepository userRepo;
     private final ActorRepository actorRepo;
     private final ProducerRepository producerRepo;
@@ -32,12 +33,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public String signup(UserDTO userDTO) {
-
         if(!userRepo.existsByUsername(userDTO.getUsername())){
             userDTO.setPassword(passwordEncoder.encode(userDTO.getPassword()));
             List<Role> actorList = new ArrayList<>();
             List<Role> producerList = new ArrayList<>();
-            Boolean position = userDTO.getPosition();
+            Boolean position = userDTO.isPosition();
             Actor actor = new Actor();
             Producer producer = new Producer();
 
@@ -45,17 +45,16 @@ public class UserServiceImpl implements UserService {
                 actorList.add(Role.USER);
                 userDTO.setRoles(actorList);
 
-                UserVO userVO = dto2EntityUserVO(userDTO);
+                UserVO userVO = dto2Entity(userDTO);
 
                 userRepo.save(userVO);
                 actor.changeUserVO(userVO);
                 actorRepo.save(actor);
-                log.info("-------actor--------" + actor.getAgency());
             } else {
                 producerList.add(Role.USER);
                 userDTO.setRoles(producerList);
 
-                UserVO userVO = dto2EntityUserVO(userDTO);
+                UserVO userVO = dto2Entity(userDTO);
 
                 userRepo.save(userVO);
                 producer.changeUserVO(userVO);
@@ -66,20 +65,30 @@ public class UserServiceImpl implements UserService {
             throw new SecurityRuntimeException("중복된 username", HttpStatus.UNPROCESSABLE_ENTITY);
         }
     }
+
     @Override
     public UserDTO signin(UserDTO userDTO) {
-        try{
-            String token = (passwordEncoder.matches(userDTO.getPassword(), userRepo.findByUsername(userDTO.getUsername()).get().getPassword()))
-                    ?provider.createToken(userDTO.getUsername(), userRepo.findByUsername(userDTO.getUsername()).get().getRoles())
-                    : "Wrong password";
 
-            UserVO userVO = dto2EntityUserVO(userDTO);
-            userDTO.setToken(token);
+        if(userRepo.checkAccount(userDTO.getUsername())){
+            try{
+                UserVO userVO = dto2Entity(userDTO);
 
-            return userDTO;
+                log.info("userVo---------" + userVO.getUserId());
+                log.info("userVo---------" + userVO.getUsername());
 
-        }catch(Exception e){
-            throw new SecurityRuntimeException("유효하지 않은 아이디 / 비밀번호", HttpStatus.UNPROCESSABLE_ENTITY);
+                String token = (passwordEncoder.matches(userVO.getPassword(), userRepo.findByUsername(userVO.getUsername()).get().getPassword()))
+                        ?provider.createToken(userVO.getUsername(), userRepo.findByUsername(userVO.getUsername()).get().getRoles())
+                        : "Wrong password";
+
+                userDTO.setToken(token);
+
+                log.info("userDto-----------" + userDTO);
+                return userDTO;
+            }catch(Exception e){
+                throw new SecurityRuntimeException("유효하지 않은 아이디 / 비밀번호", HttpStatus.UNPROCESSABLE_ENTITY);
+            }
+        } else{
+            throw new SecurityRuntimeException("회원탈퇴한 회원입니다.", HttpStatus.UNPROCESSABLE_ENTITY);
         }
     }
 
@@ -87,17 +96,16 @@ public class UserServiceImpl implements UserService {
     public List<UserVO> findAll() {
         return userRepo.findAll();
     }
+
+
+    @Override
+    public UserDTO findById(Long id) {
+        UserDTO userDTO = entity2Dto(userRepo.findById(id).get());
+        return userDTO;
+    }
+
+    @Override
+    public Optional<UserVO> findByUsername(String username) {
+        return userRepo.findByUsername(username);
+    }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-

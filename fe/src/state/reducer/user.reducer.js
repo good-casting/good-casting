@@ -1,18 +1,47 @@
 import { userService } from "../service/index"
+import  Swal  from "sweetalert2"
+
 const { createSlice, createAsyncThunk } = require("@reduxjs/toolkit");
 
-export const signup = createAsyncThunk("SIGN_UP", async (arg) => {
+const sweetalert = (icon, title, text, footer) => {
+    Swal.fire({
+        icon: icon,
+        title: title,
+        text: text,
+        footer: footer
+      })
+}
+
+
+export const signup = createAsyncThunk("SIGN_UP", async (arg,  { rejectWithValue })  => {
     console.log("reducer signup() arg: " + JSON.stringify(arg))
-    const response = await userService.signup(arg)
-    return response.data
+    try {
+        const response = await userService.signup(arg)
+        return response.data  
+    } catch (err) {
+        if(!err.response) {
+            throw err;
+        }
+        console.log(err.response.data)
+        return rejectWithValue(err.response.data)
+    }
     
 })
 
-export const signin = createAsyncThunk("SIGN_IN", async (arg) => {
-    console.log("reducer signin() arg: " + JSON.stringify(arg))
-    const response = await userService.signin(arg)
+export const signin = createAsyncThunk('SIGN_IN', async (arg) => {
+    console.log('reducer signin() arg: ' + JSON.stringify(arg));
+    const response = await userService.signin(arg);
 
-
+    if (response.data.token === 'Wrong password') {
+        alert('비밀번호를 다시 입력해주세요');
+    } else {
+        localStorage.setItem('token', 'Bearer ' + response.data.token);
+        return response.data;
+    }
+})
+export const getHireList = createAsyncThunk('HIRE_LIST', async (pageRequest) => {
+    console.log('reducer hirelist() arg: ' + JSON.stringify(pageRequest));
+    const response = await userService.hireList(pageRequest);
     return response.data
 })
 
@@ -21,25 +50,54 @@ const userSlice = createSlice({
     initialState: {
         actor: {},
         producer: {},
+        loggedIn: false,
     },
     reducers: {
-
+        isUserLoggendIn(state, { payload }) {
+          state.loggedIn = !state.loggedIn;
+          payload = state.loggedIn;
+        },
     },
     extraReducers: (builder) => {
         builder
             .addCase(signup.fulfilled, (state, { payload }) => {
                 console.log("회원가입() payload" + JSON.stringify(payload))
+                Swal.fire({
+                    icon: 'success',
+                    title: '회원가입이 완료되었습니다!',
+                })
             })
-            .addCase(signin.fulfilled, (state, { payload }) => {
-                console.log("로그인() payload: " + JSON.stringify(payload))
-                return {
-                    ...state.actor,
-                    payload
+            .addCase(signup.rejected, (state, { payload }) => {
+                console.log("payload: " + JSON.stringify(payload))
+                if(payload.message.includes("중복된") || null){
+                  Swal.fire({
+                        icon: 'error',
+                        title: '중복된 아이디입니다!',
+                        text: '다른 아이디를 입력해주세요',
+                        footer: '<a href>Why do I have this issue?</a>'      
+                      })
+                } else if (payload.message.includes("Validation") || null) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: '유효하지 않은 정보입니다.',
+                        text: '다른 정보를 입력해주세요',
+                        footer: '<a href>Why do I have this issue?</a>'      
+                      })
+                } else {
+                    alert("다른 에러")
                 }
             })
+             .addCase(signin.fulfilled, (state, { payload }) => {
+                console.log('로그인() payload: ' + JSON.stringify(payload))
+                localStorage.setItem('USER', JSON.stringify(payload));
+            })
+            .addCase(getHireList.fulfilled, (state, { payload }) => {
+                console.log('hirelist() payload:' + JSON.stringify(payload))
+                
+            })
+    },
+});
+export const userSelctor = (state) => state.userReducer;
 
-    }
-})
-
-
-export default userSlice.reducer
+export const { isUserLoggendIn } = userSlice.actions;
+export default userSlice.reducer;

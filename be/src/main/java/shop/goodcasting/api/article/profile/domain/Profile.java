@@ -2,12 +2,9 @@ package shop.goodcasting.api.article.profile.domain;
 
 import lombok.*;
 import shop.goodcasting.api.common.domain.BaseEntity;
-import shop.goodcasting.api.common.domain.HireProfile;
 import shop.goodcasting.api.user.actor.domain.Actor;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
 
 @ToString(exclude = {"actor", "hires"})
 @Builder
@@ -49,6 +46,4 @@ public class Profile extends BaseEntity {
     public void changeConfidence(Double confidence) {
         this.confidence = confidence;
     }
-
-
 }

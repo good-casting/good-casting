@@ -1,9 +1,12 @@
 spring:
   datasource:
-    url: jdbc:mariadb://localhost:3306/boot
+    url: jdbc:mariadb://192.168.0.17/goodc
+#    url: jdbc:mariadb://localhost:3306/root
     driver-class-name: org.mariadb.jdbc.Driver
-    username: root
-    password: 1234
+#    username: root
+#    password: root
+    username: goodc
+    password: Goodc1234
   jpa:
     open-in-view: false
     generate-ddl: true
@@ -16,12 +19,9 @@ spring:
   servlet:
     multipart:
       enabled: true
-      location: /Users/Kodongyoung/goodCasting
+      location: C:\Users\aa\Desktop\test2
       max-request-size: 100MB
       max-file-size: 100MB
-  security:
-    jwt:
-      secret: secret-value
   mail:
     host: smtp.gmail.com
     port: 587
@@ -33,10 +33,10 @@ spring:
           auth: true
           starttls:
             enable: true
+  security:
+    jwt:
+      secret: secret-value
 shop:
   goodcast:
     upload:
-      path: /usr/local/goodCasting
-UserController:
-  signup: Create user and returns ins JWT token
-  signin: Authenticaties user and returns ins JWT token
+      path: C:\Users\aa\Desktop\test2

@@ -1,50 +1,64 @@
 package shop.goodcasting.api.article.profile.controller;
 
 import lombok.RequiredArgsConstructor;
+
+import lombok.extern.log4j.Log4j2;
+import net.coobird.thumbnailator.Thumbnailator;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import shop.goodcasting.api.article.profile.domain.ProfileDTO;
+import shop.goodcasting.api.article.profile.domain.ProfileListDTO;
 import shop.goodcasting.api.article.profile.service.ProfileServiceImpl;
 import shop.goodcasting.api.common.domain.PageRequestDTO;
+import shop.goodcasting.api.file.domain.FileDTO;
+import shop.goodcasting.api.file.service.FileServiceImpl;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
+import java.util.UUID;
 
-
-@CrossOrigin("*")
+@Log4j2
 @RestController
 @RequiredArgsConstructor
+@CrossOrigin("*")
 @RequestMapping("/profile")
 public class ProfileController {
+    private final ProfileServiceImpl profileService;
+    private final FileServiceImpl fileService;
 
-    private final ProfileServiceImpl service;
+    @Value("${shop.goodcast.upload.path}")
+    private String uploadPath;
 
     @PostMapping("/register")
     public ResponseEntity<Long> register(@RequestBody ProfileDTO profileDTO) {
         System.out.println("Profile DTO: " + profileDTO);
 
-        service.register(profileDTO);
+        profileService.register(profileDTO);
 
         return ResponseEntity.ok(1L);
     }
 
-    @GetMapping("/profile-detail/{profileId}")
+    @GetMapping("/detail/{profileId}")
     public ResponseEntity<ProfileDTO> profileDetail(@PathVariable Long profileId) {
-        return ResponseEntity.ok(service.readProfile(profileId));
+        return ResponseEntity.ok(profileService.readProfile(profileId));
     }
 
-    @GetMapping("/profile-list/{page}")
-    public ResponseEntity<List<ProfileDTO>> profileList(@PathVariable int page) {
-        PageRequestDTO pageRequestDTO = new PageRequestDTO(page);
+    @GetMapping("/list")
+    public ResponseEntity<List<ProfileListDTO>> profileList(@RequestBody PageRequestDTO pageRequest) {
+        log.info("------------------------------" + pageRequest + "----------------------------------------------------");
 
-        return new ResponseEntity<>(service.getProfileList(pageRequestDTO).getDtoList(), HttpStatus.OK);
+        return new ResponseEntity<>(profileService.getProfileList(pageRequest).getDtoList(), HttpStatus.OK);
     }
 
     @PutMapping("/update")
     public ResponseEntity<Long> update(@RequestBody ProfileDTO profileDTO) {
-        service.update(profileDTO);
+        profileService.update(profileDTO);
 
         return new ResponseEntity<>(1L, HttpStatus.OK);
     }
@@ -52,10 +66,15 @@ public class ProfileController {
     @DeleteMapping("/{profileId}")
     public ResponseEntity<Long> delete(@PathVariable Long profileId) {
 
-        service.deleteProfile(profileId);
+        profileService.deleteProfile(profileId);
 
         return new ResponseEntity<>(1L, HttpStatus.OK);
     }
 
-}
+    @PostMapping("/search-resemble")
+    public ResponseEntity<List<ProfileListDTO>> searchResemble(@RequestBody PageRequestDTO pageRequest, MultipartFile uploadFile) {
+        log.info("----------------------image search()----------------------------------");
 
+        return new ResponseEntity<>(profileService.searchResemble(pageRequest, uploadFile).getDtoList(), HttpStatus.OK);
+    }
+}

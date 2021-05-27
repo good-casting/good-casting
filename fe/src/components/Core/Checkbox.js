@@ -53,6 +53,7 @@ const Text = styled.p`
 `;
 
 const Checkbox = ({
+  children = "Keep me signed in",
   onClick = () => {},
   ...rest
 }) => {
@@ -62,6 +63,7 @@ const Checkbox = ({
     <CheckStyled {...rest} htmlFor={uID}>
       <input className="d-none" type="checkbox" id={uID} />
       <Check className="check"></Check>
+      <Text>{children}</Text>
     </CheckStyled>
   );
 };

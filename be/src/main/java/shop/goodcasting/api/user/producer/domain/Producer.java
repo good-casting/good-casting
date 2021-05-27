@@ -1,24 +1,24 @@
 package shop.goodcasting.api.user.producer.domain;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import shop.goodcasting.api.common.domain.BaseEntity;
 import shop.goodcasting.api.user.login.domain.UserVO;
 
 import javax.persistence.*;
 
+@ToString(exclude = {})
+@Builder
 @Getter
 @Entity
-@Builder
-@NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "producers")
-public class Producer extends BaseEntity {
+@NoArgsConstructor
+@Table(name="producers")
+public class Producer {
+
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "producer_id") private Long producerId;
 
+    @Column private String name;
     @Column private String email;
     @Column private String agency;
     @Column private String phone;
@@ -28,9 +28,7 @@ public class Producer extends BaseEntity {
     @JoinColumn(name = "user_id")
     private UserVO userVO;
 
-    public void changeUserVO(UserVO userVO){
+    public void changeUserVO(UserVO userVO) {
         this.userVO = userVO;
     }
-
-
 }
