@@ -1,7 +1,7 @@
 spring:
   datasource:
     url: jdbc:mariadb://192.168.0.17/goodc
-#    url: jdbc:mariadb://localhost:3306/root
+#    url: jdbc:mariadb://localhost:3306/boot
     driver-class-name: org.mariadb.jdbc.Driver
 #    username: root
 #    password: root
