@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useCallback, useEffect, useState} from "react";
 import { Nav, Tab } from "react-bootstrap";
 import { Link } from "gatsby";
 import PageWrapper from "../components/PageWrapper";
@@ -8,20 +8,24 @@ import imgB1 from "../assets/image/l2/png/featured-job-logo-1.png";
 import imgB2 from "../assets/image/l1/png/feature-brand-1.png";
 import imgB3 from "../assets/image/svg/harvard.svg";
 import imgB4 from "../assets/image/svg/mit.svg";
-
-import imgT1 from "../assets/image/l3/png/team-member-1.png";
-import imgT2 from "../assets/image/l3/png/team-member-2.png";
-import imgT3 from "../assets/image/l3/png/team-member-3.png";
-import imgT4 from "../assets/image/l3/png/team-member-4.png";
-import imgT5 from "../assets/image/l3/png/team-member-5.png";
-
 import imgL from "../assets/image/svg/icon-loaction-pin-black.svg";
+import {profileRead, profileSelector} from "../state/reducer/profile.reducer";
+import {useDispatch, useSelector} from "react-redux";
+
+
 
 const CandidateProfile = () => {
+  const state = useSelector(profileSelector);
+  const dispatch = useDispatch()
+
+  useEffect(()=> {
+   dispatch(profileRead())
+  }, [])
+
   return (
     <>
-      <PageWrapper headerConfig={{ button: "profile" }}>
-        <div className="bg-default-2 pt-22 pt-lg-25 pb-13 pb-xxl-32">
+    <PageWrapper headerConfig={{ button: "profile" }}>
+    <div className="bg-default-2 pt-22 pt-lg-25 pb-13 pb-xxl-32">
           <div className="container">
             {/* <!-- back Button --> */}
             <div className="row justify-content-center">
@@ -76,20 +80,12 @@ const CandidateProfile = () => {
                         {/* <!-- Excerpt Start --> */}
                         <div className="pr-xl-0 pr-xxl-14 p-5 px-xs-12 pt-7 pb-5">
                           <h4 className="font-size-6 mb-7 mt-5 text-black-2 font-weight-semibold">
-                            About
+                                About
                           </h4>
                           <p className="font-size-4 mb-8">
-                            A talented professional with an academic background
-                            in IT and proven commercial development experience
-                            as C++ developer since 1999. Has a sound knowledge
-                            of the software development life cycle. Was involved
-                            in more than 140 software development outsourcing
-                            projects.
+                            {state.profile.contents}
                           </p>
                           <p className="font-size-4 mb-8">
-                            Programming Languages: C/C++, .NET C++, Python,
-                            Bash, Shell, PERL, Regular expressions, Python,
-                            Active-script.
                           </p>
                         </div>
                         {/* <!-- Excerpt End --> */}
@@ -98,64 +94,7 @@ const CandidateProfile = () => {
                           <h4 className="font-size-6 mb-7 mt-5 text-black-2 font-weight-semibold">
                             Skills
                           </h4>
-                          <ul className="list-unstyled d-flex align-items-center flex-wrap">
-                            <li>
-                              <Link
-                                to="/#"
-                                className="bg-polar text-black-2  mr-6 px-7 mt-2 mb-2 font-size-3 rounded-3 min-height-32 d-flex align-items-center"
-                              >
-                                Agile
-                              </Link>
-                            </li>
-                            <li>
-                              <Link
-                                to="/#"
-                                className="bg-polar text-black-2  mr-6 px-7 mt-2 mb-2 font-size-3 rounded-3 min-height-32 d-flex align-items-center"
-                              >
-                                Wireframing
-                              </Link>
-                            </li>
-                            <li>
-                              <Link
-                                to="/#"
-                                className="bg-polar text-black-2  mr-6 px-7 mt-2 mb-2 font-size-3 rounded-3 min-height-32 d-flex align-items-center"
-                              >
-                                Prototyping
-                              </Link>
-                            </li>
-                            <li>
-                              <Link
-                                to="/#"
-                                className="bg-polar text-black-2  mr-6 px-7 mt-2 mb-2 font-size-3 rounded-3 min-height-32 d-flex align-items-center"
-                              >
-                                Information
-                              </Link>
-                            </li>
-                            <li>
-                              <Link
-                                to="/#"
-                                className="bg-polar text-black-2  mr-6 px-7 mt-2 mb-2 font-size-3 rounded-3 min-height-32 d-flex align-items-center"
-                              >
-                                Waterfall Model
-                              </Link>
-                            </li>
-                            <li>
-                              <Link
-                                to="/#"
-                                className="bg-polar text-black-2  mr-6 px-7 mt-2 mb-2 font-size-3 rounded-3 min-height-32 d-flex align-items-center"
-                              >
-                                New Layout
-                              </Link>
-                            </li>
-                            <li>
-                              <Link
-                                to="/#"
-                                className="bg-polar text-black-2  mr-6 px-7 mt-2 mb-2 font-size-3 rounded-3 min-height-32 d-flex align-items-center"
-                              >
-                                Browsing
-                              </Link>
-                            </li>
-                          </ul>
+                          {state.profile.career}
                         </div>
                         {/* <!-- Skills End --> */}
                         {/* <!-- Card Section Start --> */}
@@ -415,12 +354,6 @@ const CandidateProfile = () => {
                                 >
                                   Message
                                 </label>
-                                <textarea
-                                  name="message"
-                                  id="message3"
-                                  placeholder="Type your message"
-                                  className="form-control h-px-144"
-                                ></textarea>
                               </div>
                               <div className="col-lg-12 pt-4">
                                 <button className="btn btn-primary text-uppercase w-100 h-px-48">

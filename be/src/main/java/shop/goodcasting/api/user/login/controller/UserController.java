@@ -24,7 +24,7 @@ public class UserController {
     @ApiResponses(value={
             @ApiResponse(code=400, message = "something wrong"),
             @ApiResponse(code=403, message = "승인거절"),
-            @ApiResponse(code=422, message = "ssdfad")})
+            @ApiResponse(code=422, message = "중복된 username")})
     public ResponseEntity<String> signup(@ApiParam("Signup user") @RequestBody UserDTO userDTO){
         return ResponseEntity.ok(service.signup(userDTO));
     }

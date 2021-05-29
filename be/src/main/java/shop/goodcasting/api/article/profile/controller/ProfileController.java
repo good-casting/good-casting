@@ -9,10 +9,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import shop.goodcasting.api.article.hire.domain.HireListDTO;
 import shop.goodcasting.api.article.profile.domain.ProfileDTO;
 import shop.goodcasting.api.article.profile.domain.ProfileListDTO;
 import shop.goodcasting.api.article.profile.service.ProfileServiceImpl;
 import shop.goodcasting.api.common.domain.PageRequestDTO;
+import shop.goodcasting.api.common.domain.PageResultDTO;
 import shop.goodcasting.api.file.domain.FileDTO;
 import shop.goodcasting.api.file.service.FileServiceImpl;
 
@@ -49,11 +51,11 @@ public class ProfileController {
         return ResponseEntity.ok(profileService.readProfile(profileId));
     }
 
-    @GetMapping("/list")
-    public ResponseEntity<List<ProfileListDTO>> profileList(@RequestBody PageRequestDTO pageRequest) {
+    @PostMapping("/list")
+    public ResponseEntity<PageResultDTO<ProfileListDTO, Object[]>> profileList(@RequestBody PageRequestDTO pageRequest) {
         log.info("------------------------------" + pageRequest + "----------------------------------------------------");
 
-        return new ResponseEntity<>(profileService.getProfileList(pageRequest).getDtoList(), HttpStatus.OK);
+        return new ResponseEntity<>(profileService.getProfileList(pageRequest), HttpStatus.OK);
     }
 
     @PutMapping("/update")

@@ -97,6 +97,8 @@ public class FileController {
     public ResponseEntity<byte[]> display(String fileName) {
         System.out.println("fileName: -----------------------------" + fileName);
 
+        ResponseEntity<byte[]> result = null;
+
         try {
             String srcFileName =  URLDecoder.decode(fileName,"UTF-8");
 
@@ -114,11 +116,14 @@ public class FileController {
             System.out.println("header: " + header);
 
             //파일 데이터 처리
-            return new ResponseEntity<>(FileCopyUtils.copyToByteArray(file), header, HttpStatus.OK);
+            result = new ResponseEntity<>(FileCopyUtils.copyToByteArray(file), header, HttpStatus.OK);
+            System.out.println("---------------result: " + result);
         } catch(Exception e) {
+            e.printStackTrace();
             log.error(e.getMessage());
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
+        return result;
     }
 
     @DeleteMapping("/delete")

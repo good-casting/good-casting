@@ -1,37 +1,64 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import { Link } from 'gatsby';
+import {useDispatch, useSelector} from "react-redux";
+import {profileList, profileSelector} from "../../state/reducer/profile.reducer";
+import {readOne} from "../../state/reducer/profile.reducer";
 
-import imgB1 from '../../assets/image/l1/png/feature-brand-1.png';
 
 const ProfileList = () => {
+
+    const dispatch = useDispatch();
+    const state = useSelector(profileSelector);
+
+    const [sort, setSort] = useState('profileId');
+    const [page, setPage] = useState(1);
+    const [disable, setDisable] = useState(true);
+
+    console.log("profileState:"+  JSON.stringify(state))
+
+    useEffect(() => {
+        dispatch(
+            profileList({
+                page: 1,
+                size: 10,
+                sort: sort,
+            })
+        );
+    }, []);
+
+
     return (
-        <>
+        <>{state.profileList.map((profile) => {
+            return(
+                <ul key={profile.profileId} style={{ listStyleType: 'none' }}>
             <div className="bg-white px-8 pt-9 pb-7 rounded-4 mb-9 feature-cardOne-adjustments">
                 <div className="d-block mb-7">
                     <Link to="/#">
-                        <img src={imgB1} alt="" />
+                        {/*<img src={`http://localhost:8080/file/display?fileName=s_${profile.fileUuid}_${profile.fileName}`}/>*/}
                     </Link>
                 </div>
                 <Link to="/#" className="font-size-3 d-block mb-0 text-gray">
-                    Google INC
+
                 </Link>
                 <h2 className="mt-n4">
                     <Link
                         to="/#"
                         className="font-size-7 text-black-2 font-weight-bold mb-4"
                     >
-                        배우이름
+                        {profile.actorName}
                     </Link>
                 </h2>
                 <div className="card-btn-group">
                     <Link
                         to="/profile-detail"
-                        className="btn btn-green text-uppercase btn-medium rounded-3"
-                    >
-                        프로필보기
+                        className="btn btn-green text-uppercase btn-medium rounded-3">
+                             프로필보기
                     </Link>
                 </div>
             </div>
+                </ul>
+            )
+        })}
         </>
     );
 };

@@ -5,6 +5,7 @@ import GlobalContext from "../../context/GlobalContext";
 import { useDispatch } from "react-redux";
 import { signup } from "../../state/reducer/user.reducer";
 
+
 const ModalStyled = styled(Modal)`
   /* &.modal {
     z-index: 10050;
@@ -19,7 +20,6 @@ const ModalSignUp = (props) => {
     username: "",
     password: "",
     confirmPassword: "",
-    position: false,
     account: true,
   })
 
@@ -110,7 +110,7 @@ const ModalSignUp = (props) => {
               &nbsp;&nbsp;&nbsp;&nbsp;
               <input 
                       type="radio" name="radio"  onClick={() => { setInputs({ position: false}) }}/>
-              <lable className="font-size-4 text-black-2 font-weight-semibold line-height-reset" htmlFor='radio'>&nbsp;재작자</lable>
+              <label className="font-size-4 text-black-2 font-weight-semibold line-height-reset" htmlFor='radio'>&nbsp;재작자</label>
               </div>
                 <form onSubmit={e => e.preventDefault()}>
                   <div className="form-group">

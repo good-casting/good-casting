@@ -39,11 +39,6 @@ export const signin = createAsyncThunk('SIGN_IN', async (arg) => {
         return response.data;
     }
 })
-export const getHireList = createAsyncThunk('HIRE_LIST', async (pageRequest) => {
-    console.log('reducer hirelist() arg: ' + JSON.stringify(pageRequest));
-    const response = await userService.hireList(pageRequest);
-    return response.data
-})
 
 const userSlice = createSlice({
     name: "user",
@@ -91,13 +86,9 @@ const userSlice = createSlice({
                 console.log('로그인() payload: ' + JSON.stringify(payload))
                 localStorage.setItem('USER', JSON.stringify(payload));
             })
-            .addCase(getHireList.fulfilled, (state, { payload }) => {
-                console.log('hirelist() payload:' + JSON.stringify(payload))
-                
-            })
     },
 });
-export const userSelctor = (state) => state.userReducer;
+export const userSelector = (state) => state.userReducer;
 
 export const { isUserLoggendIn } = userSlice.actions;
 export default userSlice.reducer;

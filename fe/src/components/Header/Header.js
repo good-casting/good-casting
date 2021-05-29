@@ -14,7 +14,7 @@ import { actorMenuItems, menuItems, producerMenuItems } from './menuItems';
 
 import imgP from '../../assets/image/header-profile.png';
 import { useDispatch, useSelector } from 'react-redux';
-import { isUserLoggendIn, userSelctor } from '../../state/reducer/user.reducer';
+import { isUserLoggendIn, userSelector } from '../../state/reducer/user.reducer';
 
 const SiteHeader = styled.header`
     .dropdown-toggle::after {
@@ -58,7 +58,7 @@ const Header = () => {
 
     const gContext = useContext(GlobalContext);
     const size = useWindowSize();
-    const user = useSelector(userSelctor);
+    const user = useSelector(userSelector);
     const userInfo = JSON.parse(localStorage.getItem('USER'));
 
     useEffect(() => {

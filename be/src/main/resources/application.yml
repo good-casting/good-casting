@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:mariadb://192.168.0.17/goodc
+    url: jdbc:mariadb://112.169.196.99/goodc
 #    url: jdbc:mariadb://localhost:3306/boot
     driver-class-name: org.mariadb.jdbc.Driver
 #    username: root
@@ -19,7 +19,7 @@ spring:
   servlet:
     multipart:
       enabled: true
-      location: C:\Users\aa\Desktop\test2
+      location: /Users/kodongyoung/goodCasting
       max-request-size: 100MB
       max-file-size: 100MB
   mail:
@@ -39,4 +39,4 @@ spring:
 shop:
   goodcast:
     upload:
-      path: C:\Users\aa\Desktop\test2
+      path: /Users/kodongyoung/goodCasting

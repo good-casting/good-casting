@@ -9,6 +9,7 @@ import shop.goodcasting.api.article.hire.domain.HireDTO;
 import shop.goodcasting.api.article.hire.domain.HireListDTO;
 import shop.goodcasting.api.article.hire.service.HireServiceImpl;
 import shop.goodcasting.api.common.domain.PageRequestDTO;
+import shop.goodcasting.api.common.domain.PageResultDTO;
 
 import java.util.List;
 
@@ -32,11 +33,11 @@ public class HireController {
         return ResponseEntity.ok(service.readHire(hireId));
     }
 
-    @GetMapping("/list")
-    public ResponseEntity<List<HireListDTO>> hireList(@RequestBody PageRequestDTO pageRequest) {
+    @PostMapping("/list")
+    public ResponseEntity<PageResultDTO<HireListDTO, Object[]>> hireList(@RequestBody PageRequestDTO pageRequest) {
         log.info("------------------" + pageRequest + "----------------------------------");
 
-        return new ResponseEntity<>(service.getHireList(pageRequest).getDtoList(), HttpStatus.OK);
+        return new ResponseEntity<>(service.getHireList(pageRequest), HttpStatus.OK);
     }
 
     @PutMapping("/update")
