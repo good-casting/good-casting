@@ -1,16 +1,7 @@
 import React from 'react';
 import { Link } from 'gatsby';
-import { Select } from '../../components/Core';
 import imgH from '../../assets/image/l1/png/hero-image.png';
 import imgP from '../../assets/image/patterns/hero-pattern.png';
-
-const defaultCountries = [
-    { value: 'sp', label: 'Singapore' },
-    { value: 'bd', label: 'Bangladesh' },
-    { value: 'usa', label: 'United States of America' },
-    { value: 'uae', label: 'United Arab Emirates' },
-    { value: 'pk', label: 'Pakistan' },
-];
 
 const Hero = () => {
     return (

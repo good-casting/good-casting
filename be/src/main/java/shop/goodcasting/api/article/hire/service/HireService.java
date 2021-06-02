@@ -5,7 +5,6 @@ import shop.goodcasting.api.article.hire.domain.HireDTO;
 import shop.goodcasting.api.article.hire.domain.HireListDTO;
 import shop.goodcasting.api.common.domain.PageRequestDTO;
 import shop.goodcasting.api.common.domain.PageResultDTO;
-import shop.goodcasting.api.file.domain.FileVO;
 import shop.goodcasting.api.user.producer.domain.Producer;
 import shop.goodcasting.api.user.producer.domain.ProducerDTO;
 
@@ -74,7 +73,7 @@ public interface HireService {
                         .build())
                 .build();
     }
-    default HireListDTO entity2DtoFiles(Hire hire, Producer producer, FileVO file) {
+    default HireListDTO entity2DtoFiles(Hire hire, Producer producer) {
         return HireListDTO.builder()
                 .hireId(hire.getHireId())
                 .cast(hire.getCast())
@@ -83,8 +82,6 @@ public interface HireService {
                 .modDate(hire.getModDate())
                 .regDate(hire.getRegDate())
                 .producerAgency(producer.getAgency())
-//                .fileName(file.getFileName())
-//                .fileUuid(file.getUuid())
                 .build();
 
     }

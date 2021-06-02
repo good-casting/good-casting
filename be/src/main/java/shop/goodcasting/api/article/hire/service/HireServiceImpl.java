@@ -1,9 +1,7 @@
 package shop.goodcasting.api.article.hire.service;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.json.JSONArray;
-import org.json.JSONObject;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -27,22 +25,24 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Log4j2
 @Service
 @RequiredArgsConstructor
 public class HireServiceImpl implements HireService {
-    private final HireRepository hireRepository;
-    private final FileRepository fileRepository;
+    private final HireRepository hireRepo;
+    private final FileRepository fileRepo;
     private final FileService fileService;
     private final ProducerService producerService;
 
     @Transactional
     @Override
     public Long register(HireDTO hireDTO) {
-        HireDTO finalHireDto = entity2DtoAll(hireRepository.save(dto2EntityAll(hireDTO)));
+        HireDTO finalHireDto = entity2DtoAll(hireRepo.save(dto2EntityAll(hireDTO)));
 
         List<FileDTO> files = hireDTO.getFiles();
 
@@ -52,7 +52,7 @@ public class HireServiceImpl implements HireService {
     @Transactional
     @Override
     public HireDTO readHire(Long hireId) {
-        List<Object[]> hireAndFileAndProducer = hireRepository.getHireAndFileAndProducerByHireId(hireId);
+        List<Object[]> hireAndFileAndProducer = hireRepo.getHireAndFileAndProducerByHireId(hireId);
 
         Hire hire = (Hire) hireAndFileAndProducer.get(0)[0];
         Producer producer = hire.getProducer();
@@ -75,11 +75,11 @@ public class HireServiceImpl implements HireService {
 
     @Override
     public PageResultDTO<HireListDTO, Object[]> getHireList(PageRequestDTO pageRequest) {
-        Page<Object[]> result = hireRepository.searchPage(pageRequest,
+        Page<Object[]> result = hireRepo.searchPage(pageRequest,
                 pageRequest.getPageable(Sort.by(pageRequest.getSort()).descending()));
 
         Function<Object[], HireListDTO> fn = (entity -> entity2DtoFiles((Hire) entity[0],
-                (Producer) entity[1], (FileVO) entity[2]));
+                (Producer) entity[1]));
 
         return new PageResultDTO<>(result, fn);
     }
@@ -88,9 +88,9 @@ public class HireServiceImpl implements HireService {
     public Long update(HireDTO hireDTO) {
         Long hireId = hireDTO.getHireId();
 
-        hireRepository.save(dto2EntityAll(hireDTO));
+        hireRepo.save(dto2EntityAll(hireDTO));
 
-        fileRepository.deleteByHireId(hireId);
+        fileRepo.deleteByHireId(hireId);
 
         List<FileDTO> files = hireDTO.getFiles();
 
@@ -99,9 +99,9 @@ public class HireServiceImpl implements HireService {
 
     @Transactional
     public void deleteHire(Long hireId) {
-        fileRepository.deleteByHireId(hireId);
+        fileRepo.deleteByHireId(hireId);
 
-        hireRepository.deleteById(hireId);
+        hireRepo.deleteById(hireId);
     }
 
     public Long saveFile(HireDTO hireDTO, List<FileDTO> files) {
@@ -109,7 +109,7 @@ public class HireServiceImpl implements HireService {
             files.forEach(fileDTO -> {
                 fileDTO.setHire(hireDTO);
                 FileVO file = fileService.dto2EntityHire(fileDTO);
-                fileRepository.save(file);
+                fileRepo.save(file);
             });
             return 1L;
         }

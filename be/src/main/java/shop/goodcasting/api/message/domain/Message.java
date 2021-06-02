@@ -3,6 +3,8 @@ package shop.goodcasting.api.message.domain;
 import lombok.*;
 import shop.goodcasting.api.common.domain.BaseEntity;
 import shop.goodcasting.api.user.login.domain.UserVO;
+
+
 import javax.persistence.*;
 
 @ToString(exclude = {"sender", "receiver"})

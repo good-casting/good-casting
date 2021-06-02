@@ -1,12 +1,10 @@
+
 package shop.goodcasting.api.article.profile.domain;
 
 import lombok.*;
 import org.springframework.stereotype.Component;
-import shop.goodcasting.api.file.domain.FileDTO;
-import shop.goodcasting.api.user.actor.domain.ActorDTO;
 
 import java.sql.Timestamp;
-import java.util.List;
 
 @ToString
 @Builder

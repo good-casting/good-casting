@@ -31,12 +31,11 @@ public class PageRequestDTO {
     private Integer wfrom;
     private Integer wto;
 
+
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate ffrom;
-
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate fto;
-
     private String conKeyword;
     private String castKeyword;
     private Integer gfrom;

@@ -1,4 +1,5 @@
 package shop.goodcasting.api.apply.service;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import shop.goodcasting.api.apply.domain.Apply;

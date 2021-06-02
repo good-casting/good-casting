@@ -1,4 +1,5 @@
 package shop.goodcasting.api.article.hire.domain;
+
 import lombok.*;
 import shop.goodcasting.api.common.domain.BaseEntity;
 import shop.goodcasting.api.user.producer.domain.Producer;

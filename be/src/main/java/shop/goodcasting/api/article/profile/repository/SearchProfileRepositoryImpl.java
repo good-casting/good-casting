@@ -45,7 +45,7 @@ public class SearchProfileRepositoryImpl extends QuerydslRepositorySupport imple
         jpqlQuery.leftJoin(actor).on(profile.actor.eq(actor));
         jpqlQuery.leftJoin(file).on(file.profile.eq(profile));
 
-        JPQLQuery<Tuple> tuple = jpqlQuery.select(profile, actor, file);
+        JPQLQuery<Tuple> tuple = jpqlQuery.select(profile, actor , file );
 
         BooleanBuilder booleanBuilder = new BooleanBuilder();
         BooleanExpression expression = profile.profileId.gt(0L);

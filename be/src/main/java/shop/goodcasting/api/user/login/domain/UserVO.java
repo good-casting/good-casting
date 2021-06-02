@@ -7,7 +7,6 @@ import javax.persistence.*;
 import javax.validation.constraints.Size;
 import java.util.List;
 
-@ToString
 @Builder
 @Getter
 @Table(name = "users")
@@ -32,5 +31,8 @@ public class UserVO extends BaseEntity {
 
     public void changeRoles(List<Role> roles) {
         this.roles = roles;
+    }
+    public void addRoles(Role role) {
+        roles.add(role);
     }
 }

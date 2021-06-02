@@ -1,19 +1,13 @@
-import React, { useContext } from 'react';
-import { Link } from 'gatsby';
-import GlobalContext from '../context/GlobalContext';
-import PageWrapper from '../components/PageWrapper';
-import ProfileList from '../components/Profile/ProfileList';
-import ProfileSidebar from '../components/ProfileSidebar';
-
-const defaultCountries = [
-    { value: 'sp', label: 'Singapore' },
-    { value: 'bd', label: 'Bangladesh' },
-    { value: 'usa', label: 'United States of America' },
-    { value: 'uae', label: 'United Arab Emirates' },
-    { value: 'pk', label: 'Pakistan' },
-];
+import React from 'react'
+import { Link } from 'gatsby'
+import { useSelector } from 'react-redux'
+import PageWrapper from '../components/PageWrapper'
+import ProfileSidebar from '../components/ProfileSidebar'
+import { profileSelector } from '../state/reducer/profile.reducer'
+import MyProfileList from '../components/Profile/MyprofileList'
 
 const ActorMypage = () => {
+    const state = useSelector(profileSelector)
     return (
         <>
             <PageWrapper>
@@ -24,23 +18,19 @@ const ActorMypage = () => {
                                 <ProfileSidebar />
                             </div>
                             <div className="col-12 col-md-8 col-xs-12 ">
-                                <div className="pt-12 ml-lg-0 ml-md-15">
-                                    <div className="pt-6">
-                                        <Link to="/profile-register">
-                                            <button className="btn btn-primary text-uppercase font-size-3">
-                                                프로필등록하기
-                                            </button>
-                                        </Link>
-                                        <div className="row justify-content-center">
+                                <div className="pt-6">
+                                    <Link to="/profile-register">
+                                        <button className="btn btn-primary text-uppercase font-size-3">프로필등록하기</button>
+                                    </Link>
+                                    <div className="pt-6 row justify-content-center">
+                                        {state.profile !== null ? (
                                             <div className="col-12 col-lg-6">
-                                                {null ? (
-                                                    <ProfileList />
-                                                ) : (
-                                                    <p>프로필을 등록해주세요</p>
-                                                )}
+                                                <MyProfileList />
                                             </div>
-                                            <div className="col-12 col-lg-6"></div>
-                                        </div>
+                                        ) : (
+                                            <p>프로필없음</p>
+                                        )}
+                                        <div className="col-12 col-lg-6"></div>
                                     </div>
                                 </div>
                             </div>
@@ -49,6 +39,6 @@ const ActorMypage = () => {
                 </div>
             </PageWrapper>
         </>
-    );
-};
-export default ActorMypage;
+    )
+}
+export default ActorMypage

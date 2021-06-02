@@ -1,4 +1,5 @@
 package shop.goodcasting.api.apply.controller;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
 import org.springframework.http.ResponseEntity;

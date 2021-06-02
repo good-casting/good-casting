@@ -9,6 +9,7 @@ import shop.goodcasting.api.file.domain.FileVO;
 import shop.goodcasting.api.user.actor.domain.Actor;
 import shop.goodcasting.api.user.actor.domain.ActorDTO;
 
+
 public interface ProfileService {
     Long register(ProfileDTO profileDTO);
     ProfileDTO readProfile(Long profileId);
@@ -18,7 +19,6 @@ public interface ProfileService {
     default Profile dto2Entity(ProfileDTO profileDTO) {
         return Profile.builder()
                 .profileId(profileDTO.getProfileId())
-                .career(profileDTO.getCareer())
                 .contents(profileDTO.getContents())
                 .privacy(profileDTO.isPrivacy())
                 .resemble(profileDTO.getResemble())
@@ -29,7 +29,6 @@ public interface ProfileService {
     default Profile dto2EntityAll(ProfileDTO profileDTO){
         return Profile.builder()
                 .profileId(profileDTO.getProfileId())
-                .career(profileDTO.getCareer())
                 .contents(profileDTO.getContents())
                 .privacy(profileDTO.isPrivacy())
                 .resemble(profileDTO.getResemble())
@@ -43,7 +42,6 @@ public interface ProfileService {
     default ProfileDTO entity2Dto(Profile profile) {
         return ProfileDTO.builder()
                 .profileId(profile.getProfileId())
-                .career(profile.getCareer())
                 .contents(profile.getContents())
                 .privacy(profile.isPrivacy())
                 .resemble(profile.getResemble())
@@ -56,7 +54,6 @@ public interface ProfileService {
     default ProfileDTO entity2DtoAll(Profile profile) {
         return ProfileDTO.builder()
                 .profileId(profile.getProfileId())
-                .career(profile.getCareer())
                 .contents(profile.getContents())
                 .privacy(profile.isPrivacy())
                 .resemble(profile.getResemble())

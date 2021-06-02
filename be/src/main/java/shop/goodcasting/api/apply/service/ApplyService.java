@@ -1,4 +1,5 @@
 package shop.goodcasting.api.apply.service;
+
 import shop.goodcasting.api.apply.domain.Apply;
 import shop.goodcasting.api.apply.domain.ApplyDTO;
 import shop.goodcasting.api.article.hire.domain.Hire;

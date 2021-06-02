@@ -1,4 +1,5 @@
 package shop.goodcasting.api.article.hire.repository;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -9,6 +10,7 @@ import shop.goodcasting.api.article.hire.domain.Hire;
 
 import java.util.List;
 
+@Repository
 public interface HireRepository extends JpaRepository<Hire, Long>, SearchHireRepository {
     @Query("select h, h.producer, f from Hire h left join FileVO f on f.hire = h where  h.hireId= :hireId")
     List<Object[]> getHireAndFileAndProducerByHireId(@Param("hireId") Long hireId);

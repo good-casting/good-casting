@@ -1,5 +1,4 @@
-import React, { useCallback, useContext, useState } from 'react';
-import { navigate } from 'gatsby';
+import React, { useCallback, useContext, useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { Modal } from 'react-bootstrap';
 import GlobalContext from '../../context/GlobalContext';
@@ -7,9 +6,9 @@ import { useDispatch } from 'react-redux';
 import { signin } from '../../state/reducer/user.reducer';
 
 const ModalStyled = styled(Modal)`
-    /* &.modal {
-    z-index: 10050;
-  } */
+  /* &.modal {
+  z-index: 10050;
+} */
 `;
 
 const ModalSignIn = (props) => {
@@ -32,18 +31,21 @@ const ModalSignIn = (props) => {
     };
 
     const handleSubmit = (e) => {
+        console.log('클릭');
         e.preventDefault();
         dispatch(signin(inputs));
-        localStorage.getItem('token');
         gContext.toggleSignInModal();
+
     };
 
     const onChange = useCallback((e) => {
         setInputs({
             ...inputs,
             [e.target.name]: e.target.value,
+
         });
     });
+
 
     return (
         <ModalStyled

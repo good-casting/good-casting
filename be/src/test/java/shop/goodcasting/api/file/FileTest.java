@@ -11,21 +11,19 @@ import java.io.File;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class FileTest {
+@SpringBootTest
+public class FileTest implements FileService {
     @Autowired
     private FileRepository fileRepo;
 
     @Test
-    public void fileDeleteTests() {
-        File deleteFile = new File("C:/Users/aa/Desktop/test2/에일리 노래.mp4");
+    public void test() {
+        fileRepo.findAll().stream().map(entity -> entity2Dto(entity)).collect(Collectors.toList());
+    }
 
-        if(deleteFile.exists()) {
-            deleteFile.delete();
-//            fileRepo.deleteById(fileId);
-            System.out.println("파일을 삭제하였습니다.");
-        } else {
-            System.out.println("파일이 존재하지 않습니다.");
-        }
+    @Override
+    public void extractVideoThumbnail(File file) throws Exception {
+
     }
 
 }

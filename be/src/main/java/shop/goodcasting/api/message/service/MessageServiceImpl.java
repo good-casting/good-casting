@@ -2,6 +2,7 @@ package shop.goodcasting.api.message.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import shop.goodcasting.api.message.domain.Message;
 import shop.goodcasting.api.message.domain.MessageActionType;

@@ -1,18 +1,15 @@
 package shop.goodcasting.api.user.actor.service;
 
-import lombok.Builder;
-import lombok.extern.java.Log;
 import shop.goodcasting.api.user.actor.domain.Actor;
 import shop.goodcasting.api.user.actor.domain.ActorDTO;
 import shop.goodcasting.api.user.login.domain.UserDTO;
 import shop.goodcasting.api.user.login.domain.UserVO;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface ActorService {
     List<Actor> findAll();
-    Optional<Actor> findById(Long actorId);
+    ActorDTO findById(Long actorId);
     Long delete(ActorDTO actorDTO);
     ActorDTO moreDetail(ActorDTO actorDTO);
 
@@ -27,10 +24,11 @@ public interface ActorService {
                 .agency(actorDTO.getAgency())
                 .gender(actorDTO.getGender())
                 .name(actorDTO.getName())
-                .email(actorDTO.getEmail())
                 .age(actorDTO.getAge())
+                .email(actorDTO.getEmail())
                 .build();
     }
+
     default Actor dto2EntityAll(ActorDTO actorDTO){
         return Actor.builder()
                 .actorId(actorDTO.getActorId())
@@ -42,8 +40,8 @@ public interface ActorService {
                 .agency(actorDTO.getAgency())
                 .gender(actorDTO.getGender())
                 .name(actorDTO.getName())
-                .email(actorDTO.getEmail())
                 .age(actorDTO.getAge())
+                .email(actorDTO.getEmail())
                 .user(UserVO.builder()
                         .userId(actorDTO.getUser().getUserId())
                         .build())
@@ -61,8 +59,8 @@ public interface ActorService {
                 .major(actor.getMajor())
                 .gender(actor.getGender())
                 .agency(actor.getAgency())
-                .email(actor.getEmail())
                 .age(actor.getAge())
+                .email(actor.getEmail())
                 .build();
     }
 
@@ -77,8 +75,8 @@ public interface ActorService {
                 .major(actor.getMajor())
                 .gender(actor.getGender())
                 .agency(actor.getAgency())
-                .email(actor.getEmail())
                 .age(actor.getAge())
+                .email(actor.getEmail())
                 .user(UserDTO.builder()
                         .userId(actor.getUser().getUserId())
                         .build())

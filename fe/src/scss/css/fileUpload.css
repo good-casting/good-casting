@@ -19,3 +19,31 @@
     clip: rect(0, 0, 0, 0);
     border: 0;
 }
+
+.pic_basic .btn_custom_file_camera {
+    display: block;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    width: 60px;
+    height: 60px;
+    background: rgba(0, 0, 0, 0.5) url(../../assets//image/ico_camera.svg)
+    no-repeat 50% 50% / 30px 26px;
+}
+
+.select-dropdown {
+    width: 228px;
+}
+
+.btn-center {
+    margin: 0 auto !important;
+}
+
+.thumnail-size {
+    width: 150px !important;
+    height: 150px !important;
+    border-radius: 7px !important;
+}
+.thumnail-margin {
+    padding-bottom: 30px !important;
+}

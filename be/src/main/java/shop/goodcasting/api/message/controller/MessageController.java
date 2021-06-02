@@ -1,4 +1,5 @@
 package shop.goodcasting.api.message.controller;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
 import org.springframework.http.HttpStatus;

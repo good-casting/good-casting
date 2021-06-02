@@ -2,12 +2,10 @@ package shop.goodcasting.api.user.producer.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import shop.goodcasting.api.article.hire.domain.Hire;
 import shop.goodcasting.api.article.hire.repository.HireRepository;
-import shop.goodcasting.api.article.profile.repository.ProfileRepository;
 import shop.goodcasting.api.file.domain.FileVO;
 import shop.goodcasting.api.file.repository.FileRepository;
 import shop.goodcasting.api.user.login.repository.UserRepository;
@@ -24,21 +22,21 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class ProducerServiceImpl implements ProducerService {
-    private final UserRepository userRepository;
-    private final ProducerRepository producerRepository;
-    private final FileRepository fileRepository;
-    private final ProfileRepository profileRepository;
-    private final PasswordEncoder passwordEncoder;
-    private final HireRepository hireRepository;
+    private final UserRepository userRepo;
+    private final ProducerRepository producerRepo;
+    private final FileRepository fileRepo;
+    private final HireRepository hireRepo;
 
     @Override
     public List<Producer> findAll() {
-        return producerRepository.findAll();
+        return producerRepo.findAll();
     }
 
     @Override
-    public Optional<Producer> findById(Long producerId) {
-        return producerRepository.findById(producerId);
+    public ProducerDTO findById(Long producerId) {
+        Optional<Producer> producer = producerRepo.findById(producerId);
+
+        return producer.map(this::entity2DtoAll).orElse(null);
     }
 
     @Override
@@ -46,43 +44,41 @@ public class ProducerServiceImpl implements ProducerService {
     public Long delete(ProducerDTO producerDTO) {
         Producer producer = dto2EntityAll(producerDTO);
 
-        Long hireId = producerRepository.getHireId(producer.getProducerId());
+        Long hireId = producerRepo.getHireId(producer.getProducerId());
 
         log.info("hireId : " + hireId);
 
         if(hireId != null){
-            Hire hire = hireRepository.findById(hireId).get();
-            List<FileVO> fileList = fileRepository.findFileListByHireId(hireId);
+            Hire hire = hireRepo.findById(hireId).get();
+            List<FileVO> fileList = fileRepo.findFileListByHireId(hireId);
+
+            log.info("fileList : " + fileList);
 
             List<Long> fileId = new ArrayList<>();
-            fileList.forEach( i -> {
-                fileId.add(i.getFileId());
-            });
+            fileList.forEach( i -> fileId.add(i.getFileId()));
             log.info("fileId : " + fileId);
 
             fileId.forEach( id -> {
-                FileVO test = fileRepository.findById(id).get();
+                FileVO test = fileRepo.findById(id).get();
                 System.out.println(test);
-                fileRepository.delete(test);
+                fileRepo.delete(test);
             });
 
-            hireRepository.delete(hire);
+            hireRepo.delete(hire);
         }
-        userRepository.accountUpdate(producer.getUserVO().getUserId(), false);
-        producerRepository.delete(producer);
+        userRepo.accountUpdate(producer.getUser().getUserId(), false);
+        producerRepo.delete(producer);
 
-        return producerRepository.findById(producer.getProducerId()).orElse(null) == null ? 1L : 0L;
+        return producerRepo.findById(producer.getProducerId()).orElse(null) == null ? 1L : 0L;
     }
 
     @Override
     @Transactional
     public ProducerDTO moreDetail(ProducerDTO producerDTO) {
-        String passwordUp =  passwordEncoder.encode(producerDTO.getUser().getPassword());
-        System.out.println("있니?" + producerDTO.getUser().getUserId());
-        userRepository.passwordUpdate(producerDTO.getUser().getUserId(), passwordUp);
-
+//        String passwordUp =  passwordEncoder.encode(producerDTO.getUser().getPassword());
+//        userRepository.passwordUpdate(producerDTO.getUser().getUserId(), passwordUp);
         Producer producer = dto2EntityAll(producerDTO);
-        producerRepository.save(producer);
+        producerRepo.save(producer);
         return null;
     }
 }

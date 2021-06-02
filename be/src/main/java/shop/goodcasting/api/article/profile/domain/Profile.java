@@ -21,8 +21,7 @@ public class Profile extends BaseEntity {
 
     // column
     @Column private boolean privacy;
-    @Column private String contents;
-    @Column private String career;
+    @Column(columnDefinition = "TEXT") private String contents;
     @Column private String resemble;
     @Column private Double confidence;
 
@@ -31,19 +30,24 @@ public class Profile extends BaseEntity {
     @JoinColumn(name = "actor_id")
     private Actor actor;
 
+
     public void changePrivacy(boolean privacy) {
         this.privacy = privacy;
     }
     public void changeContents(String contents) {
         this.contents = contents;
     }
-    public void changeCareer(String career) {
-        this.career = career;
-    }
     public void changeResemble(String resemble) {
         this.resemble = resemble;
     }
     public void changeConfidence(Double confidence) {
         this.confidence = confidence;
+    }
+
+
+    //temp
+    @Column(columnDefinition = "TEXT") private String career;
+    public void changeCareer(String career) {
+        this.career = career;
     }
 }

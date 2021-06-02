@@ -1,5 +1,4 @@
 package shop.goodcasting.api.article.hire.repository;
-
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.Tuple;
 import com.querydsl.core.types.Order;
@@ -37,14 +36,14 @@ public class SearchHireRepositoryImpl extends QuerydslRepositorySupport implemen
 
         String type = pageRequest.getType();
         QHire hire = QHire.hire;
-        QFileVO file = QFileVO.fileVO;
+
         QProducer producer = QProducer.producer;
 
         JPQLQuery<Hire> jpqlQuery = from(hire);
         jpqlQuery.leftJoin(producer).on(hire.producer.eq(producer));
-        jpqlQuery.leftJoin(file).on(file.hire.eq(hire));
 
-        JPQLQuery<Tuple> tuple = jpqlQuery.select(hire, producer, file);
+
+        JPQLQuery<Tuple> tuple = jpqlQuery.select(hire, producer);
 
         BooleanBuilder booleanBuilder = new BooleanBuilder();
         BooleanExpression expression = hire.hireId.gt(0L);

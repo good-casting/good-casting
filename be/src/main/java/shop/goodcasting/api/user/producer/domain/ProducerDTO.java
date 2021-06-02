@@ -4,7 +4,8 @@ import lombok.*;
 import org.springframework.stereotype.Component;
 import shop.goodcasting.api.user.login.domain.UserDTO;
 
-@ToString(exclude = {"user"})
+import java.sql.Timestamp;
+
 @Builder
 @Data
 @Component
@@ -17,6 +18,8 @@ public class ProducerDTO {
     private String phone;
     private String position;
     private String name;
+    private Timestamp regDate;
+    private Timestamp modDate;
 
     private UserDTO user;
 }

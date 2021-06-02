@@ -6,13 +6,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import shop.goodcasting.api.user.producer.domain.Producer;
 import shop.goodcasting.api.user.producer.domain.ProducerDTO;
-import shop.goodcasting.api.user.producer.repository.ProducerRepository;
 import shop.goodcasting.api.user.producer.service.ProducerServiceImpl;
 
 import java.util.List;
-import java.util.Optional;
 
-
+@CrossOrigin("*")
 @Log
 @RestController
 @RequiredArgsConstructor
@@ -25,9 +23,9 @@ public class ProducerController {
         return ResponseEntity.ok(service.findAll());
     }
 
-    @GetMapping("/myPage")
-    public ResponseEntity<Optional<Producer>> myPage(@RequestBody Producer producer){
-        return ResponseEntity.ok(service.findById(producer.getProducerId()));
+    @GetMapping("/myPage/{producerId}")
+    public ResponseEntity<ProducerDTO> myPage(@PathVariable Long producerId){
+        return ResponseEntity.ok(service.findById(producerId));
     }
 
     @PostMapping("/info")
