@@ -3,27 +3,28 @@ import { Tab } from "react-bootstrap";
 import { Link } from "gatsby";
 import PageWrapper from "../components/PageWrapper";
 import FileUpload from "../components/Core/FileUpload";
-import FileUploads from "../components/Core/FileUploads";
 import { useDispatch, useSelector } from "react-redux";
 import { hireRegister } from "../state/reducer/hire.reducer";
 import { producerSelector } from "../state/reducer/producer.reducer";
-import {
-  fileRegister,
-  profileSelector
-} from "../state/reducer/profile.reducer";
-import cameraIcon from "../assets/image/ico_camera.svg";
 import "../scss/css/fileUpload.css";
+import { fileSelector } from "../state/reducer/file.reducer";
 
 const HireRegister = () => {
   const dispatch = useDispatch();
 
   const producerState = useSelector(producerSelector);
-  const profileState = useSelector(profileSelector);
+  const fileState = useSelector(fileSelector);
 
-  const [inputs, setInputs] = useState({});
-  const [image, setImage] = useState(null);
+  const { producerId } = JSON.parse(localStorage.getItem("USER"))[1];
 
-  console.log("profileState :" + profileState.fileList);
+  console.log("------------------");
+  console.log(producerId);
+  console.log("------------------");
+
+  const [inputs, setInputs] = useState({
+    producer: { producerId: producerId }
+  });
+  const [image, setImages] = useState(null);
 
   const handleSubmit = e => {
     e.preventDefault();
@@ -42,10 +43,9 @@ const HireRegister = () => {
   useEffect(() => {
     setInputs({
       ...inputs,
-      producer: producerState.producer,
-      files: profileState.fileList
+      files: fileState.fileList
     });
-  }, [profileState, producerState]);
+  }, [fileState]);
 
   return (
     <>
@@ -77,7 +77,7 @@ const HireRegister = () => {
                         onChange={handleChange}
                         value={inputs.title}
                       />
-                      <FileUpload setImages={setImage} image={image} />
+                      <FileUpload setImages={setImages} image={image} />
                     </div>
                     <hr />
                     <Tab.Container

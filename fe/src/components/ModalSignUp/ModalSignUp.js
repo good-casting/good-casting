@@ -101,7 +101,7 @@ const ModalSignUp = (props) => {
                                             }}
                                         />
                                         <label className="font-size-4 text-black-2 font-weight-semibold line-height-reset" htmlFor="radio">
-                                            &nbsp;제작자
+                                            &nbsp;재작자
                                         </label>
                                     </div>
                                     <form onSubmit={(e) => e.preventDefault()}>

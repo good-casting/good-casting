@@ -8,7 +8,7 @@ const userInfo =
     : null;
 
 const profileRegister = arg => {
-  console.log("service hireList pageRequest: " + JSON.stringify(arg));
+  console.log("service profileList pageRequest: " + JSON.stringify(arg));
   return axios({
     url: `${SERVER}/profiles/register`,
     method: "post",
@@ -19,6 +19,18 @@ const profileRegister = arg => {
     }
   });
 };
+const fileRegister = formData => {
+  return axios({
+    url: `${SERVER}/files/register`,
+    method: "post",
+    data: formData,
+    headers: {
+      Authorization: "JWT fefege..",
+      "Content-Type": "multipart/form-data"
+    }
+  });
+};
+
 const profileList = pageRequest => {
   console.log(
     "service profileList pageRequest: " + JSON.stringify(pageRequest)
@@ -27,7 +39,7 @@ const profileList = pageRequest => {
     url: `${SERVER}/profiles/list`,
     method: "post",
     data: pageRequest,
-    headers: { Authorization: localStorage.getItem('TOKEN')  }
+    headers: { Authorization: "JWT fefege.." }
   });
 };
 
@@ -38,15 +50,4 @@ const profileRead = () => {
     headers: { Authorization: localStorage.getItem("TOKEN") }
   });
 };
-const fileRegister = arg => {
-  return axios({
-    url: `${SERVER}/files/register`,
-    method: "post",
-    data: arg,
-    headers: {
-      "Content-Type": "multipart/form-data",
-      Authorization: localStorage.getItem("TOKEN")
-    }
-  });
-};
-export default { profileRegister, profileList, profileRead, fileRegister };
+export default { profileRegister, fileRegister, profileList, profileRead };

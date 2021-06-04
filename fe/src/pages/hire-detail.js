@@ -14,7 +14,6 @@ import { profileList, profileSelector } from "../state/reducer/profile.reducer";
 import { hireApply } from "../state/reducer/apply.reducer";
 
 const JobDetails = ({ location }) => {
-  console.log(" location : " + JSON.stringify(location));
   const getModalStyle = () => {
     const top = 50 + rand();
     const left = 50 + rand();
@@ -49,10 +48,9 @@ const JobDetails = ({ location }) => {
 
   const dispatch = useDispatch();
 
-  const hire = useSelector(hireSelector).hireDetail;
+  const hire = useSelector(hireSelector).hire;
   const pageResult = useSelector(profileSelector).pageResult;
   const pageRequest = useSelector(profileSelector).pageRequest;
-  const dtoList = useSelector(profileSelector).pageResult.dtoList;
 
   const [inputs, setInputs] = useState({});
   const [modalStyle, setModalStyle] = useState(getModalStyle);
@@ -83,7 +81,6 @@ const JobDetails = ({ location }) => {
       setApply({ ...apply, profile: { profileId } });
     }
   };
-  console.log(JSON.stringify(apply));
 
   const handleApply = e => {
     e.preventDefault();

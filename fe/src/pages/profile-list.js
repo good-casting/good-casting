@@ -1,5 +1,4 @@
 import React from 'react';
-import { Link } from 'gatsby';
 import PageWrapper from '../components/PageWrapper';
 import Sidebar from '../components/Profile/Sidebar';
 import ProfileList from '../components/Profile/ProfileList';
@@ -29,29 +28,17 @@ const SearchGrid = () => {
                                 <div className="pt-12 ml-lg-0 ml-md-15">
                                     <div className="d-flex align-items-center justify-content-between">
                                         <h5 className="font-size-4 font-weight-normal text-default-color">
-                                            <span className="heading-default-color">
-                                                120
-                                            </span>
-                                            results for{' '}
-                                            <span className="heading-default-color">
-                                                UI Designer
-                                            </span>
+                                            <span className="heading-default-color">120</span>
+                                            results for <span className="heading-default-color">UI Designer</span>
                                         </h5>
                                     </div>
                                     <div className="pt-6">
                                         <div className="row justify-content-center">
-                                            <ProfileList
-                                                pageResult={pageResult}
-                                                pageRequest={pageRequest}
-                                            />
+                                            <ProfileList pageResult={pageResult} pageRequest={pageRequest} />
                                         </div>
                                     </div>
                                     <div className="text-center pt-5 pt-lg-13">
-                                        <PageListComponent
-                                            pageRequest={pageRequest}
-                                            pageResult={pageResult}
-                                            flag={'prifileList'}
-                                        />
+                                        <PageListComponent flag={'profileList'} />
                                     </div>
                                 </div>
                                 {/* <!-- form end --> */}

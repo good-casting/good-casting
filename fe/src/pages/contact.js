@@ -1,25 +1,7 @@
-import React, { useCallback, useState } from "react";
+import React from "react";
 import PageWrapper from "../components/PageWrapper";
-import { useDispatch } from "react-redux";
-import { messageSend } from "../state/reducer/user.reducer";
 
 const Contact = () => {
-  const dispatch = useDispatch();
-
-  const [message, setMessage] = useState({});
-
-  const handleSubmit = e => {
-    e.preventDefault();
-    console.log("handle Submit :" + JSON.stringify(message));
-    dispatch(messageSend(message));
-  };
-  const handleChange = useCallback(e => {
-    setMessage({
-      ...message,
-      [e.target.name]: e.target.value
-    });
-  });
-
   return (
     <>
       <PageWrapper>
@@ -34,7 +16,6 @@ const Contact = () => {
                     method="post"
                     data-netlify="true"
                     data-netlify-honeypot="bot-field"
-                    onSubmit={handleSubmit}
                   >
                     {/* You still need to add the hidden input with the form name to your JSX form */}
                     <input type="hidden" name="form-name" value="contact" />
@@ -53,8 +34,6 @@ const Contact = () => {
                           id="name"
                           name="name"
                           required
-                          onChange={handleChange}
-                          value={message.sender}
                         />
                       </div>
                       <div className="col-lg-6 mb-7">

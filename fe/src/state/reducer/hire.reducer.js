@@ -21,6 +21,14 @@ export const hireList = createAsyncThunk("HIRE_LIST", async pageRequest => {
   return response.data;
 });
 
+export const myHireList = createAsyncThunk("MYHIRE_LIST", async pageRequest => {
+  console.log(
+    "reducer myHireList() pageRequest: " + JSON.stringify(pageRequest)
+  );
+  const response = await hireService.hireList(pageRequest);
+  return response.data;
+});
+
 export const hireDetail = createAsyncThunk("HIRE_DETAIL", async id => {
   console.log("createAsyncThunk enter: " + JSON.stringify(id));
 
@@ -37,98 +45,58 @@ export const hireRegister = createAsyncThunk("HIRE_REGISTER", async arg => {
   return response.data;
 });
 
-const hireSlice = createSlice({
-  name: "hire",
-  initialState: {
-    producerHireList: [],
-    pageRequest: {
-      page: 1,
-      size: 10,
-      type: "",
-      sort: "hireId",
-      ffrom: 0,
-      fto: 0,
-      conKeyword: "",
-      castKeyword: "",
-      gfrom: 0,
-      gto: 0,
-      tkeyword: 0,
-      pkeyword: 0
-    },
-    pageResult: {
-      pageList: [],
-      dtoList: [],
-      page: 1,
-      size: 10,
-      totalPage: 0,
-      start: 0,
-      end: 0,
-      prev: false,
-      next: false,
-      totalElement: 0
-    },
-    hireDetail: {
-      hireId: 0,
-      title: "",
-      project: "",
-      contents: "",
-      cast: "",
-      filming: "",
-      guarantee: 0,
-      personnel: 0,
-      deadline: "",
-      producer: {
-        producerId: 0,
-        email: "",
-        agency: "",
-        phone: "",
-        position: "",
-        name: ""
-      },
-      hireApply: {
-        applyStatus: 0
-      },
-
-      files: [
-        {
-          fileId: 0,
-          uuid: "",
-          fileName: ""
-        }
-      ]
+export const hireDelete = createAsyncThunk("HIRE_DELETE", async id => {
+  console.log("createAsyncThunk enter: " + JSON.stringify(id));
+  const response = await hireService.hireDelete(id);
+  console.log("hireDelete: " + response.data);
+  return response.data;
+});
+const initialState = {
+  pageRequest: {
+    page: 1,
+    size: 10,
+    type: "",
+    sort: "hireId",
+    searchKey: {},
+    period: {},
+    pay: {},
+    file: {
+      fileName: "",
+      uuid: ""
     }
   },
+  pageResult: {
+    pageList: [],
+    dtoList: [],
+    page: 1,
+    size: 10,
+    totalPage: 0,
+    start: 0,
+    end: 0,
+    prev: false,
+    next: false,
+    totalElement: 0
+  },
+  hireDetail: {},
+  reset: false,
+  hire: {
+    deadline: "",
+    producer: {}
+  }
+};
+
+const hireSlice = createSlice({
+  name: "hire",
+  initialState: initialState,
   reducers: {
     pageListChange: (state, { payload }) => {
       state.pageResult.page = payload;
     },
-    setFfrom: ({ pageRequest }, { payload }) => {
-      console.log("before ffrom: " + pageRequest.ffrom);
-      pageRequest.ffrom = payload;
-      console.log("after ffrom" + pageRequest.ffrom);
-    },
-    setFto: ({ pageRequest }, { payload }) => {
-      console.log("before fto: " + pageRequest.fto);
-      pageRequest.fto = payload;
-      console.log("after fto: " + pageRequest.fto);
-    },
-    setKeywords: ({ pageRequest }, { payload }) => {
-      console.log("keyword: " + payload);
-      pageRequest.castKeyword = payload;
-      pageRequest.conKeyword = payload;
-      pageRequest.pkeyword = payload;
-      pageRequest.tkeyword = payload;
-    },
-    setType: ({ pageRequest }, { payload }) => {
-      pageRequest.type += payload;
-    },
-    setGfrom: ({ pageRequest }, { payload }) => {
-      console.log("guarantee from: " + payload);
-      pageRequest.gfrom = payload;
-    },
-    setGto: ({ pageRequest }, { payload }) => {
-      console.log("guarantee to: " + payload);
-      pageRequest.gto = payload;
+    resetHireSearch: (state = initialState) => {
+      return {
+        ...initialState,
+        reset: !state.reset
+      };
     }
   },
   extraReducers: builder => {
@@ -143,13 +111,15 @@ const hireSlice = createSlice({
 
         return {
           ...state,
-          pageResult: { ...payload }
+          pageResult: payload,
+          pageRequest: payload.pageRequest
         };
       })
       .addCase(hireDetail.fulfilled, (state, { payload }) => {
+        console.log("hireDetail payload: " + JSON.stringify(payload));
         return {
           ...state,
-          hireDetail: { ...payload }
+          hire: payload
         };
       })
       .addCase(hireRegister.fulfilled, (state, { payload }) => {
@@ -158,19 +128,18 @@ const hireSlice = createSlice({
           icon: "success",
           title: "공고가 등록되었습니다."
         });
+      })
+      .addCase(myHireList.fulfilled, (state, { payload }) => {
+        console.log("payload :" + JSON.stringify(payload));
+        return {
+          ...state,
+          pageResult: { ...payload }
+        };
       });
   }
 });
 
 export const hireSelector = state => state.hireReducer;
 
-export const {
-  pageListChange,
-  setFfrom,
-  setFto,
-  setKeywords,
-  setType,
-  setGfrom,
-  setGto
-} = hireSlice.actions;
+export const { pageListChange, resetHireSearch } = hireSlice.actions;
 export default hireSlice.reducer;

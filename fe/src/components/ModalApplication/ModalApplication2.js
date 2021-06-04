@@ -10,7 +10,7 @@ const ModalStyled = styled(Modal)`
   } */
 `;
 
-const ModalApplication = props => {
+const ModalApplication = (props) => {
   const gContext = useContext(GlobalContext);
 
   const toggleModal = () => {
@@ -59,7 +59,7 @@ const ModalApplication = props => {
                 {/* <!-- Excerpt Start --> */}
                 <div className="pr-xl-0 pr-xxl-14 p-5 px-xs-12 pt-7 pb-5">
                   <h4 className="font-size-6 font-weight-semibold mb-7 mt-5 text-black-2">
-                    hi
+                    About
                   </h4>
                   <p className="font-size-4 mb-8">
                     A talented professional with an academic background in IT

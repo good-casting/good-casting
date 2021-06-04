@@ -13,5 +13,16 @@ const hireApply = apply => {
     }
   });
 };
+const applicantList = pageRequest => {
+  console.log(
+    "service applicantList pageRequest: " + JSON.stringify(pageRequest)
+  );
+  return axios({
+    url: `${SERVER}/applies/list`,
+    method: "post",
+    data: pageRequest,
+    headers: { Authorization: localStorage.getItem("TOKEN") }
+  });
+};
 
-export default { hireApply };
+export default { hireApply, applicantList };

@@ -1,4 +1,3 @@
-
 import React, { useCallback, useState, useEffect } from 'react';
 import { fileRegister, fileSelector } from '../../state/reducer/file.reducer';
 import { useDispatch, useSelector } from 'react-redux';

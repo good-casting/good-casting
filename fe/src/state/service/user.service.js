@@ -22,14 +22,4 @@ const signin = arg => {
   });
 };
 
-const messageSend = arg => {
-  console.log("service message arg : " + JSON.stringify(arg));
-  return axios({
-    url: `${SERVER}/messages/send`,
-    method: "post",
-    data: arg,
-    headers: { Authorization: "JWT fefege.." }
-  });
-};
-
-export default { signup, signin, messageSend };
+export default { signup, signin };
