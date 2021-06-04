@@ -2,48 +2,81 @@ package shop.goodcasting.api.article.profile.service;
 
 import shop.goodcasting.api.article.profile.domain.Profile;
 import shop.goodcasting.api.article.profile.domain.ProfileDTO;
-import shop.goodcasting.api.file.photo.domain.Photo;
-import shop.goodcasting.api.file.photo.domain.PhotoDTO;
+import shop.goodcasting.api.article.profile.domain.ProfileListDTO;
+import shop.goodcasting.api.common.domain.PageRequestDTO;
+import shop.goodcasting.api.common.domain.PageResultDTO;
+import shop.goodcasting.api.file.domain.FileVO;
 import shop.goodcasting.api.user.actor.domain.Actor;
 import shop.goodcasting.api.user.actor.domain.ActorDTO;
 
+
 public interface ProfileService {
     Long register(ProfileDTO profileDTO);
+    ProfileDTO readProfile(Long profileId);
+
+    PageResultDTO<ProfileListDTO, Object[]> getProfileList(PageRequestDTO requestDTO);
 
     default Profile dto2Entity(ProfileDTO profileDTO) {
-
-        Profile entity = Profile.builder()
+        return Profile.builder()
                 .profileId(profileDTO.getProfileId())
-                .career(profileDTO.getCareer())
                 .contents(profileDTO.getContents())
                 .privacy(profileDTO.isPrivacy())
-                .actor(profileDTO.getActor())
+                .resemble(profileDTO.getResemble())
+                .confidence(profileDTO.getConfidence())
                 .build();
-        return entity;
     }
 
-    default Actor dto2EntityActor(ActorDTO actorDTO) {
-        Actor actor = Actor.builder()
-                .actorId(actorDTO.getActorId())
-                .height(actorDTO.getHeight())
-                .phone(actorDTO.getPhone())
-                .weight(actorDTO.getWeight())
-                .birthday(actorDTO.getBirthday())
-                .major(actorDTO.getMajor())
-                .agency(actorDTO.getAgency())
+    default Profile dto2EntityAll(ProfileDTO profileDTO){
+        return Profile.builder()
+                .profileId(profileDTO.getProfileId())
+                .contents(profileDTO.getContents())
+                .privacy(profileDTO.isPrivacy())
+                .resemble(profileDTO.getResemble())
+                .confidence(profileDTO.getConfidence())
+                .actor(Actor.builder()
+                        .actorId(profileDTO.getActor().getActorId())
+                        .build())
                 .build();
-        return actor;
     }
 
-    default Photo dto2EntityPhoto(PhotoDTO photoDTO) {
-        Photo photo = Photo.builder()
-                .photoId(photoDTO.getPhotoId())
-                .fileName(photoDTO.getFileName())
-                .uuid(photoDTO.getUuid())
-                .first(photoDTO.isFirst())
-                .profile(photoDTO.getProfile())
+    default ProfileDTO entity2Dto(Profile profile) {
+        return ProfileDTO.builder()
+                .profileId(profile.getProfileId())
+                .contents(profile.getContents())
+                .privacy(profile.isPrivacy())
+                .resemble(profile.getResemble())
+                .confidence(profile.getConfidence())
+                .regDate(profile.getRegDate())
+                .modDate(profile.getModDate())
                 .build();
+    }
 
-        return photo;
+    default ProfileDTO entity2DtoAll(Profile profile) {
+        return ProfileDTO.builder()
+                .profileId(profile.getProfileId())
+                .contents(profile.getContents())
+                .privacy(profile.isPrivacy())
+                .resemble(profile.getResemble())
+                .confidence(profile.getConfidence())
+                .regDate(profile.getRegDate())
+                .modDate(profile.getModDate())
+                .actor(ActorDTO.builder()
+                        .actorId(profile.getActor().getActorId())
+                        .build())
+                .build();
+    }
+
+    default ProfileListDTO entity2DtoFiles(Profile profile, Actor actor, FileVO file) {
+        return ProfileListDTO.builder()
+                .profileId(profile.getProfileId())
+                .privacy(profile.isPrivacy())
+                .resemble(profile.getResemble())
+                .confidence(profile.getConfidence())
+                .modDate(profile.getModDate())
+                .regDate(profile.getRegDate())
+                .actorName(actor.getName())
+                .fileName(file.getFileName())
+                .fileUuid(file.getUuid())
+                .build();
     }
 }

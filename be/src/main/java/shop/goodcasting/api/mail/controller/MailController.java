@@ -7,8 +7,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import shop.ryuseulgi.goodCasting.mail.domain.MailDTO;
-import shop.ryuseulgi.goodCasting.mail.service.MailServiceImpl;
+import shop.goodcasting.api.mail.domain.MailDTO;
+import shop.goodcasting.api.mail.service.MailServiceImpl;
 
 @Log
 @RestController

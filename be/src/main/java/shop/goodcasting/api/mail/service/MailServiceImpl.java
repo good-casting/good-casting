@@ -4,8 +4,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
-import shop.ryuseulgi.goodCasting.mail.domain.MailDTO;
-import shop.ryuseulgi.goodCasting.mail.exception.MailHandler;
+import shop.goodcasting.api.mail.domain.MailDTO;
+import shop.goodcasting.api.mail.exception.MailHandler;
 
 @Service
 @RequiredArgsConstructor

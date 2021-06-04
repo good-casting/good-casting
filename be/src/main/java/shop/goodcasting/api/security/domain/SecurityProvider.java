@@ -5,6 +5,7 @@ import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -12,9 +13,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
 import shop.goodcasting.api.user.login.domain.Role;
+import shop.goodcasting.api.user.login.service.UserDetailsServiceImpl;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
@@ -24,6 +25,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+@Log4j2
 @Component
 @RequiredArgsConstructor
 public class SecurityProvider implements AuthenticationProvider {
@@ -34,7 +36,7 @@ public class SecurityProvider implements AuthenticationProvider {
     @Value("${security.jwt.token.expire-length:3600000}")
     private long validityInMilliseconds = 3600000;
 
-    private final UserDetailsService service;
+    private final UserDetailsServiceImpl service;
 
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
@@ -71,9 +73,12 @@ public class SecurityProvider implements AuthenticationProvider {
     }
 
     public Authentication getAuthentication(String token) {
+        System.out.println("getAuthentication : 진입");
         UserDetails userDetails = service.loadUserByUsername(getUsername(token));
-
-        return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
+        System.out.println("userDetails : " + userDetails);
+        System.out.println("userDetails.getAuth : " + userDetails.getAuthorities());
+        // jwt토큰 서명을 통해 서명이 정상이라면 Authorities 객체 생성
+        return new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
     }
 
     private String getUsername(String token) {
@@ -83,19 +88,24 @@ public class SecurityProvider implements AuthenticationProvider {
     public String resolveToken(HttpServletRequest request) {
         String bearerToken = request.getHeader("Authorization");
 
+
+        log.info("bearerToken : " +bearerToken);
         if (bearerToken != null && bearerToken.startsWith("Bearer")) {
             return bearerToken.substring(7);
+        } else {
+            return "No JWT token found in request headers";
         }
-
-        return null;
     }
 
     public boolean validateToken(String token) throws Exception {
-
+        System.out.println("validateToken : 진입");
         try {
             Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token);
+            log.info(Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token));
+            log.info("validateToken : true");
             return true;
         } catch (JwtException | IllegalArgumentException e) {
+            log.info("validateToken : false");
             throw new Exception();
         }
     }

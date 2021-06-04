@@ -1,37 +1,36 @@
 package shop.goodcasting.api.article.profile.domain;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.stereotype.Component;
-import shop.goodcasting.api.article.hire.domain.HireDTO;
-import shop.goodcasting.api.file.photo.domain.PhotoDTO;
-import shop.goodcasting.api.file.video.domain.VideoDTO;
-import shop.goodcasting.api.user.actor.domain.Actor;
+import shop.goodcasting.api.career.domain.CareerDTO;
+import shop.goodcasting.api.file.domain.FileDTO;
+import shop.goodcasting.api.user.actor.domain.ActorDTO;
 
-import javax.persistence.Column;
-import java.util.ArrayList;
+import java.sql.Timestamp;
+import java.util.List;
 
+@ToString
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
 @Component
 public class ProfileDTO {
-    // pk
-    private long profileId;
+    private Long profileId;
 
-    // data
     private boolean privacy;
     private String contents;
-    private String career;
     private String resemble;
-    private String confidence;
+    private Double confidence;
+    private String actorName;
+    private Integer actorAge;
+    private boolean first;
 
-    // join object
-    private Actor actor;
-    private ArrayList<PhotoDTO> photos;
-    private VideoDTO video;
-    private ArrayList<HireDTO> hires;
+    private Timestamp regDate;
+    private Timestamp modDate;
+
+    private ActorDTO actor;
+
+    private List<FileDTO> files;
+    private List<CareerDTO> careers;
 }

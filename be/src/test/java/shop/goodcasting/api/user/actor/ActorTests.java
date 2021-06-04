@@ -7,7 +7,6 @@ import org.jsoup.select.Elements;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import shop.goodcasting.api.user.actor.domain.Actor;
 import shop.goodcasting.api.user.actor.domain.ActorDTO;
 import shop.goodcasting.api.user.actor.repository.ActorRepository;
@@ -31,9 +30,6 @@ public class ActorTests {
 
     @Autowired
     private ActorService service;
-
-    @Autowired
-    private PasswordEncoder passwordEncoder;
 
     @Test
     public void insertDummyActors() throws IOException {
@@ -61,8 +57,8 @@ public class ActorTests {
 
             ActorDTO actorDTO = new ActorDTO();
             String yeardel= birthday.text().replace("년",""); //출생년도 "년" 삭제
-            String cmdel= height.text().replace("Cm",""); //키 "cm" 삭제
-            String kgdel= weight.text().replace("Kg",""); //키 "cm" 삭제
+            Integer cmdel= Integer.valueOf(height.text().replace("Cm","")); //키 "cm" 삭제
+            Integer kgdel= Integer.valueOf(weight.text().replace("Kg","")); //키 "cm" 삭제
             boolean human = (height.text().contains("Cm") &&weight.text().contains("Kg"));
 
             if(human){
@@ -70,6 +66,7 @@ public class ActorTests {
                 UserVO userVO = UserVO.builder()
                         .username("user" + i)
                         .password("1111")
+                        .position(true)
                         .build();
                 userRepository.save(userVO);
 
