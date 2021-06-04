@@ -24,8 +24,9 @@ const ModalStyled = styled(Modal)`
   }
 `;
 
-const ModalSignIn = (props) => {
+const ModalSignIn = props => {
   const gContext = useContext(GlobalContext);
+
 
   const handleClose = () => {
     gContext.toggleApplicationModal();

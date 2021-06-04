@@ -2,43 +2,19 @@ import profileService from "../service/profile.service";
 
 const { createSlice, createAsyncThunk } = require("@reduxjs/toolkit");
 
-export const profileRegister = createAsyncThunk(
-  "PROFILE_REGISTER",
-  async arg => {
+export const profileRegister = createAsyncThunk("PROFILE_REGISTER", async arg => {
     console.log(arg);
     const response = await profileService.profileRegister();
     return response.data;
   }
 );
+export const profileList = createAsyncThunk("PROFILE_LIST", async pageRequest => {
+          console.log("reducer profileList() pageRequest: " + JSON.stringify(pageRequest));
+          const response = await profileService.profileList(pageRequest);
 
-export const myProfileList = createAsyncThunk(
-  "MYPROFILE_LIST",
-  async pageRequest => {
-    console.log(
-      "reducer myProfileList() pageRequest: " + JSON.stringify(pageRequest)
-    );
-    const response = await profileService.profileList(pageRequest);
-
-    return response.data;
+          return response.data;
   }
 );
-
-export const profileList = createAsyncThunk(
-  "PROFILE_LIST",
-  async pageRequest => {
-    console.log(
-      "reducer profileList() pageRequest: " + JSON.stringify(pageRequest)
-    );
-    const response = await profileService.profileList(pageRequest);
-
-    return response.data;
-  }
-);
-
-export const profileRead = createAsyncThunk("PROFILE_DETAIL", async () => {
-  const response = await profileService.profileRead();
-  return response.data;
-});
 
 export const fileRegister = createAsyncThunk("FILE_REGISTER", async arg => {
   const response = await profileService.fileRegister(arg);
@@ -48,23 +24,28 @@ export const fileRegister = createAsyncThunk("FILE_REGISTER", async arg => {
 const profileSlice = createSlice({
   name: "profile",
   initialState: {
-    profile: [],
-    careerList: [],
     profileList: [],
+    careerList: [],
     fileList: [],
     pageRequest: {
       page: 1,
       size: 10,
-      type: "",
-      sort: "profileId",
-      ffrom: 0,
-      fto: 0,
-      conKeyword: "",
-      castKeyword: "",
-      gfrom: 0,
-      gto: 0,
-      tkeyword: 0,
-      pkeyword: 0
+      type: '',
+      sort: 'profileId',
+      searchCond: {
+        afrom: 0,
+        ato: 0,
+        rKeyword: '',
+        gKeyword: '',
+        wfrom: 0,
+        wto: 0,
+        hfrom: 0,
+        hto: 0,
+      },
+      file: {
+        fileName: '',
+        uuid: '',
+      },
     },
     pageResult: {
       pageList: [],
@@ -76,8 +57,8 @@ const profileSlice = createSlice({
       end: 0,
       prev: false,
       next: false,
-      totalElement: 0
-    }
+      totalElement: 0,
+    },
   },
   reducers: {
     addCareer(state, { payload }) {
@@ -103,25 +84,11 @@ const profileSlice = createSlice({
       })
       .addCase(profileList.fulfilled, (state, { payload }) => {
         console.log("payload :" + JSON.stringify(payload));
-        //state.profileList.push(...payload)
-        //     state.page = payload.page
-        //     state.pageList = payload.pageList
-        //     state.size = payload.size
-        //     state.totalPage = payload.totalPage
-        // })
-        if (!payload) {
-          state.page = 1;
-          return state;
-        }
 
         return {
           ...state,
           pageResult: { ...payload }
         };
-      })
-      .addCase(profileRead.fulfilled, (state, { payload }) => {
-        console.log("payload : " + JSON.stringify(payload));
-        state.profile = payload;
       })
       .addCase(fileRegister.fulfilled, (state, { payload }) => {
         console.log("payload : " + JSON.stringify(payload));
@@ -129,12 +96,12 @@ const profileSlice = createSlice({
           ...state,
           fileList: [...payload]
         };
-      });
+      })
   }
 });
 
 export const profileSelector = state => state.profileReducer;
 
-export const { addCareer, deleteCareer } = profileSlice.actions;
+export const {  addCareer, setCareer, deleteCareer } = profileSlice.actions;
 
 export default profileSlice.reducer;

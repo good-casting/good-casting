@@ -75,6 +75,10 @@ const hireSlice = createSlice({
         position: "",
         name: ""
       },
+      hireApply: {
+        applyStatus: 0,
+      },
+
       files: [
         {
           fileId: 0,
@@ -140,7 +144,7 @@ const hireSlice = createSlice({
       })
       .addCase(hireRegister.fulfilled, (state, { payload }) => {
         console.log("payload : " + JSON.stringify(payload));
-      });
+      })
   }
 });
 

@@ -1,3 +1,4 @@
+
 package shop.goodcasting.api.file.controller;
 
 import lombok.RequiredArgsConstructor;
@@ -26,9 +27,9 @@ import java.util.UUID;
 
 @Log4j2
 @RestController
-@CrossOrigin("*")
-@RequestMapping("/files")
+@CrossOrigin(origins ="*", allowedHeaders = "*")
 @RequiredArgsConstructor
+@RequestMapping("/files")
 public class FileController {
     private final FileServiceImpl service;
     @Value("${shop.goodcast.upload.path}")
@@ -68,10 +69,9 @@ public class FileController {
 
                     File thumbnailFile = new File(thumbnailSaveName);
 
-                    Thumbnailator.createThumbnail(savePath.toFile(), thumbnailFile, 100, 100);
+                    Thumbnailator.createThumbnail(savePath.toFile(), thumbnailFile, 500, 500);
 
-
-                }else if(mimeType.startsWith("video")) {
+                } else if(mimeType.startsWith("video")) {
                     log.info("video thumbnail extract");
                     service.extractVideoThumbnail(new File(saveName));
                 }
@@ -83,8 +83,6 @@ public class FileController {
 
                 resultDTOList.add(fileDTO);
 
-            } catch (IOException e) {
-                e.printStackTrace();
             } catch (Exception e) {
                 e.printStackTrace();
             }

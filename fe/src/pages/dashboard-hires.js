@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link } from "gatsby";
 import PageWrapper from "../components/PageWrapper";
 import { Select } from "../components/Core";
-
+import { useDispatch } from "react-redux";
+import { hireList } from "../state/reducer/hire.reducer";
 
 const defaultJobs = [
   { value: "current", label: "최신순" },
@@ -11,6 +12,12 @@ const defaultJobs = [
   { value: "deadline", label: "마감순" }
 ];
 const DashboardHires = () => {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    console.log("HireList : " + JSON.stringify(hireList));
+    dispatch(hireList());
+  });
 
   return (
     <>

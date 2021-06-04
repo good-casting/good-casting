@@ -1,5 +1,4 @@
 package shop.goodcasting.api.career.domain;
-
 import lombok.*;
 import shop.goodcasting.api.article.profile.domain.Profile;
 import shop.goodcasting.api.common.domain.BaseEntity;
@@ -19,7 +18,7 @@ public class Career extends BaseEntity {
     @Column(name = "career_id") private Long careerId;
 
     @Column private Integer year;
-    @Column private String gerne;
+    @Column private String genre;
     @Column private String title;
     @Column private String contents;
 

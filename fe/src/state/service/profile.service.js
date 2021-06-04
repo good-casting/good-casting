@@ -19,7 +19,6 @@ const profileRegister = arg => {
     }
   });
 };
-
 const profileList = pageRequest => {
   console.log(
     "service profileList pageRequest: " + JSON.stringify(pageRequest)
@@ -27,13 +26,8 @@ const profileList = pageRequest => {
   return axios({
     url: `${SERVER}/profiles/list`,
     method: "post",
-    data: {
-      page: pageRequest.page,
-      size: pageRequest.size,
-      sort: pageRequest.sort
-    },
-
-    headers: { Authorization: localStorage.getItem("TOKEN") }
+    data: pageRequest,
+    headers: { Authorization: localStorage.getItem('TOKEN')  }
   });
 };
 

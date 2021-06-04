@@ -16,7 +16,6 @@ import java.util.List;
 @Data
 @Component
 public class ProfileDTO {
-    // pk
     private Long profileId;
 
     private boolean privacy;
@@ -25,6 +24,7 @@ public class ProfileDTO {
     private Double confidence;
     private String actorName;
     private Integer actorAge;
+    private boolean first;
 
     private Timestamp regDate;
     private Timestamp modDate;

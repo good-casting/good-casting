@@ -1,6 +1,7 @@
 
 package shop.goodcasting.api.article.profile.domain;
 
+
 import lombok.*;
 import org.springframework.stereotype.Component;
 
@@ -20,6 +21,7 @@ public class ProfileListDTO {
     private String resemble;
     private Double confidence;
     private String actorName;
+    private boolean first;
     private String fileUuid;
     private String fileName;
     private Timestamp regDate;

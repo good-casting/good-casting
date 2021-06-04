@@ -105,6 +105,7 @@ const DashboardApplicantList = () => {
                                                 href="/#"
                                                 className="font-size-3 font-weight-bold text-black-2 text-uppercase"
                                                 onClick={(e) => {
+
                                                     e.preventDefault();
                                                     gContext.toggleApplicationModal();
                                                 }}

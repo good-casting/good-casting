@@ -1,13 +1,17 @@
-import React from 'react'
-import { Link } from 'gatsby'
-import { useSelector } from 'react-redux'
-import PageWrapper from '../components/PageWrapper'
-import ProfileSidebar from '../components/ProfileSidebar'
-import { profileSelector } from '../state/reducer/profile.reducer'
-import MyProfileList from '../components/Profile/MyprofileList'
+import React from 'react';
+import { Link } from 'gatsby';
+import { useSelector } from 'react-redux';
+import PageWrapper from '../components/PageWrapper';
+import MyProfileList from '../components/Profile/MyProfileList';
+import ProfileSidebar from '../components/ProfileSidebar';
+import { profileSelector } from '../state/reducer/profile.reducer';
+import { hireSelector } from '../state/reducer/hire.reducer';
 
 const ActorMypage = () => {
-    const state = useSelector(profileSelector)
+    const profileList = useSelector(profileSelector).profileList;
+    const pageResult = useSelector(hireSelector).pageResult;
+    const pageRequest = useSelector(hireSelector).pageRequest;
+
     return (
         <>
             <PageWrapper>
@@ -20,17 +24,21 @@ const ActorMypage = () => {
                             <div className="col-12 col-md-8 col-xs-12 ">
                                 <div className="pt-6">
                                     <Link to="/profile-register">
-                                        <button className="btn btn-primary text-uppercase font-size-3">프로필등록하기</button>
+                                        <button className="btn btn-primary text-uppercase font-size-3">
+                                            프로필등록하기
+                                        </button>
                                     </Link>
                                     <div className="pt-6 row justify-content-center">
-                                        {state.profile !== null ? (
+                                        {profileList !== null ? (
                                             <div className="col-12 col-lg-6">
-                                                <MyProfileList />
+                                                <MyProfileList
+                                                    pageResult={pageResult}
+                                                    pageRequest={pageRequest}
+                                                />
                                             </div>
                                         ) : (
                                             <p>프로필없음</p>
                                         )}
-                                        <div className="col-12 col-lg-6"></div>
                                     </div>
                                 </div>
                             </div>
@@ -39,6 +47,6 @@ const ActorMypage = () => {
                 </div>
             </PageWrapper>
         </>
-    )
-}
-export default ActorMypage
+    );
+};
+export default ActorMypage;
