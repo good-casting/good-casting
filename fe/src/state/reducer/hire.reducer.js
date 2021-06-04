@@ -1,4 +1,14 @@
 import hireService from "../service/hire.service";
+import Swal from "sweetalert2";
+
+const sweetalert = (icon, title, text, footer) => {
+  Swal.fire({
+    icon: icon,
+    title: title,
+    text: text,
+    footer: footer
+  });
+};
 
 const { createSlice, createAsyncThunk } = require("@reduxjs/toolkit");
 
@@ -22,7 +32,7 @@ export const hireDetail = createAsyncThunk("HIRE_DETAIL", async id => {
 });
 
 export const hireRegister = createAsyncThunk("HIRE_REGISTER", async arg => {
-  console.log("createAsyncThunk enter: " + JSON.stringify(arg));
+  console.log("createAsyncThunk hireRegister enter: " + JSON.stringify(arg));
   const response = await hireService.hireRegister(arg);
   return response.data;
 });
@@ -76,7 +86,7 @@ const hireSlice = createSlice({
         name: ""
       },
       hireApply: {
-        applyStatus: 0,
+        applyStatus: 0
       },
 
       files: [
@@ -144,7 +154,11 @@ const hireSlice = createSlice({
       })
       .addCase(hireRegister.fulfilled, (state, { payload }) => {
         console.log("payload : " + JSON.stringify(payload));
-      })
+        Swal.fire({
+          icon: "success",
+          title: "공고가 등록되었습니다."
+        });
+      });
   }
 });
 

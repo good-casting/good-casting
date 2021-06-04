@@ -2,9 +2,9 @@ import applyService from "../service/apply.service";
 
 const { createSlice, createAsyncThunk } = require("@reduxjs/toolkit");
 
-export const hireApply = createAsyncThunk("HIRE_APPLY", async arg => {
-  console.log("createAsyncThunk enter : " + JSON.stringify(arg));
-  const response = await applyService.hireApply(arg);
+export const hireApply = createAsyncThunk("HIRE_APPLY", async apply => {
+  console.log("createAsyncThunk enter : " + JSON.stringify(apply));
+  const response = await applyService.hireApply(apply);
   return response.data;
 });
 

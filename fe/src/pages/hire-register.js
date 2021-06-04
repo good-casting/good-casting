@@ -2,6 +2,8 @@ import React, { useCallback, useEffect, useState } from "react";
 import { Tab } from "react-bootstrap";
 import { Link } from "gatsby";
 import PageWrapper from "../components/PageWrapper";
+import FileUpload from "../components/Core/FileUpload";
+import FileUploads from "../components/Core/FileUploads";
 import { useDispatch, useSelector } from "react-redux";
 import { hireRegister } from "../state/reducer/hire.reducer";
 import { producerSelector } from "../state/reducer/producer.reducer";
@@ -11,16 +13,6 @@ import {
 } from "../state/reducer/profile.reducer";
 import cameraIcon from "../assets/image/ico_camera.svg";
 import "../scss/css/fileUpload.css";
-import Swal from "sweetalert2";
-
-const sweetalert = (icon, title, text, footer) => {
-  Swal.fire({
-    icon: icon,
-    title: title,
-    text: text,
-    footer: footer
-  });
-};
 
 const HireRegister = () => {
   const dispatch = useDispatch();
@@ -37,10 +29,6 @@ const HireRegister = () => {
     e.preventDefault();
     console.log("handleSubmit" + JSON.stringify(inputs));
     dispatch(hireRegister(inputs));
-    Swal.fire({
-      icon: "success",
-      title: "공고가 등록되었습니다."
-    });
   };
   const handleChange = useCallback(
     e => {
@@ -58,18 +46,6 @@ const HireRegister = () => {
       files: profileState.fileList
     });
   }, [profileState, producerState]);
-
-  const handleSelectedImage = useCallback(e => {
-    e.preventDefault();
-
-    const formData = new FormData();
-    const imgFile = e.target.files[0];
-    const imgUrl = URL.createObjectURL(imgFile);
-
-    formData.append("uploadFiles", imgFile);
-    dispatch(fileRegister(formData));
-    setImage(imgUrl);
-  });
 
   return (
     <>
@@ -101,40 +77,7 @@ const HireRegister = () => {
                         onChange={handleChange}
                         value={inputs.title}
                       />
-                      <div
-                        id="userActions"
-                        className="square-144 m-auto px-6 mb-7 "
-                      >
-                        <label
-                          htmlFor="fileUpload"
-                          className="mb-0 font-size-4 text-smoke"
-                        >
-                          {image === null ? (
-                            <img
-                              className="pic_basic btn_custom_file_camera"
-                              src={cameraIcon}
-                            />
-                          ) : (
-                            profileState.fileList.map(file => {
-                              return (
-                                <img
-                                  alt=""
-                                  className="pic_basic btn_custom_file_camera thumnail-size"
-                                  src={`http://localhost:8080/files/display?fileName=s_${file.uuid}_${file.fileName}`}
-                                />
-                              );
-                            })
-                          )}
-                        </label>
-
-                        <input
-                          type="file"
-                          accept="image/*"
-                          id="fileUpload"
-                          className="sr-only"
-                          onChange={handleSelectedImage}
-                        />
-                      </div>
+                      <FileUpload setImages={setImage} image={image} />
                     </div>
                     <hr />
                     <Tab.Container

@@ -14,6 +14,7 @@ import { profileList, profileSelector } from "../state/reducer/profile.reducer";
 import { hireApply } from "../state/reducer/apply.reducer";
 
 const JobDetails = ({ location }) => {
+  console.log(" location : " + JSON.stringify(location));
   const getModalStyle = () => {
     const top = 50 + rand();
     const left = 50 + rand();
@@ -22,7 +23,7 @@ const JobDetails = ({ location }) => {
       left: `${left}%`,
       height: "50vh",
       // weight: "50vh",
-      transform: `translate(-${top}%, -${left}%)`,
+      transform: `translate(-70%, -${left}%)`,
       overflow: "scroll"
     };
   };
@@ -70,24 +71,24 @@ const JobDetails = ({ location }) => {
     );
   }, [inputs]);
 
-  const handleApply = e => {
-    e.preventDefault();
-    dispatch(hireApply(selectArr));
-  };
-
-  const [selectArr, setSelectArr] = useState([]);
-
+  const [apply, setApply] = useState({
+    applyStatus: 1,
+    hire: { hireId: location.state.id }
+  });
   const handleChange = e => {
     const profileId = e.target.getAttribute("data-profileid");
     console.log("checked before profileId : " + profileId);
 
     if (e.target.checked) {
-      setSelectArr({ ...selectArr, profileId });
-    } else {
+      setApply({ ...apply, profile: { profileId } });
     }
-    selectArr.hireId = location.state.id;
-    console.log(selectArr);
-    // selectArr.push({ hireId : location.state.id})
+  };
+  console.log(JSON.stringify(apply));
+
+  const handleApply = e => {
+    e.preventDefault();
+    console.log("handleApply : " + JSON.stringify(apply));
+    dispatch(hireApply(apply));
   };
 
   const handleOpen = () => {
@@ -197,24 +198,24 @@ const JobDetails = ({ location }) => {
                                         </p>
                                       </h2>
                                       <input
-                                        type="checkbox"
+                                        type="radio"
                                         data-profileid={profile.profileId}
                                         name="select"
                                         checked={inputs.select}
                                         onChange={e => handleChange(e)}
                                       />
+                                      <div className="card-btn-group">
+                                        <div
+                                          className="btn btn-green text-uppercase btn-medium rounded-3 center"
+                                          onClick={handleApply}
+                                        >
+                                          APPLY
+                                        </div>
+                                      </div>
                                     </div>
                                   </>
                                 );
                               })}
-                              <div className="card-btn-group">
-                                <div
-                                  className="btn btn-green text-uppercase btn-medium rounded-3 center"
-                                  onClick={handleApply}
-                                >
-                                  APPLY
-                                </div>
-                              </div>
                             </div>
                           </Modal>
                         </div>
