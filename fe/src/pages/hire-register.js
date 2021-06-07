@@ -6,20 +6,15 @@ import FileUpload from "../components/Core/FileUpload";
 import { useDispatch, useSelector } from "react-redux";
 import { hireRegister } from "../state/reducer/hire.reducer";
 import { producerSelector } from "../state/reducer/producer.reducer";
-import "../scss/css/fileUpload.css";
 import { fileSelector } from "../state/reducer/file.reducer";
+import "../scss/css/fileUpload.css";
 
 const HireRegister = () => {
   const dispatch = useDispatch();
 
-  const producerState = useSelector(producerSelector);
   const fileState = useSelector(fileSelector);
 
   const { producerId } = JSON.parse(localStorage.getItem("USER"))[1];
-
-  console.log("------------------");
-  console.log(producerId);
-  console.log("------------------");
 
   const [inputs, setInputs] = useState({
     producer: { producerId: producerId }

@@ -1,13 +1,19 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { hireList, hireSelector, pageListChange } from '../../state/reducer/hire.reducer';
+import {
+    hireList,
+    hireSelector,
+    pageListChange,
+} from '../../state/reducer/hire.reducer';
 import { profileList } from '../../state/reducer/profile.reducer';
 
 const PageListComponent = ({ flag }) => {
     const dispatch = useDispatch();
     const pageRequest = useSelector(hireSelector).pageRequest;
 
-    const { next, prev, pageList, start, end } = useSelector(hireSelector).pageResult;
+    const { next, prev, pageList, start, end } = useSelector(
+        hireSelector
+    ).pageResult;
 
     const changePage = (page) => {
         if (flag === 'hireList') {
@@ -42,7 +48,11 @@ const PageListComponent = ({ flag }) => {
             <div>
                 {prev ? (
                     <div className="text-center pt-5 pt-lg-13">
-                        <button style={btnStyle} onClick={clickPrev} className="text-green font-weight-bold text-uppercase font-size-3">
+                        <button
+                            style={btnStyle}
+                            onClick={clickPrev}
+                            className="text-green font-weight-bold text-uppercase font-size-3"
+                        >
                             prev
                         </button>
                     </div>
@@ -66,7 +76,11 @@ const PageListComponent = ({ flag }) => {
                 })}
                 {next ? (
                     <div className="text-center pt-5 pt-lg-13">
-                        <button style={btnStyle} onClick={clickNext} className="text-green font-weight-bold text-uppercase font-size-3">
+                        <button
+                            style={btnStyle}
+                            onClick={clickNext}
+                            className="text-green font-weight-bold text-uppercase font-size-3"
+                        >
                             next
                             <i className="fas fa-sort-down ml-3"></i>
                         </button>

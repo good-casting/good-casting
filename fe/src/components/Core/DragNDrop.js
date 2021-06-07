@@ -39,13 +39,29 @@ const DragNDropComponent = ({ pageRequest }) => {
             <div className="upload-file mb-16 text-center">
                 <div id="userActions" className="square-144 m-auto px-6 mb-7">
                     {file.fileName ? (
-                        <img style={{ width: '150px', height: '200px' }} src={'http://localhost:8080/files/display?fileName=s_' + file.uuid + '_' + file.fileName} />
+                        <img
+                            style={{ width: '150px', height: '200px' }}
+                            src={
+                                'http://localhost:8080/files/display?fileName=s_' +
+                                file.uuid +
+                                '_' +
+                                file.fileName
+                            }
+                        />
                     ) : (
                         <>
-                            <label htmlFor="fileUpload" className="mb-0 font-size-4 text-smoke">
+                            <label
+                                htmlFor="fileUpload"
+                                className="mb-0 font-size-4 text-smoke"
+                            >
                                 Browse or Drag and Drop
                             </label>
-                            <input type="file" id="fileUpload" className="sr-only" onChange={uploadAjax} />
+                            <input
+                                type="file"
+                                id="fileUpload"
+                                className="sr-only"
+                                onChange={uploadAjax}
+                            />
                         </>
                     )}
                 </div>

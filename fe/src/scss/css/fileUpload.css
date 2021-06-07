@@ -27,7 +27,8 @@
     bottom: 0;
     width: 60px;
     height: 60px;
-    background: rgba(0, 0, 0, 0.5) url(../../assets//image/ico_camera.svg) no-repeat 50% 50% / 30px 26px;
+    background: rgba(0, 0, 0, 0.5) url(../../assets//image/ico_camera.svg)
+        no-repeat 50% 50% / 30px 26px;
 }
 
 .select-dropdown {

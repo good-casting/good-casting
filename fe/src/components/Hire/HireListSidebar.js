@@ -1,9 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import DatePickerComponent from '../DatePicker/DatePicker';
-import { useDispatch } from 'react-redux';
 import RangeSearchComponent from '../Core/RangeSearch';
-import SearchBtnComponent from '../Core/SearchBtn';
 
 const CheckStyled = styled.span`
     cursor: pointer;
@@ -48,21 +46,20 @@ const Check = ({ children }) => {
 };
 
 const HireListSidebar = ({ pageRequest }) => {
-    const dispatch = useDispatch();
-
     return (
         <>
-            {/* <!-- Sidebar Start --> */}
             <div className="widgets mb-11 ">
                 <div>
-                    <h4 className="font-size-6 font-weight-semibold mb-6 w-75">촬영 기간</h4>
-                    {/* <!-- Range Slider --> */}
-                    <h6 className="font-size-4 font-weight-semibold mb-6 w-75">시작일</h6>
+                    <h4 className="font-size-6 font-weight-semibold mb-6 w-75">
+                        촬영 기간
+                    </h4>
+                    <h6 className="font-size-4 font-weight-semibold mb-6 w-75">
+                        시작일
+                    </h6>
                     <DatePickerComponent isRangeSearch={true} />
                 </div>
             </div>
             <RangeSearchComponent text={'출연료'} />
-            {/* <!-- Sidebar End --> */}
         </>
     );
 };

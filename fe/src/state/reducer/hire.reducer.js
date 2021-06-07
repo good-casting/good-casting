@@ -1,15 +1,6 @@
 import hireService from "../service/hire.service";
 import Swal from "sweetalert2";
 
-const sweetalert = (icon, title, text, footer) => {
-  Swal.fire({
-    icon: icon,
-    title: title,
-    text: text,
-    footer: footer
-  });
-};
-
 const { createSlice, createAsyncThunk } = require("@reduxjs/toolkit");
 
 export const hireList = createAsyncThunk("HIRE_LIST", async pageRequest => {
@@ -45,12 +36,6 @@ export const hireRegister = createAsyncThunk("HIRE_REGISTER", async arg => {
   return response.data;
 });
 
-export const hireDelete = createAsyncThunk("HIRE_DELETE", async id => {
-  console.log("createAsyncThunk enter: " + JSON.stringify(id));
-  const response = await hireService.hireDelete(id);
-  console.log("hireDelete: " + response.data);
-  return response.data;
-});
 const initialState = {
   pageRequest: {
     page: 1,
@@ -122,19 +107,19 @@ const hireSlice = createSlice({
           hire: payload
         };
       })
-      .addCase(hireRegister.fulfilled, (state, { payload }) => {
-        console.log("payload : " + JSON.stringify(payload));
-        Swal.fire({
-          icon: "success",
-          title: "공고가 등록되었습니다."
-        });
-      })
       .addCase(myHireList.fulfilled, (state, { payload }) => {
         console.log("payload :" + JSON.stringify(payload));
         return {
           ...state,
           pageResult: { ...payload }
         };
+      })
+      .addCase(hireRegister.fulfilled, (state, { payload }) => {
+        console.log("payload : " + JSON.stringify(payload));
+        Swal.fire({
+          icon: "success",
+          title: "공고가 등록되었습니다."
+        });
       });
   }
 });

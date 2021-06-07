@@ -233,7 +233,9 @@ code,
 kbd,
 samp {
     font-family: $font-family-monospace;
-    @include font-size(1em); // Correct the odd `em` font sizing in all browsers.
+    @include font-size(
+        1em
+    ); // Correct the odd `em` font sizing in all browsers.
 }
 
 pre {
@@ -486,6 +488,7 @@ template {
 [hidden] {
     display: none !important;
 }
+
 .file-upload-form {
     width: 100px;
     height: 100px;

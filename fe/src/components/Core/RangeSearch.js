@@ -16,7 +16,9 @@ const RangeSearchComponent = ({ text }) => {
     return (
         <div className="widgets mb-11 ">
             <div className="d-flex align-items-center pr-15 pr-xs-0 pr-md-0 pr-xl-22">
-                <h4 className="font-size-6 font-weight-semibold mb-6 w-75">{text}</h4>
+                <h4 className="font-size-6 font-weight-semibold mb-6 w-75">
+                    {text}
+                </h4>
                 {/* <!-- Range Slider --> */}
 
                 <div className="slider-price w-25 text-right mr-7">
@@ -27,7 +29,8 @@ const RangeSearchComponent = ({ text }) => {
                                 white-space: nowrap;
                             `}
                         >
-                            {rangeValues[0].toFixed()} -{rangeValues[1].toFixed()}
+                            {rangeValues[0].toFixed()} -
+                            {rangeValues[1].toFixed()}
                         </span>
                     </p>
                 </div>
@@ -114,7 +117,11 @@ const RangeSearchComponent = ({ text }) => {
                     />
                 </>
             </div>
-            <SearchBtnComponent data={rangeValues} text={'출연료 검색'} className="btn btn-primary line-height-reset h-50 w-50 text-uppercase" />
+            <SearchBtnComponent
+                data={rangeValues}
+                text={'출연료 검색'}
+                className="btn btn-primary line-height-reset h-50 w-50 text-uppercase"
+            />
         </div>
     );
 };

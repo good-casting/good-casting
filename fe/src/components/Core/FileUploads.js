@@ -32,7 +32,7 @@ const FileUploads = ({ image }) => {
             for (let i = 0; i < imgFile.length; i++) {
                 formData.append('uploadFiles', imgFile[i]);
 
-                if (imgFile[i].name.includes('video')) {
+                if (imgFile[i].type.includes('video')) {
                     const removeMP4 = imgFile[i].name.slice(
                         0,
                         imgFile[i].name.length - 4

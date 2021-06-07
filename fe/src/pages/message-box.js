@@ -9,7 +9,7 @@ const MessageBox = () => {
         { value: 'SUPPORT', label: '지원' },
         { value: 'PASS', label: '합격' },
         { value: 'MESSAGE', label: '메시지' },
-        { value: 'CONTACT', label: '연락' },
+        { value: 'CONTACT', label: '연락 ' },
     ];
 
     return (

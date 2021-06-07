@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
+import CustomizedRadios from '../Core/CustomizedRadios';
 import styled from 'styled-components';
 import { Range, getTrackBackground } from 'react-range';
-import CustomizedRadios from '../Core/CustomizedRadios';
 
 const STEP = 1;
 const MIN = 0;
@@ -58,14 +58,14 @@ const Sidebar = () => {
     const [rangeValues, setRangeValues] = useState([0, 100]);
     return (
         <>
-            {/* <!-- Sidebar Start --> */}
             <div className="widgets mb-11">
                 <CustomizedRadios />
             </div>
             <div className="widgets mb-11 ">
                 <div className="d-flex align-items-center pr-15 pr-xs-0 pr-md-0 pr-xl-22">
-                    <h4 className="font-size-6 font-weight-semibold mb-6 w-75">나이 범위</h4>
-                    {/* <!-- Range Slider --> */}
+                    <h4 className="font-size-6 font-weight-semibold mb-6 w-75">
+                        나이 범위
+                    </h4>
 
                     <div className="slider-price w-25 text-right mr-7">
                         <p className="font-weight-bold">
@@ -75,7 +75,8 @@ const Sidebar = () => {
                                     white-space: nowrap;
                                 `}
                             >
-                                {rangeValues[0].toFixed()} - {rangeValues[1].toFixed()}세
+                                {rangeValues[0].toFixed()} -{' '}
+                                {rangeValues[1].toFixed()}세
                             </span>
                         </p>
                     </div>
@@ -126,7 +127,11 @@ const Sidebar = () => {
                                             borderRadius: '4px',
                                             background: getTrackBackground({
                                                 values: rangeValues,
-                                                colors: ['#ccc', '#755dd9', '#ccc'],
+                                                colors: [
+                                                    '#ccc',
+                                                    '#755dd9',
+                                                    '#ccc',
+                                                ],
                                                 min: MIN,
                                                 max: MAX,
                                             }),
@@ -163,8 +168,6 @@ const Sidebar = () => {
                     </>
                 </div>
             </div>
-
-            {/* <!-- Sidebar End --> */}
         </>
     );
 };
