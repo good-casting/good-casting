@@ -8,17 +8,16 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-import shop.goodcasting.api.article.profile.domain.Profile;
-import shop.goodcasting.api.article.profile.domain.ProfileDTO;
-import shop.goodcasting.api.article.profile.domain.ProfileListDTO;
+import shop.goodcasting.api.apply.repository.ApplyRepository;
+import shop.goodcasting.api.article.profile.domain.*;
 import shop.goodcasting.api.article.profile.repository.ProfileRepository;
 
 import shop.goodcasting.api.career.domain.Career;
 import shop.goodcasting.api.career.domain.CareerDTO;
 import shop.goodcasting.api.career.repository.CareerRepository;
 import shop.goodcasting.api.career.service.CareerService;
-import shop.goodcasting.api.common.domain.PageRequestDTO;
-import shop.goodcasting.api.common.domain.PageResultDTO;
+import shop.goodcasting.api.article.hire.domain.HirePageRequestDTO;
+import shop.goodcasting.api.article.hire.domain.HirePageResultDTO;
 import shop.goodcasting.api.file.domain.FileDTO;
 import shop.goodcasting.api.file.domain.FileVO;
 import shop.goodcasting.api.file.repository.FileRepository;
@@ -46,6 +45,7 @@ public class ProfileServiceImpl implements ProfileService {
     private final ActorService actorService;
     private final CareerService careerService;
     private final CareerRepository careerRepo;
+    private final ApplyRepository applyRepo;
 
     @Value("${shop.goodcast.upload.path}")
     private String uploadPath;
@@ -63,11 +63,39 @@ public class ProfileServiceImpl implements ProfileService {
     }
 
     public Long saveCareer(ProfileDTO profileDTO, List<CareerDTO> careers) {
+
         if(careers != null && careers.size() > 0) {
             careers.forEach(careerDTO -> {
                 careerDTO.setProfile(profileDTO);
                 Career career = careerService.dto2EntityAll(careerDTO);
                 careerRepo.save(career);
+            });
+            return 1L;
+        }
+        return 0L;
+    }
+
+    public Long saveFile(ProfileDTO profileDTO, List<FileDTO> files) {
+        if(files != null && files.size() > 0) {
+            files.forEach(fileDTO -> {
+                fileDTO.setProfile(profileDTO);
+                FileVO file = fileService.dto2EntityProfile(fileDTO);
+                fileRepo.save(file);
+
+                if (file.isPhotoType() && fileDTO.isFirst()) {
+                    String[] arr = extractCelebrity(
+                            uploadPath + File.separator + file.getUuid() + "_" + file.getFileName());
+
+                    log.info("extract end ----------------------");
+                    log.info("profileDTO: " + profileDTO.getProfileId());
+                    log.info("resemble");
+                    log.info(arr[0]);
+                    log.info("confidence");
+                    log.info(arr[1]);
+                    profileRepo.updateResembleAndConfidenceByProfileId(
+                            profileDTO.getProfileId(), arr[0], Double.parseDouble(arr[1]));
+                    log.info("analyze end ----------------------");
+                }
             });
             return 1L;
         }
@@ -99,8 +127,8 @@ public class ProfileServiceImpl implements ProfileService {
     }
 
     @Override
-    public PageResultDTO<ProfileListDTO, Object[]> getProfileList(PageRequestDTO pageRequest) {
-        if (!pageRequest.getFile().getFileName().equals("")) {
+    public ProfilePageResultDTO<ProfileListDTO, Object[]> getProfileList(ProfilePageRequestDTO pageRequest) {
+        if (!(pageRequest.getFile() == null)) {
             log.info("service enter: " + pageRequest);
 
             String fileName = uploadPath + File.separator + "s_"
@@ -109,7 +137,7 @@ public class ProfileServiceImpl implements ProfileService {
 
             String[] arr = extractCelebrity(fileName);
 
-            pageRequest.getSearchCond().setRkeyword(arr[0]);
+            pageRequest.setResembleKey(arr[0]);
 
             log.info("before get page list: " + pageRequest);
         }
@@ -134,7 +162,7 @@ public class ProfileServiceImpl implements ProfileService {
                     (Actor) entity[1], (FileVO) entity[2]));
 
         }
-        return new PageResultDTO<>(result, fn);
+        return new ProfilePageResultDTO<>(result, fn, pageRequest);
     }
 
     @Transactional
@@ -153,9 +181,13 @@ public class ProfileServiceImpl implements ProfileService {
     @Transactional
     public void deleteProfile(Long profileId) {
         fileRepo.deleteByProfileId(profileId);
-
+        Long careerId = careerRepo.getCareerIdByProfileId(profileId);
+        Long applyId = applyRepo.findByProfileId(profileId);
+        if(careerId != null){ careerRepo.deleteById(careerId);}
+        if(applyId != null){ applyRepo.deleteById(applyId);}
         profileRepo.deleteById(profileId);
     }
+
 
     public String[] extractCelebrity(String photoName) {
         log.info("extractCelebrity enter: " + photoName);
@@ -243,25 +275,5 @@ public class ProfileServiceImpl implements ProfileService {
             System.out.println(e);
         }
         return null;
-    }
-
-    public Long saveFile(ProfileDTO profileDTO, List<FileDTO> files) {
-        if(files != null && files.size() > 0) {
-            files.forEach(fileDTO -> {
-                fileDTO.setProfile(profileDTO);
-                FileVO file = fileService.dto2EntityProfile(fileDTO);
-                fileRepo.save(file);
-
-                if (file.isPhotoType() && fileDTO.isFirst()) {
-                    String[] arr = extractCelebrity(
-                            uploadPath + File.separator + file.getUuid() + "_" + file.getFileName());
-
-                    profileRepo.updateResembleAndConfidenceByProfileId(
-                            profileDTO.getProfileId(), arr[0], Double.parseDouble(arr[1]));
-                }
-            });
-            return 1L;
-        }
-        return 0L;
     }
 }

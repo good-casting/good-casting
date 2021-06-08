@@ -1,15 +1,16 @@
 package shop.goodcasting.api.message.controller;
 
+import io.jsonwebtoken.lang.Collections;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import org.springframework.web.bind.annotation.*;
-import shop.goodcasting.api.message.domain.Message;
 import shop.goodcasting.api.message.domain.MessageActionType;
 import shop.goodcasting.api.message.domain.MessageDTO;
 import shop.goodcasting.api.message.service.MessageServiceImpl;
+
 
 import java.util.List;
 import java.util.Optional;
@@ -41,6 +42,13 @@ public class MessageController {
     @GetMapping("/list/{actionType}/{receiver}")
     public ResponseEntity<List<MessageDTO>> messageTypeList(@PathVariable MessageActionType actionType, @PathVariable Long receiver){
         return ResponseEntity.ok(service.findByType(actionType));
+    }
+
+    @PutMapping("/update")
+    public ResponseEntity<List<MessageDTO>> update(@RequestBody MessageDTO messageDTO) {
+
+        log.info(""+messageDTO);
+        return ResponseEntity.ok(service.update(messageDTO));
     }
 
     @DeleteMapping("/delete/{messageId}")

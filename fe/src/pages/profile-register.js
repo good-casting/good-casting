@@ -4,12 +4,9 @@ import ProfileCareer from '../components/Profile/ProfileCareer';
 import FileUpload from '../components/Core/FileUpload';
 import FileUploads from '../components/Core/FileUploads';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-    profileRegister,
-    profileSelector,
-} from '../state/reducer/profile.reducer';
+import { profileRegister, profileSelector, resetStatus } from '../state/reducer/profile.reducer';
 import { actorSelctor } from '../state/reducer/actor.reducer';
-import { fileSelector, setFirst } from '../state/reducer/file.reducer';
+import { fileSelector, resetFile, setFirst } from '../state/reducer/file.reducer';
 import PageWrapper from '../components/PageWrapper';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
@@ -21,7 +18,8 @@ const ProfileRegister = () => {
 
     const profileState = useSelector(profileSelector);
     const fileList = useSelector(fileSelector).fileList;
-    const actorState = useSelector(actorSelctor);
+    const actorState = JSON.parse(localStorage.getItem('USER'));
+    const { status } = useSelector(profileSelector);
 
     const [image, setImages] = useState(null);
     const [inputs, setInputs] = useState({
@@ -29,9 +27,22 @@ const ProfileRegister = () => {
     });
 
     useEffect(() => {
+        return () => {
+            dispatch(resetFile());
+        };
+    }, []);
+
+    if (status === 'success') {
+        navigate('/actor-mypage');
+        dispatch(resetStatus());
+    }
+
+    useEffect(() => {
         setInputs({
             ...inputs,
-            actor: actorState.actor,
+            actor: {
+                actorId: actorState[1].actorId,
+            },
             careers: profileState.careerList,
             files: fileList,
         });
@@ -39,13 +50,12 @@ const ProfileRegister = () => {
         if (fileList.length === 1) {
             dispatch(setFirst(fileList[0]));
         }
-    }, [image, profileState, actorState, fileList]);
+    }, [image, profileState, fileList]);
 
     const handleSubmit = (e) => {
         e.preventDefault();
         dispatch(profileRegister(inputs));
         setInputs(''); // 초기화
-        navigate('/actor-mypage');
     };
 
     const handleChange = useCallback(
@@ -80,16 +90,11 @@ const ProfileRegister = () => {
                         <div className="mb-15 mb-lg-23">
                             <div className="row">
                                 <div className="col-xxxl-9 px-lg-13 px-6">
-                                    <h5 className="font-size-6 font-weight-semibold mb-11">
-                                        프로필 등록
-                                    </h5>
+                                    <h5 className="font-size-6 font-weight-semibold mb-11">프로필 등록</h5>
                                     <div className="contact-form bg-white shadow-8 rounded-4 pl-sm-10 pl-4 pr-sm-11 pr-4 pt-15 pb-13">
                                         <div className="upload-file mb-16 text-center">
                                             <div className="m-auto px-6 mb-7">
-                                                <FileUpload
-                                                    setImages={setImages}
-                                                    image={image}
-                                                />
+                                                <FileUpload setImages={setImages} image={image} />
                                             </div>
                                             <p>※ 프로필 사진을 등록해주세요</p>
                                         </div>
@@ -100,12 +105,9 @@ const ProfileRegister = () => {
                                                         htmlFor="aboutTextarea"
                                                         className="d-block text-black-2 font-size-4 font-weight-semibold mb-4"
                                                     >
-                                                        추가 사진 / 연기 동영상
-                                                        업로드
+                                                        추가 사진 / 연기 동영상 업로드
                                                     </label>
-                                                    <FileUploads
-                                                        image={image}
-                                                    />
+                                                    <FileUploads image={image} />
                                                 </div>
                                                 <div className="col-md-12">
                                                     <div className="form-group">
@@ -133,12 +135,8 @@ const ProfileRegister = () => {
                                                             rows="7"
                                                             className="border border-mercury text-gray w-100 pt-4 pl-6"
                                                             placeholder="간단한 자기소개를 입력해주세요"
-                                                            onChange={
-                                                                handleChange
-                                                            }
-                                                            value={
-                                                                inputs.contents
-                                                            }
+                                                            onChange={handleChange}
+                                                            value={inputs.contents}
                                                         ></textarea>
                                                     </div>
                                                 </div>
@@ -154,12 +152,8 @@ const ProfileRegister = () => {
                                                             control={
                                                                 <Switch
                                                                     color="primary"
-                                                                    checked={
-                                                                        inputs.privacy
-                                                                    }
-                                                                    onChange={
-                                                                        handleToggle
-                                                                    }
+                                                                    checked={inputs.privacy}
+                                                                    onChange={handleToggle}
                                                                     name="privacy"
                                                                 />
                                                             }
@@ -168,7 +162,10 @@ const ProfileRegister = () => {
                                                     </div>
                                                 </div>
                                                 <div className="row">
-                                                    <button className="btn btn-green btn-h-60 text-white min-width-px-210 rounded-5 text-uppercase btn-center">
+                                                    <button
+                                                        type="submit"
+                                                        className="btn btn-green btn-h-60 text-white min-width-px-210 rounded-5 text-uppercase btn-center"
+                                                    >
                                                         등록하기
                                                     </button>
                                                 </div>

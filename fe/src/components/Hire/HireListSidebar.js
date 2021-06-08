@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import DatePickerComponent from '../DatePicker/DatePicker';
 import RangeSearchComponent from '../Core/RangeSearch';
+import { hireList, hireSelector } from '../../state/reducer/hire.reducer';
 
 const CheckStyled = styled.span`
     cursor: pointer;
@@ -30,36 +31,17 @@ const CheckStyled = styled.span`
     }
 `;
 
-const Check = ({ children }) => {
-    const [active, setActive] = useState(false);
-
-    return (
-        <CheckStyled
-            className={`toggle-item ${active ? 'active' : ''}`}
-            onClick={() => {
-                setActive(!active);
-            }}
-        >
-            {children}
-        </CheckStyled>
-    );
-};
-
-const HireListSidebar = ({ pageRequest }) => {
+const HireListSidebar = () => {
     return (
         <>
             <div className="widgets mb-11 ">
                 <div>
-                    <h4 className="font-size-6 font-weight-semibold mb-6 w-75">
-                        촬영 기간
-                    </h4>
-                    <h6 className="font-size-4 font-weight-semibold mb-6 w-75">
-                        시작일
-                    </h6>
+                    <h4 className="font-size-6 font-weight-semibold mb-6 w-75">촬영 기간</h4>
+                    <h6 className="font-size-4 font-weight-semibold mb-6 w-75">시작일</h6>
                     <DatePickerComponent isRangeSearch={true} />
                 </div>
             </div>
-            <RangeSearchComponent text={'출연료'} />
+            <RangeSearchComponent list={hireList} selector={hireSelector} MAX={1000000} MIN={0} STEP={1000} text={'출연료'} />
         </>
     );
 };

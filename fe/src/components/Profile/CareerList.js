@@ -1,9 +1,6 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-    deleteCareer,
-    profileSelector,
-} from '../../state/reducer/profile.reducer';
+import { deleteCareer, profileSelector } from '../../state/reducer/profile.reducer';
 
 const CareerList = () => {
     const dispatch = useDispatch();
@@ -15,30 +12,13 @@ const CareerList = () => {
             <div id="temp_career career-form">
                 {careerList.map((career) => {
                     return (
-                        <div
-                            key={career.id}
-                            className="input-group career_item"
-                        >
-                            <input
-                                type="hidden"
-                                name="careerTypeArr"
-                                value="C"
-                            />
+                        <div key={career.id} className="input-group career_item">
+                            <input type="hidden" name="careerTypeArr" value="C" />
                             <div className="input-group-prepend wp32">
-                                <input
-                                    type="text"
-                                    className="form-control"
-                                    value={career.year}
-                                    readOnly
-                                />
+                                <input type="text" className="form-control" value={career.year} readOnly />
                             </div>
                             <div className="input-group-prepend wp32">
-                                <input
-                                    type="text"
-                                    className="form-control"
-                                    value={career.genre}
-                                    readOnly
-                                />
+                                <input type="text" className="form-control" value={career.genre} readOnly />
                             </div>
 
                             <div className="input-group-prepend wp32">

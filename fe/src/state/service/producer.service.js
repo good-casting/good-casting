@@ -2,10 +2,7 @@ const { default: axios } = require('axios');
 
 const SERVER = 'http://localhost:8080';
 
-const userInfo =
-    typeof window !== `undefined`
-        ? JSON.parse(localStorage.getItem('USER'))
-        : null;
+const userInfo = typeof window !== `undefined` ? JSON.parse(localStorage.getItem('USER')) : null;
 
 const getProducerInfo = () => {
     return axios({
@@ -16,7 +13,6 @@ const getProducerInfo = () => {
 };
 
 const updateProducerInfo = (arg) => {
-    console.log('service ProducerInfo arg: ' + JSON.stringify(arg));
     return axios({
         url: `${SERVER}/producers/info`,
         method: 'post',

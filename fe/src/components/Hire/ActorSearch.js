@@ -1,7 +1,8 @@
 import React, { useRef, useState } from 'react';
+
 import SearchBtnComponent from '../Core/SearchBtn';
 
-const ActorSearch = ({ pageRequest }) => {
+const ActorSearch = () => {
     const [keyword, setKeyword] = useState('');
 
     const onChange = (e) => {

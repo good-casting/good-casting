@@ -32,9 +32,7 @@ const ModalSignUp = (props) => {
     });
 
     useEffect(() => {
-        setCheckValidate(
-            inputs.confirmPassword !== inputs.password ? 'red' : ''
-        );
+        setCheckValidate(inputs.confirmPassword !== inputs.password ? 'red' : '');
     }, [inputs]);
 
     const gContext = useContext(GlobalContext);
@@ -54,13 +52,7 @@ const ModalSignUp = (props) => {
 
     return (
         <>
-            <ModalStyled
-                {...props}
-                size="lg"
-                centered
-                show={gContext.signUpModalVisible}
-                onHide={gContext.toggleSignUpModal}
-            >
+            <ModalStyled {...props} size="lg" centered show={gContext.signUpModalVisible} onHide={gContext.toggleSignUpModal}>
                 <Modal.Body className="p-0">
                     <button
                         type="button"
@@ -77,25 +69,16 @@ const ModalSignUp = (props) => {
                                         <h3 className="font-size-8 text-white line-height-reset pb-4 line-height-1p4">
                                             Create a free account today
                                         </h3>
-                                        <p className="mb-0 font-size-4 text-white">
-                                            Create your account to continue and
-                                            explore new jobs.
-                                        </p>
+                                        <p className="mb-0 font-size-4 text-white">Create your account to continue and explore new jobs.</p>
                                     </div>
                                     <div className="border-top border-default-color-2 mt-auto">
                                         <div className="d-flex mx-n9 pt-6 flex-xs-row flex-column">
                                             <div className="pt-5 px-9">
-                                                <h3 className="font-size-7 text-white">
-                                                    295
-                                                </h3>
-                                                <p className="font-size-3 text-white gr-opacity-5 line-height-1p4">
-                                                    New jobs posted today
-                                                </p>
+                                                <h3 className="font-size-7 text-white">295</h3>
+                                                <p className="font-size-3 text-white gr-opacity-5 line-height-1p4">New jobs posted today</p>
                                             </div>
                                             <div className="pt-5 px-9">
-                                                <h3 className="font-size-7 text-white">
-                                                    14
-                                                </h3>
+                                                <h3 className="font-size-7 text-white">14</h3>
                                                 <p className="font-size-3 text-white gr-opacity-5 line-height-1p4">
                                                     New companies registered
                                                 </p>
@@ -111,16 +94,10 @@ const ModalSignUp = (props) => {
                                             type="radio"
                                             name="radio"
                                             onClick={() => {
-                                                setInputs({
-                                                    position: true,
-                                                    account: true,
-                                                });
+                                                setInputs({ position: true, account: true });
                                             }}
                                         />
-                                        <label
-                                            className="font-size-4 text-black-2 font-weight-semibold line-height-reset"
-                                            htmlFor="radio"
-                                        >
+                                        <label className="font-size-4 text-black-2 font-weight-semibold line-height-reset" htmlFor="radio">
                                             &nbsp;배우
                                         </label>
                                         &nbsp;&nbsp;&nbsp;&nbsp;
@@ -128,17 +105,11 @@ const ModalSignUp = (props) => {
                                             type="radio"
                                             name="radio"
                                             onClick={() => {
-                                                setInputs({
-                                                    position: false,
-                                                    account: true,
-                                                });
+                                                setInputs({ position: false, account: true });
                                             }}
                                         />
-                                        <label
-                                            className="font-size-4 text-black-2 font-weight-semibold line-height-reset"
-                                            htmlFor="radio"
-                                        >
-                                            &nbsp;제작자
+                                        <label className="font-size-4 text-black-2 font-weight-semibold line-height-reset" htmlFor="radio">
+                                            &nbsp;재작자
                                         </label>
                                     </div>
                                     <form onSubmit={(e) => e.preventDefault()}>
@@ -168,22 +139,14 @@ const ModalSignUp = (props) => {
                                             </label>
                                             <div className="position-relative">
                                                 <input
-                                                    type={
-                                                        showPassFirst
-                                                            ? 'password'
-                                                            : 'text'
-                                                    }
+                                                    type={showPassFirst ? 'password' : 'text'}
                                                     className="form-control"
                                                     id="password"
                                                     placeholder="Enter password"
                                                     name="password"
                                                     value={inputs.password}
                                                     onChange={onChange}
-                                                    style={{
-                                                        backgroundColor: `${checkValidate}`,
-                                                        opacity: '0.4',
-                                                        borderColor: 'gray',
-                                                    }}
+                                                    style={{ backgroundColor: `${checkValidate}`, opacity: '0.4', borderColor: 'gray' }}
                                                 />
                                                 <a
                                                     href="/#"
@@ -193,9 +156,7 @@ const ModalSignUp = (props) => {
                                                         togglePasswordFirst();
                                                     }}
                                                 >
-                                                    <span className="d-none">
-                                                        none
-                                                    </span>
+                                                    <span className="d-none">none</span>
                                                 </a>
                                             </div>
                                         </div>
@@ -208,24 +169,14 @@ const ModalSignUp = (props) => {
                                             </label>
                                             <div className="position-relative">
                                                 <input
-                                                    type={
-                                                        showPassSecond
-                                                            ? 'password'
-                                                            : 'text'
-                                                    }
+                                                    type={showPassSecond ? 'password' : 'text'}
                                                     className="form-control"
                                                     id="password2"
                                                     placeholder="Enter password"
                                                     name="confirmPassword"
-                                                    value={
-                                                        inputs.confirmPassword
-                                                    }
+                                                    value={inputs.confirmPassword}
                                                     onChange={onChange}
-                                                    style={{
-                                                        backgroundColor: `${checkValidate}`,
-                                                        opacity: '0.4',
-                                                        borderColor: 'gray',
-                                                    }}
+                                                    style={{ backgroundColor: `${checkValidate}`, opacity: '0.4', borderColor: 'gray' }}
                                                 />
 
                                                 <a
@@ -236,37 +187,22 @@ const ModalSignUp = (props) => {
                                                         togglePasswordSecond();
                                                     }}
                                                 >
-                                                    <span className="d-none">
-                                                        none
-                                                    </span>
+                                                    <span className="d-none">none</span>
                                                 </a>
                                             </div>
                                         </div>
                                         <div className="form-group d-flex flex-wrap justify-content-between mb-1">
-                                            <label
-                                                htmlFor="terms-check2"
-                                                className="gr-check-input d-flex  mr-3"
-                                            >
-                                                <input
-                                                    className="d-none"
-                                                    type="checkbox"
-                                                    id="terms-check2"
-                                                />
+                                            <label htmlFor="terms-check2" className="gr-check-input d-flex  mr-3">
+                                                <input className="d-none" type="checkbox" id="terms-check2" />
                                                 <span className="checkbox mr-5"></span>
                                                 <span className="font-size-3 mb-0 line-height-reset d-block">
                                                     Agree to the{' '}
-                                                    <a
-                                                        href="/#"
-                                                        className="text-primary"
-                                                    >
+                                                    <a href="/#" className="text-primary">
                                                         Terms &amp; Conditions
                                                     </a>
                                                 </span>
                                             </label>
-                                            <a
-                                                href="/#"
-                                                className="font-size-3 text-dodger line-height-reset"
-                                            >
+                                            <a href="/#" className="font-size-3 text-dodger line-height-reset">
                                                 Forget Password
                                             </a>
                                         </div>
@@ -287,10 +223,7 @@ const ModalSignUp = (props) => {
                                         </div>
                                         <p className="font-size-4 text-center heading-default-color">
                                             Don’t have an account?
-                                            <a
-                                                href="/#"
-                                                className="text-primary"
-                                            >
+                                            <a href="/#" className="text-primary">
                                                 Create a free account
                                             </a>
                                         </p>

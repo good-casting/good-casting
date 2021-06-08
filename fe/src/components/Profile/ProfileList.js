@@ -1,14 +1,11 @@
 import React, { useEffect } from 'react';
 import { Link } from 'gatsby';
+
 import { useDispatch, useSelector } from 'react-redux';
-import {
-    profileList,
-    profileSelector,
-} from '../../state/reducer/profile.reducer';
+import { profileList, profileSelector } from '../../state/reducer/profile.reducer';
 
 const ProfileList = () => {
     const dispatch = useDispatch();
-
     const { reset } = useSelector(profileSelector);
     const pageRequest = useSelector(profileSelector).pageRequest;
     const pageResult = useSelector(profileSelector).pageResult;
@@ -31,7 +28,7 @@ const ProfileList = () => {
                             <div>
                                 <div className="bg-white px-8 pt-9 pb-7 rounded-4 mb-9 feature-cardOne-adjustments">
                                     <div className="d-block mb-7">
-                                        <Link to="/profile-detail">
+                                        <Link state={{ id: profile.profileId }} to="/profile-detail">
                                             <img
                                                 style={{
                                                     width: '150px',
@@ -48,12 +45,11 @@ const ProfileList = () => {
                                         </Link>
                                     </div>
                                     <h2 className="mt-n4">
-                                        <p className="font-size-7 text-black-2 font-weight-bold mb-4">
-                                            {profile.actorName}
-                                        </p>
+                                        <p className="font-size-7 text-black-2 font-weight-bold mb-4">{profile.actorName}</p>
                                     </h2>
                                     <div className="card-btn-group">
                                         <Link
+                                            state={{ id: profile.profileId }}
                                             to="/profile-detail"
                                             className="btn btn-green text-uppercase btn-medium rounded-3"
                                         >

@@ -20,9 +20,7 @@ const getCustomStyles = (theme, accentColor, bg, border, indicator) => {
         option: (provided, state) => {
             return {
                 ...provided,
-                color: state.isSelected
-                    ? theme.colors[accentColor]
-                    : theme.colors.dark,
+                color: state.isSelected ? theme.colors[accentColor] : theme.colors.dark,
                 textAlign: 'left',
                 backgroundColor: bg,
             };
