@@ -1,30 +1,30 @@
-import React, { useCallback, useState, useEffect } from 'react'
-import PageWrapper from '../components/PageWrapper'
-import { useDispatch, useSelector } from 'react-redux'
-import { producerSelctor, updateProducerInfo, getProducerInfo } from '../state/reducer/producer.reducer'
+import React, { useCallback, useState, useEffect } from 'react';
+import PageWrapper from '../components/PageWrapper';
+import { useDispatch, useSelector } from 'react-redux';
+import { producerSelctor, updateProducerInfo, getProducerInfo } from '../state/reducer/producer.reducer';
 
 const DashboardSettings = () => {
-    const dispatch = useDispatch()
+    const dispatch = useDispatch();
 
-    const state = useSelector(producerSelctor)
+    const state = useSelector(producerSelctor);
 
-    const [inputs, setInputs] = useState([])
+    const [inputs, setInputs] = useState({});
+
     useEffect(() => {
-        setInputs(state.producer)
-    }, [])
+        setInputs(state.producer);
+    }, []);
 
     const handleSubmit = (e) => {
-        e.preventDefault()
-        console.log(inputs)
-        dispatch(updateProducerInfo(inputs))
-    }
+        e.preventDefault();
+        dispatch(updateProducerInfo(inputs));
+    };
 
     const handleChange = useCallback((e) => {
         setInputs({
             ...inputs,
             [e.target.name]: e.target.value,
-        })
-    })
+        });
+    });
 
     return (
         <>
@@ -56,52 +56,109 @@ const DashboardSettings = () => {
                                                 <div className="row mb-xl-1 mb-9">
                                                     <div className="col-lg-6">
                                                         <div className="form-group">
-                                                            <label htmlFor="namedash" className="d-block text-black-2 font-size-4 font-weight-semibold mb-4">
+                                                            <label
+                                                                htmlFor="namedash"
+                                                                className="d-block text-black-2 font-size-4 font-weight-semibold mb-4"
+                                                            >
                                                                 Agency
                                                             </label>
-                                                            <input type="text" className="form-control h-px-48" id="namedash" value={inputs.agency} name="agency" onChange={handleChange} placeholder="소속사를 입력해주세요" />
+                                                            <input
+                                                                type="text"
+                                                                className="form-control h-px-48"
+                                                                id="namedash"
+                                                                value={inputs.agency}
+                                                                name="agency"
+                                                                onChange={handleChange}
+                                                                placeholder="소속사를 입력해주세요"
+                                                            />
                                                         </div>
                                                     </div>
                                                     <div className="col-lg-6">
                                                         <div className="form-group">
-                                                            <label htmlFor="namedash" className="d-block text-black-2 font-size-4 font-weight-semibold mb-4">
+                                                            <label
+                                                                htmlFor="namedash"
+                                                                className="d-block text-black-2 font-size-4 font-weight-semibold mb-4"
+                                                            >
                                                                 Name
                                                             </label>
-                                                            <input type="text" className="form-control h-px-48" id="namedash" placeholder="이름을 입력해주세요." value={inputs.name} name="name" onChange={handleChange} />
+                                                            <input
+                                                                type="text"
+                                                                className="form-control h-px-48"
+                                                                id="namedash"
+                                                                placeholder="이름을 입력해주세요."
+                                                                value={inputs.name}
+                                                                name="name"
+                                                                onChange={handleChange}
+                                                            />
                                                         </div>
                                                     </div>
                                                 </div>
                                                 <div className="row mb-8">
                                                     <div className="col-lg-6">
                                                         <div className="form-group">
-                                                            <label htmlFor="namedash" className="d-block text-black-2 font-size-4 font-weight-semibold mb-4">
+                                                            <label
+                                                                htmlFor="namedash"
+                                                                className="d-block text-black-2 font-size-4 font-weight-semibold mb-4"
+                                                            >
                                                                 Phone
                                                             </label>
-                                                            <input type="text" className="form-control h-px-48" id="namedash" placeholder="예) 010-1234-5678" value={inputs.phone} name="phone" onChange={handleChange} />
+                                                            <input
+                                                                type="text"
+                                                                className="form-control h-px-48"
+                                                                id="namedash"
+                                                                placeholder="예) 010-1234-5678"
+                                                                value={inputs.phone}
+                                                                name="phone"
+                                                                onChange={handleChange}
+                                                            />
                                                         </div>
                                                     </div>
                                                     <div className="col-lg-6">
                                                         <div className="form-group">
-                                                            <label htmlFor="namedash" className="d-block text-black-2 font-size-4 font-weight-semibold mb-4">
+                                                            <label
+                                                                htmlFor="namedash"
+                                                                className="d-block text-black-2 font-size-4 font-weight-semibold mb-4"
+                                                            >
                                                                 Position
                                                             </label>
-                                                            <input type="text" className="form-control h-px-48" id="namedash" placeholder="직책을 입력해주세요." value={inputs.position} name="position" onChange={handleChange} />
+                                                            <input
+                                                                type="text"
+                                                                className="form-control h-px-48"
+                                                                id="namedash"
+                                                                placeholder="직책을 입력해주세요."
+                                                                value={inputs.position}
+                                                                name="position"
+                                                                onChange={handleChange}
+                                                            />
                                                         </div>
                                                     </div>
                                                 </div>
                                                 <div className="row mb-8">
                                                     <div className="col-lg-6">
                                                         <div className="form-group">
-                                                            <label htmlFor="namedash" className="d-block text-black-2 font-size-4 font-weight-semibold mb-4">
+                                                            <label
+                                                                htmlFor="namedash"
+                                                                className="d-block text-black-2 font-size-4 font-weight-semibold mb-4"
+                                                            >
                                                                 E-mail
                                                             </label>
-                                                            <input type="text" className="form-control h-px-48" id="namedash" placeholder="예)goodCasting@gmail.com" value={inputs.email} name="email" onChange={handleChange} />
+                                                            <input
+                                                                type="text"
+                                                                className="form-control h-px-48"
+                                                                id="namedash"
+                                                                placeholder="예)goodCasting@gmail.com"
+                                                                value={inputs.email}
+                                                                name="email"
+                                                                onChange={handleChange}
+                                                            />
                                                         </div>
                                                     </div>
                                                 </div>
                                                 <div className="row">
                                                     <div className="col-md-12">
-                                                        <button className="btn btn-green btn-h-60 text-white min-width-px-210 rounded-5 text-uppercase">등록하기</button>
+                                                        <button className="btn btn-green btn-h-60 text-white min-width-px-210 rounded-5 text-uppercase">
+                                                            등록하기
+                                                        </button>
                                                     </div>
                                                 </div>
                                             </fieldset>
@@ -114,6 +171,6 @@ const DashboardSettings = () => {
                 </div>
             </PageWrapper>
         </>
-    )
-}
-export default DashboardSettings
+    );
+};
+export default DashboardSettings;

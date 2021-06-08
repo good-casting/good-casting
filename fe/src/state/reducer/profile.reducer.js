@@ -1,54 +1,44 @@
+import Swal from "sweetalert2";
 import profileService from "../service/profile.service";
 import uuid from "uuid/dist/v4";
-import Swal from "sweetalert2";
 
 const { createSlice, createAsyncThunk } = require("@reduxjs/toolkit");
-
-const sweetalert = (icon, title, text, footer) => {
-  Swal.fire({
-    icon: icon,
-    title: title,
-    text: text,
-    footer: footer
-  });
-};
 
 export const profileList = createAsyncThunk(
   "PROFILE_LIST",
   async pageRequest => {
-    console.log(
-      "reducer profileList() pageRequest: " + JSON.stringify(pageRequest)
-    );
     const response = await profileService.profileList(pageRequest);
-
     return response.data;
   }
 );
 
-export const profileRead = createAsyncThunk("PROFILE_DETAIL", async () => {
-  const response = await profileService.profileRead();
+export const profileDetail = createAsyncThunk("PROFILE_DETAIL", async id => {
+  const response = await profileService.profileDetail(id);
   return response.data;
 });
 
-export const myProfileList = createAsyncThunk(
-  "MYPROFILE_LIST",
-  async pageRequest => {
-    console.log(
-      "reducer myProfileList() pageRequest: " + JSON.stringify(pageRequest)
-    );
-    const response = await profileService.profileList(pageRequest);
-
-    return response.data;
-  }
-);
-
 export const profileRegister = createAsyncThunk(
   "PROFILE_REGISTER",
-  async arg => {
-    const response = await profileService.profileRegister(arg);
-    return response.data;
+  async (arg, { rejectWithValue }) => {
+    try {
+      const response = await profileService.profileRegister(arg);
+      return response.data;
+    } catch (e) {
+      return rejectWithValue(e.response.data);
+    }
   }
 );
+
+export const profileDelete = createAsyncThunk("PROFILE_DELETE", async id => {
+  const response = await profileService.profileDelete(id);
+  return response.data;
+});
+
+export const profileUpdate = createAsyncThunk("PROFILE_UPDATE", async arg => {
+  console.log("profileUpdate Thunk : " + JSON.stringify(arg));
+  const response = await profileService.profileUpdate(arg);
+  return response.data;
+});
 
 const initialState = {
   profileList: [],
@@ -72,13 +62,25 @@ const initialState = {
     totalElement: 0,
     pageRequest: {}
   },
-  reset: false
+  profile: {
+    actor: {},
+    files: [],
+    careers: []
+  },
+  reset: false,
+  status: ""
 };
 
 const profileSlice = createSlice({
   name: "profile",
   initialState: initialState,
   reducers: {
+    resetProfileSelector: (state = initialState) => {
+      return {
+        ...initialState,
+        reset: !state.reset
+      };
+    },
     addCareer(state, { payload }) {
       state.careerList.push({
         uuid: uuid(),
@@ -93,11 +95,8 @@ const profileSlice = createSlice({
         career => career.uuid !== payload
       );
     },
-    resetProfileSearch: (state = initialState) => {
-      return {
-        ...initialState,
-        reset: !state.reset
-      };
+    resetStatus(state) {
+      state.status = "";
     }
   },
   extraReducers: builder => {
@@ -111,32 +110,44 @@ const profileSlice = createSlice({
           pageRequest: payload.pageRequest
         };
       })
-      .addCase(profileRegister.fulfilled, (state, { payload }) => {
-        console.log(payload);
-
+      .addCase(profileRegister.fulfilled, state => {
+        state.status = "success";
         Swal.fire({
           icon: "success",
           title: "프로필이 등록되었습니다."
         });
       })
-      .addCase(profileRegister.rejected, (state, { payload }) => {
+      .addCase(profileRegister.rejected, state => {
+        state.status = "reject";
         Swal.fire({
           icon: "error",
-          title: "내용을 모두 입력해주세요"
+          title: "내용을 모두 입력해주세요."
         });
       })
-      .addCase(profileRead.fulfilled, (state, { payload }) => {
-        console.log("payload : " + JSON.stringify(payload));
-        state.profile = payload;
+      .addCase(profileDetail.fulfilled, (state, { payload }) => {
+        return {
+          ...state,
+          profile: payload
+        };
+      })
+      .addCase(profileDelete.fulfilled, (state, { payload }) => {
+        state.status = "success";
+        Swal.fire({
+          icon: "success",
+          title: "프로필이 삭제되었습니다."
+        });
+      })
+      .addCase(profileUpdate.fulfilled, (state, { payload }) => {
+        console.log(JSON.stringify(payload));
       });
   }
 });
-
 export const profileSelector = state => state.profileReducer;
+
 export const {
+  resetProfileSelector,
   addCareer,
   deleteCareer,
-  resetProfileSearch
+  resetStatus
 } = profileSlice.actions;
-
 export default profileSlice.reducer;

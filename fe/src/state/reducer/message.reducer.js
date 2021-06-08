@@ -1,27 +1,57 @@
-import messageService from "../service/message.service";
+import messageService from '../service/message.service';
 
-const { createSlice, createAsyncThunk } = require("@reduxjs/toolkit");
+const { createSlice, createAsyncThunk } = require('@reduxjs/toolkit');
 
-export const messageList = createAsyncThunk("MESSAGE_LIST", async () => {
-  const response = await messageService.messageList();
-  console.log(response.data);
-  return response.data;
+export const getMessageList = createAsyncThunk('MESSAGE_LIST', async () => {
+    const response = await messageService.messageList();
+    return response.data;
+});
+
+export const deleteMessage = createAsyncThunk('DELETE_MESSAGE', async (arg) => {
+    const response = await messageService.deleteMessage(arg);
+    return response.data;
+});
+
+export const updateMessage = createAsyncThunk('READ_MESSAGE', async (arg) => {
+    console.log(arg);
+
+    console.log(arg.readMessage);
+
+    const response = await messageService.readMessage(arg);
+
+    console.log(response.data);
+    return response.data;
 });
 
 const messageSlice = createSlice({
-  name: "message",
-  initialState: {
-    messageList: []
-  },
-  reducers: {},
-  extraReducers: builder => {
-    builder.addCase(messageList.fulfilled, (state, { payload }) => {
-      console.log(payload);
-      state.messageList = payload;
-    });
-  }
+    name: 'message',
+    initialState: {
+        messageList: [],
+    },
+    reducers: {},
+    extraReducers: (builder) => {
+        builder
+            .addCase(getMessageList.fulfilled, (state, { payload }) => {
+                return {
+                    ...state,
+                    messageList: payload,
+                };
+            })
+            .addCase(deleteMessage.fulfilled, (state, { payload }) => {
+                console.log(payload);
+            })
+            .addCase(updateMessage.fulfilled, (state, { payload }) => {
+                console.log(payload);
+
+                return {
+                    ...state,
+                    messageList: payload,
+                };
+            });
+    },
 });
 
-export const messageSelector = state => state.messageReducer;
+export const messageSelector = (state) => state.messageReducer;
+export const { readMessage } = messageSlice.actions;
 
 export default messageSlice.reducer;

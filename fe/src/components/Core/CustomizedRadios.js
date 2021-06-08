@@ -92,7 +92,6 @@ export default function CustomizedRadios() {
 
     return (
         <FormControl component="fieldset">
-            <FormLabel component="legend">Gender</FormLabel>
             <RadioGroup
                 defaultValue="female"
                 aria-label="gender"

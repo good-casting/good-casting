@@ -4,12 +4,13 @@ import { Collapse } from 'react-bootstrap';
 import GlobalContext from '../../context/GlobalContext';
 import imgL from '../../assets/image/logo-main-black.png';
 import Logo from '../Logo';
-import { useDispatch, useSelector } from 'react-redux';
-import { producerSelctor, getProducerInfo } from '../../state/reducer/producer.reducer';
+import { useDispatch } from 'react-redux';
+import { getProducerInfo } from '../../state/reducer/producer.reducer';
 
 const Sidebar = () => {
     const gContext = useContext(GlobalContext);
     const dispatch = useDispatch();
+
     useEffect(() => {
         dispatch(getProducerInfo());
     }, []);
@@ -28,25 +29,43 @@ const Sidebar = () => {
                     </div>
                     <ul className="list-unstyled dashboard-layout-sidebar">
                         <li className="">
-                            <Link activeClassName="active" to="/dashboard" className="px-10 py-1 my-5 font-size-4 font-weight-semibold flex-y-center">
+                            <Link
+                                activeClassName="active"
+                                to="/dashboard"
+                                className="px-10 py-1 my-5 font-size-4 font-weight-semibold flex-y-center"
+                            >
                                 <i className="icon icon-layout-11 mr-7"></i>
                                 메인
                             </Link>
                         </li>
                         <li className="">
-                            <Link to="/dashboard-hires" activeClassName="active" className="px-10 py-1 my-5 font-size-4 font-weight-semibold flex-y-center">
+                            <Link
+                                to="/dashboard-hires"
+                                activeClassName="active"
+                                className="px-10 py-1 my-5 font-size-4 font-weight-semibold flex-y-center"
+                            >
                                 <i className="fas fa-briefcase mr-7"></i>
                                 업로드리스트
                             </Link>
                         </li>
                         <li className="">
-                            <Link to="/dashboard-applicants" activeClassName="active" className="px-10 py-1 my-5 font-size-4 font-weight-semibold flex-y-center">
+                            <Link
+                                to="/dashboard-applicants"
+                                activeClassName="active"
+                                className="px-10 py-1 my-5 font-size-4 font-weight-semibold flex-y-center"
+                            >
                                 <i className="fas fa-user mr-7"></i>지원자리스트
-                                <span className="ml-auto px-1 h-1 bg-dodger text-white font-size-3 rounded-5 max-height-px-18 flex-all-center">14</span>
+                                <span className="ml-auto px-1 h-1 bg-dodger text-white font-size-3 rounded-5 max-height-px-18 flex-all-center">
+                                    14
+                                </span>
                             </Link>
                         </li>
                         <li className="">
-                            <Link to="/dashboard-settings" activeClassName="active" className="px-10 py-1 my-5 font-size-4 font-weight-semibold flex-y-center">
+                            <Link
+                                to="/dashboard-settings"
+                                activeClassName="active"
+                                className="px-10 py-1 my-5 font-size-4 font-weight-semibold flex-y-center"
+                            >
                                 <i className="fas fa-cog mr-7"></i>정보수정
                             </Link>
                         </li>

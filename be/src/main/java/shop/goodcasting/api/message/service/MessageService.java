@@ -1,5 +1,4 @@
 package shop.goodcasting.api.message.service;
-
 import shop.goodcasting.api.message.domain.Message;
 import shop.goodcasting.api.message.domain.MessageActionType;
 import shop.goodcasting.api.message.domain.MessageDTO;

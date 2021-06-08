@@ -93,9 +93,11 @@ public class UserServiceImpl implements UserService {
                 if(userDTO.isPosition()){
                     ActorDTO actorDTO = new ActorDTO();
                     Long actorId = actorRepo.getActorIdFromUserId(userDTO.getUserId());
+                    String actorName = actorRepo.getActorNameFromUserId(userDTO.getUserId());
                     log.info("actorId : " + actorId);
 
                     actorDTO.setActorId(actorId);
+                    actorDTO.setName(actorName);
                     infoList.add(actorDTO);
                 } else {
                     ProducerDTO producerDTO = new ProducerDTO();
@@ -110,7 +112,7 @@ public class UserServiceImpl implements UserService {
             }catch(Exception e){
                 throw new SecurityRuntimeException("유효하지 않은 아이디 / 비밀번호", HttpStatus.UNPROCESSABLE_ENTITY);
             }
-        } else{
+        } else {
             throw new SecurityRuntimeException("탈퇴한 회원입니다.", HttpStatus.UNPROCESSABLE_ENTITY);
         }
     }

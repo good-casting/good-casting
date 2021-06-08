@@ -11,20 +11,20 @@ import NestedMenu from '../NestedMenu';
 import { device } from '../../utils';
 import Logo from '../Logo';
 import { actorMenuItems, menuItems, producerMenuItems } from './menuItems';
-import MessageDropdown from '../Core/MessageDropdown';
 
+import imgP from '../../assets/image/header-profile.png';
 import { useDispatch, useSelector } from 'react-redux';
 import { isUserLoggendIn, userSelector } from '../../state/reducer/user.reducer';
 import { resetHireSearch } from '../../state/reducer/hire.reducer';
 import { resetProfileSearch } from '../../state/reducer/profile.reducer';
 import { resetFile } from '../../state/reducer/file.reducer';
-
-import imgP from '../../assets/image/header-profile.png';
+import MessageDropdown from '../Core/MessageDropdown';
 
 const SiteHeader = styled.header`
     .dropdown-toggle::after {
         opacity: 0;
     }
+
     padding: 10px 0 10px 0;
     position: absolute !important;
     top: 0;
@@ -88,8 +88,20 @@ const Header = () => {
     return (
         <>
             <SiteHeader
-                className={`site-header site-header--sticky  site-header--absolute py-7 py-xs-0 sticky-header ${gContext.header.bgClass} ${gContext.header.align === 'left' ? 'site-header--menu-left ' : gContext.header.align === 'right' ? 'site-header--menu-right ' : 'site-header--menu-center '}
-        ${gContext.header.theme === 'dark' ? 'dark-mode-texts' : ' '} ${showScrolling ? 'scrolling' : ''} ${gContext.header.reveal && showReveal && gContext.header.theme === 'dark' ? 'reveal-header bg-blackish-blue' : gContext.header.reveal && showReveal ? 'reveal-header' : ''}`}
+                className={`site-header site-header--sticky  site-header--absolute py-7 py-xs-0 sticky-header ${gContext.header.bgClass} ${
+                    gContext.header.align === 'left'
+                        ? 'site-header--menu-left '
+                        : gContext.header.align === 'right'
+                        ? 'site-header--menu-right '
+                        : 'site-header--menu-center '
+                }
+        ${gContext.header.theme === 'dark' ? 'dark-mode-texts' : ' '} ${showScrolling ? 'scrolling' : ''} ${
+                    gContext.header.reveal && showReveal && gContext.header.theme === 'dark'
+                        ? 'reveal-header bg-blackish-blue'
+                        : gContext.header.reveal && showReveal
+                        ? 'reveal-header'
+                        : ''
+                }`}
             >
                 <Container fluid={gContext.header.isFluid} className={gContext.header.isFluid ? 'pr-lg-9 pl-lg-9' : ''}>
                     <nav className="navbar site-navbar offcanvas-active navbar-expand-lg px-0 py-0">
@@ -104,23 +116,7 @@ const Header = () => {
                                               return (
                                                   <React.Fragment key={name + index}>
                                                       <li className="nav-item" {...rest}>
-                                                          {' '}
-                                                          <Link
-                                                              onClick={(e) => {
-                                                                  if (index === 0) {
-                                                                      dispatch(resetHireSearch());
-                                                                  }
-                                                                  if (index === 1) {
-                                                                      console.log('enter?');
-                                                                      dispatch(resetProfileSearch());
-                                                                      dispatch(resetFile());
-                                                                  }
-                                                              }}
-                                                              className="nav-link"
-                                                              to={`/${name}`}
-                                                              role="button"
-                                                              aria-expanded="false"
-                                                          >
+                                                          <Link className="nav-link" to={`/${name}`} role="button" aria-expanded="false">
                                                               {label}
                                                           </Link>
                                                       </li>
@@ -132,22 +128,7 @@ const Header = () => {
                                               return (
                                                   <React.Fragment key={name + index}>
                                                       <li className="nav-item" {...rest}>
-                                                          <Link
-                                                              onClick={(e) => {
-                                                                  if (index === 0) {
-                                                                      dispatch(resetHireSearch());
-                                                                  }
-                                                                  if (index === 1) {
-                                                                      console.log('enter?');
-                                                                      dispatch(resetProfileSearch());
-                                                                      dispatch(resetFile());
-                                                                  }
-                                                              }}
-                                                              className="nav-link"
-                                                              to={`/${name}`}
-                                                              role="button"
-                                                              aria-expanded="false"
-                                                          >
+                                                          <Link className="nav-link" to={`/${name}`} role="button" aria-expanded="false">
                                                               {label}
                                                           </Link>
                                                       </li>
@@ -158,22 +139,7 @@ const Header = () => {
                                               return (
                                                   <React.Fragment key={name + index}>
                                                       <li className="nav-item" {...rest}>
-                                                          <Link
-                                                              onClick={() => {
-                                                                  if (index === 0) {
-                                                                      dispatch(resetHireSearch());
-                                                                  }
-                                                                  if (index === 1) {
-                                                                      console.log('enter?');
-                                                                      dispatch(resetProfileSearch());
-                                                                      dispatch(resetFile());
-                                                                  }
-                                                              }}
-                                                              className="nav-link"
-                                                              to={`/${name}`}
-                                                              role="button"
-                                                              aria-expanded="false"
-                                                          >
+                                                          <Link className="nav-link" to={`/${name}`} role="button" aria-expanded="false">
                                                               {label}
                                                           </Link>
                                                       </li>
@@ -184,14 +150,6 @@ const Header = () => {
                             </div>
                         </div>
 
-                        {gContext.header.button === 'cta' && (
-                            <div className="header-btn ml-auto ml-lg-0 mr-6 mr-lg-0 d-none d-xs-block">
-                                <Link to="/#" className={`btn btn-${gContext.header.variant}`}>
-                                    {gContext.header.buttonText}
-                                </Link>
-                            </div>
-                        )}
-
                         {userInfo && (
                             <div className="header-btn-devider ml-auto ml-lg-5 pl-2 d-none d-xs-flex align-items-center">
                                 <div>
@@ -200,17 +158,25 @@ const Header = () => {
                                             <div className="px-3 ml-7 font-size-7 notification-block flex-y-center position-relative">
                                                 <Link to="/message-box">
                                                     <i className="fas fa-bell heading-default-color"></i>
-                                                    <span className="font-size-3 count font-weight-semibold text-white bg-primary circle-24 border border-width-3 border border-white">3</span>
+                                                    <span className="font-size-3 count font-weight-semibold text-white bg-primary circle-24 border border-width-3 border border-white">
+                                                        3
+                                                    </span>
                                                 </Link>
                                             </div>
                                             <i className="fas fa-chevron-down heading-default-color ml-6"></i>
                                         </Dropdown.Toggle>
                                         {size.width <= 991 ? (
-                                            <Dropdown.Menu className="gr-menu-dropdown border-0 border-width-2 py-2 w-auto bg-default" key="1">
+                                            <Dropdown.Menu
+                                                className="gr-menu-dropdown border-0 border-width-2 py-2 w-auto bg-default"
+                                                key="1"
+                                            >
                                                 <MessageDropdown />
                                             </Dropdown.Menu>
                                         ) : (
-                                            <div className="dropdown-menu gr-menu-dropdown dropdown-right border-0 border-width-2 py-2 w-auto bg-default" key="2">
+                                            <div
+                                                className="dropdown-menu gr-menu-dropdown dropdown-right border-0 border-width-2 py-2 w-auto bg-default"
+                                                key="2"
+                                            >
                                                 <MessageDropdown />
                                             </div>
                                         )}
@@ -225,26 +191,50 @@ const Header = () => {
                                             <i className="fas fa-chevron-down heading-default-color ml-6"></i>
                                         </Dropdown.Toggle>
                                         {size.width <= 991 ? (
-                                            <Dropdown.Menu className="gr-menu-dropdown border-0 border-width-2 py-2 w-auto bg-default" key="1">
-                                                <Link to="/profile-register" className="dropdown-item py-2 font-size-3 font-weight-semibold line-height-1p2 text-uppercase">
+                                            <Dropdown.Menu
+                                                className="gr-menu-dropdown border-0 border-width-2 py-2 w-auto bg-default"
+                                                key="1"
+                                            >
+                                                <Link
+                                                    to="/profile-register"
+                                                    className="dropdown-item py-2 font-size-3 font-weight-semibold line-height-1p2 text-uppercase"
+                                                >
                                                     프로필 등록
                                                 </Link>
-                                                <Link to="/#" className="dropdown-item py-2 font-size-3 font-weight-semibold line-height-1p2 text-uppercase">
+                                                <Link
+                                                    to="/#"
+                                                    className="dropdown-item py-2 font-size-3 font-weight-semibold line-height-1p2 text-uppercase"
+                                                >
                                                     지원리스트
                                                 </Link>
-                                                <Link to="/actor-mypage" className="dropdown-item py-2 font-size-3 font-weight-semibold line-height-1p2 text-uppercase">
+                                                <Link
+                                                    to="/actor-mypage"
+                                                    className="dropdown-item py-2 font-size-3 font-weight-semibold line-height-1p2 text-uppercase"
+                                                >
                                                     정보수정
                                                 </Link>
                                             </Dropdown.Menu>
                                         ) : (
-                                            <div className="dropdown-menu gr-menu-dropdown dropdown-right border-0 border-width-2 py-2 w-auto bg-default" key="2">
-                                                <Link to="/profile-register" className="dropdown-item py-2 font-size-3 font-weight-semibold line-height-1p2 text-uppercase">
+                                            <div
+                                                className="dropdown-menu gr-menu-dropdown dropdown-right border-0 border-width-2 py-2 w-auto bg-default"
+                                                key="2"
+                                            >
+                                                <Link
+                                                    to="/profile-register"
+                                                    className="dropdown-item py-2 font-size-3 font-weight-semibold line-height-1p2 text-uppercase"
+                                                >
                                                     프로필 등록
                                                 </Link>
-                                                <Link to="/#" className="dropdown-item py-2 font-size-3 font-weight-semibold line-height-1p2 text-uppercase">
+                                                <Link
+                                                    to="/#"
+                                                    className="dropdown-item py-2 font-size-3 font-weight-semibold line-height-1p2 text-uppercase"
+                                                >
                                                     지원리스트
                                                 </Link>
-                                                <Link to="/actor-mypage" className="dropdown-item py-2 font-size-3 font-weight-semibold line-height-1p2 text-uppercase">
+                                                <Link
+                                                    to="/actor-mypage"
+                                                    className="dropdown-item py-2 font-size-3 font-weight-semibold line-height-1p2 text-uppercase"
+                                                >
                                                     정보수정
                                                 </Link>
                                             </div>
@@ -290,7 +280,17 @@ const Header = () => {
                             </div>
                         )}
 
-                        <ToggleButton className={`navbar-toggler btn-close-off-canvas ml-3 ${gContext.visibleOffCanvas ? 'collapsed' : ''}`} type="button" data-toggle="collapse" data-target="#mobile-menu" aria-controls="mobile-menu" aria-expanded="false" aria-label="Toggle navigation" onClick={gContext.toggleOffCanvas} dark={gContext.header.theme === 'dark' ? 1 : 0}>
+                        <ToggleButton
+                            className={`navbar-toggler btn-close-off-canvas ml-3 ${gContext.visibleOffCanvas ? 'collapsed' : ''}`}
+                            type="button"
+                            data-toggle="collapse"
+                            data-target="#mobile-menu"
+                            aria-controls="mobile-menu"
+                            aria-expanded="false"
+                            aria-label="Toggle navigation"
+                            onClick={gContext.toggleOffCanvas}
+                            dark={gContext.header.theme === 'dark' ? 1 : 0}
+                        >
                             {/* <i className="icon icon-simple-remove icon-close"></i> */}
                             <i className="icon icon-menu-34 icon-burger d-block"></i>
                         </ToggleButton>

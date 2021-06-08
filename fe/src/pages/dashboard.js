@@ -1,12 +1,23 @@
-import React from 'react'
-import CountUp from 'react-countup'
-import LazyLoad from 'react-lazyload'
-import PageWrapper from '../components/PageWrapper'
+import React, { useEffect } from 'react';
+import CountUp from 'react-countup';
+import LazyLoad from 'react-lazyload';
+import PageWrapper from '../components/PageWrapper';
 
-import DashboardHireList from '../components/Dashboard/DashboardHireList'
-import DashboardApplicants from './dashboard-applicants'
+import DashboardHireList from '../components/Dashboard/DashboardHireList';
+import DashboardApplicants from './dashboard-applicants';
+import { useDispatch } from 'react-redux';
+import { resetHireSelector } from '../state/reducer/hire.reducer';
 
 const DashboardMain = () => {
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        return () => {
+            console.log('hire-list unmount');
+            dispatch(resetHireSelector());
+        };
+    }, []);
+
     return (
         <>
             <PageWrapper
@@ -38,7 +49,10 @@ const DashboardMain = () => {
                                 </a>
                             </div>
                             <div className="col-xxl-3 col-xl-4 col-lg-6 col-sm-6">
-                                <a href="/dashboard-applicants" className="media bg-white rounded-4 pl-8 pt-9 pb-9 pr-7 hover-shadow-1 mb-9 shadow-8">
+                                <a
+                                    href="/dashboard-applicants"
+                                    className="media bg-white rounded-4 pl-8 pt-9 pb-9 pr-7 hover-shadow-1 mb-9 shadow-8"
+                                >
                                     <div className="text-pink bg-pink-opacity-1 circle-56 font-size-6 mr-7">
                                         <i className="fas fa-user"></i>
                                     </div>
@@ -99,6 +113,6 @@ const DashboardMain = () => {
                 </div>
             </PageWrapper>
         </>
-    )
-}
-export default DashboardMain
+    );
+};
+export default DashboardMain;

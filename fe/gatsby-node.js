@@ -10,4 +10,9 @@ exports.onCreatePage = ({ page, actions }) => {
     page.context.layout = "dashboard";
     createPage(page);
   }
+
+  if (page.path.match(/actor-/)) {
+    page.context.layout = "actor-";
+    createPage(page);
+  }
 };

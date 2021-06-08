@@ -1,7 +1,7 @@
 package shop.goodcasting.api.article.hire.domain;
+
 import lombok.*;
 import org.springframework.stereotype.Component;
-
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 

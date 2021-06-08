@@ -11,6 +11,7 @@ const HireList = () => {
     const pageRequest = useSelector(hireSelector).pageRequest;
     const { dtoList } = useSelector(hireSelector).pageResult;
     const { reset } = useSelector(hireSelector);
+
     useEffect(() => {
         dispatch(hireList(pageRequest));
     }, [reset]);
@@ -22,7 +23,10 @@ const HireList = () => {
                     <ul key={hire.hireId} style={{ listStyleType: 'none', paddingLeft: '0' }}>
                         <li>
                             <Link state={{ id: hire.hireId }} to={`/hire-detail`}>
-                                <div style={{ width: '830px' }} className="pt-6 px-xl-6 px-lg-6 px-7 pb-7 light-mode-texts bg-white rounded hover-shadow-3 ">
+                                <div
+                                    style={{ width: '830px' }}
+                                    className="pt-6 px-xl-6 px-lg-6 px-7 pb-7 light-mode-texts bg-white rounded hover-shadow-3 "
+                                >
                                     <div className="row">
                                         <div className="col-md-3">
                                             <div className="media align-items-center">
@@ -51,7 +55,10 @@ const HireList = () => {
                                         <div className="col-md-7">
                                             <ul className="d-flex list-unstyled mr-n3 flex-wrap">
                                                 <li>
-                                                    <Link to="/#" className="bg-regent-opacity-15 min-width-px-96 mr-3 text-center rounded-3 px-6 py-1 font-size-3 text-black-2 mt-2">
+                                                    <Link
+                                                        to="/#"
+                                                        className="bg-regent-opacity-15 min-width-px-96 mr-3 text-center rounded-3 px-6 py-1 font-size-3 text-black-2 mt-2"
+                                                    >
                                                         {hire.cast}
                                                     </Link>
                                                 </li>

@@ -1,46 +1,50 @@
-import React, { useCallback, useContext, useState, useEffect } from 'react'
-import styled from 'styled-components'
-import { Modal } from 'react-bootstrap'
-import GlobalContext from '../../context/GlobalContext'
-import { useDispatch } from 'react-redux'
-import { signin } from '../../state/reducer/user.reducer'
+import React, { useCallback, useContext, useState, useEffect } from 'react';
+import styled from 'styled-components';
+import { Modal } from 'react-bootstrap';
+import GlobalContext from '../../context/GlobalContext';
+import { useDispatch } from 'react-redux';
+import { signin } from '../../state/reducer/user.reducer';
 
 const ModalStyled = styled(Modal)`
     /* &.modal {
     z-index: 10050;
   } */
-`
+`;
 
 const ModalSignIn = (props) => {
-    const gContext = useContext(GlobalContext)
-    const dispatch = useDispatch()
+    const gContext = useContext(GlobalContext);
+    const dispatch = useDispatch();
 
-    const [showPass, setShowPass] = useState(true)
+    const [showPass, setShowPass] = useState(true);
 
     const [inputs, setInputs] = useState({
         username: '',
         password: '',
-    })
+    });
 
     const handleClose = () => {
-        gContext.toggleSignInModal()
-    }
+        gContext.toggleSignInModal();
+    };
 
     const togglePassword = () => {
-        setShowPass(!showPass)
-    }
+        setShowPass(!showPass);
+    };
 
     const onChange = useCallback((e) => {
         setInputs({
             ...inputs,
             [e.target.name]: e.target.value,
-        })
-    })
+        });
+    });
 
     return (
         <ModalStyled {...props} size="lg" centered show={gContext.signInModalVisible} onHide={gContext.toggleSignInModal}>
             <Modal.Body className="p-0">
-                <button type="button" className="circle-32 btn-reset bg-white pos-abs-tr mt-md-n6 mr-lg-n6 focus-reset z-index-supper" onClick={handleClose}>
+                <button
+                    type="button"
+                    className="circle-32 btn-reset bg-white pos-abs-tr mt-md-n6 mr-lg-n6 focus-reset z-index-supper"
+                    onClick={handleClose}
+                >
                     <i className="fas fa-times"></i>
                 </button>
                 <div className="login-modal-main bg-white rounded-8 overflow-hidden">
@@ -71,20 +75,36 @@ const ModalSignIn = (props) => {
                                     <label htmlFor="username" className="font-size-4 text-black-2 font-weight-semibold line-height-reset">
                                         아이디
                                     </label>
-                                    <input type="username" className="form-control" placeholder="아이디를 입력해주세요" id="username" name="username" value={inputs.username} onChange={onChange} />
+                                    <input
+                                        type="username"
+                                        className="form-control"
+                                        placeholder="아이디를 입력해주세요"
+                                        id="username"
+                                        name="username"
+                                        value={inputs.username}
+                                        onChange={onChange}
+                                    />
                                 </div>
                                 <div className="form-group">
                                     <label htmlFor="password" className="font-size-4 text-black-2 font-weight-semibold line-height-reset">
                                         비밀번호
                                     </label>
                                     <div className="position-relative">
-                                        <input type={showPass ? 'password' : 'text'} className="form-control" id="password" placeholder="비밀번호를 입력해주세요" name="password" value={inputs.password} onChange={onChange} />
+                                        <input
+                                            type={showPass ? 'password' : 'text'}
+                                            className="form-control"
+                                            id="password"
+                                            placeholder="비밀번호를 입력해주세요"
+                                            name="password"
+                                            value={inputs.password}
+                                            onChange={onChange}
+                                        />
                                         <a
                                             href="/#"
                                             className="show-password pos-abs-cr fas mr-6 text-black-2"
                                             onClick={(e) => {
-                                                e.preventDefault()
-                                                togglePassword()
+                                                e.preventDefault();
+                                                togglePassword();
                                             }}
                                         >
                                             <span className="d-none">none</span>
@@ -105,8 +125,8 @@ const ModalSignIn = (props) => {
                                     <button
                                         className="btn btn-primary btn-medium w-100 rounded-5 text-uppercase"
                                         onClick={() => {
-                                            dispatch(signin(inputs))
-                                            gContext.toggleSignInModal()
+                                            dispatch(signin(inputs));
+                                            gContext.toggleSignInModal();
                                         }}
                                     >
                                         Log in
@@ -124,7 +144,7 @@ const ModalSignIn = (props) => {
                 </div>
             </Modal.Body>
         </ModalStyled>
-    )
-}
+    );
+};
 
-export default ModalSignIn
+export default ModalSignIn;
